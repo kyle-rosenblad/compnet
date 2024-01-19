@@ -1,0 +1,436 @@
+#' Network models of interspecific competition with presence-absence data
+#'
+#' @importFrom utils combn
+#' @importFrom stats sd
+#' @export
+#' @param presabs Must be specified by user. Binary (0 or 1) presence-absence matrix with sites as rows and species as columns. Column names should be unique species names.
+#' @param spvars_no_int A matrix or data frame, in which rows are species and columns are traits to be included in the model as additive species effects only, with no interaction term. Row names should be unique species names, and column names should be unique trait names.
+#' @param spvars_dist_int A matrix or data frame, in which rows are species and columns are traits to be included in the model with a distance interaction term (i.e., the absolute value of the difference in trait values for each species pair). Row names should be unique species names, and column names should be unique trait names.
+#' @param spvars_multi_int A matrix or data frame, in which rows are species and columns are traits to be included in the model with a multiplicative interaction term (i.e., the product of the trait values for each species pair). Row names should be unique species names, and column names should be unique trait names.
+#' @param pairvars A matrix or data frame, in which rows are species pairs and columns are pair-level traits that do not have a species-level analog, e.g., phylogenetic distance. Row names should be unique species names, and column names should be unique trait names. There should also be two columns named "spAid" and "spBid" containing the unique names of the species in each pair.
+#' @param family Distribution family for the likelihood. Binomial, beta-binomial, and zero-inflated binomial are currently supported.
+#' @param rank Number of dimensions for the multiplicative latent factor term. Rank=0 (the default) yields a model with no multiplicative term.
+#' @param prior_intercept_scale Scale parameter for mean-zero Gaussian prior on the intercept term for the linear predictor.
+#' @param prior_betas_scale Scale parameter for mean-zero Gaussian priors on the coefficients of fixed effect terms in the linear predictor.
+#' @param prior_sigma_addeff_rate Rate parameter for exponential prior on the scale of the species-level Gaussian random effects (i.e., "row and column effects").
+#' @param prior_multi_cholesky_eta Eta parameter for Cholesky LKJ prior determining correlations among latent factors. Larger values imply greater skepticism of strong correlations.
+#' @param prior_sigma_multi_shape Shape parameter for gamma prior on scale of multiplicative latent factor effects.
+#' @param prior_sigma_multi_scale Scale parameter for gamma prior on scale of multiplicative latent factor effects.
+#' @param prior_lambda_scale Scale parameter for mean-zero Gaussian prior on diagonal values of Lambda, the matrix that determines how different species' values of the latent factors interact in the linear predictor.
+#' @param prior_phi_rate Rate parameter for exponential prior on phi, the "over/under-dispersion parameter" in beta-binomial models.
+#' @return Object of class "compnet", which is a list containing the stanfit model object, a named list of posterior samples for all model parameters, a data frame containing all input variables for the model, a matrix of dyadic X variables, a matrix of X variables pertaining to species A in each pair, a matrix of X variables pertaining to species B in each pair, a character string denoting the distribution family, and--when relevant--a matrix of means and standard deviations for the input trait data before centering and scaling.
+#' @details This function uses Stan, as accessed through the rstan package, to build a network regression model of interspecific competitive niche differentiation in a Bayesian framework. This function is designed to test the hypothesis that species are more likely to co-occur with other species that are functionally dissimilar. Functional dissimilarity can be represented directly by traits or by a proxy like phylogenetic distance. The core input data are a species-by-site presence-absence matrix and one or more species-level traits (e.g., plant leaf size) or pair-level traits (e.g., phylogenetic distance). Units of analysis are species pairs. The response variable can follow a binomial, beta-binomial, or zero-inflated binomial distribution. The number of trials is the number of sites occupied by at least one species in a pair, and the number of successes is the number of sites occupied by both species. If species-level traits are used, each trait can be non-interacting (i.e., there is no interaction term between species A's trait value and species B's), interacting via a typical multiplicative term, or interacting via an absolute value difference (i.e., "distance") term. The interaction terms are key to the core hypothesis. If competitive niche differentiation is occurring, then the probability of co-occurrence is expected to increase with trait or phylogenetic distance between species A and B, or with the product of their trait values, if a multiplicative interaction is specified instead of a distance interaction. Random effects are used to account for additive species-level dependencies and, optionally, higher-order dependencies involving multiple species (e.g., "the enemy of my enemy is my friend"). Higher-order dependencies are modeled using a number of latent variable specified by "rank". For more details on the random effects, see Hoff, P. (2021) Additive and multiplicative effects network models. Stat. Sci. 36, 34–50.
+#' @examples
+#'
+#' data(ex_presabs)
+#' data(ex_traits)
+#'
+#' ex_compnet <- compnet(presabs=ex_presabs, spvars_dist_int=ex_traits, warmup=100, iter=200)  # Quick demo run. Will prompt warnings. Run with default warmup and iter for good posterior sampling.
+#' ex_compnet2 <- compnet(presabs=ex_presabs, spvars_dist_int=ex_traits) # Full run for good posterior sampling. Takes several minutes in most environments.
+#'
+#'
+
+compnet <- function(presabs,
+                    spvars_no_int=NULL,
+                    spvars_dist_int=NULL,
+                    spvars_multi_int=NULL,
+                    pairvars=NULL,
+                    family="binomial",
+                    rank=0,
+                    prior_intercept_scale=5,
+                    prior_betas_scale=5,
+                    prior_sigma_addeff_rate=1,
+                    prior_multi_cholesky_eta=5,
+                    prior_sigma_multi_shape=1,
+                    prior_sigma_multi_scale=1,
+                    prior_lambda_scale=5,
+                    prior_phi_rate=1,
+                    warmup=2500,
+                    iter=7500
+){
+
+  ### data prep
+  dyads <- t(utils::combn(colnames(presabs),2))
+  d <- as.data.frame(dyads)
+  names(d) <- c("spAid", "spBid")
+
+  for(j in 1:nrow(d)){
+    tmp <- presabs[,dyads[j,c(1:2)]]
+    d[j, "both"] <- length(which(tmp[,1]==1 & tmp[,2]==1))
+    d[j, "either"] <- length(which(tmp[,1]==1 | tmp[,2]==1))
+  }
+
+  XA <- matrix(NA, ncol=1, nrow=nrow(d))
+  XB <- matrix(NA, ncol=1, nrow=nrow(d))
+  Xdy <- matrix(NA, ncol=1, nrow=nrow(d))
+
+  if(!missing("spvars_no_int")){
+    for(i in 1:ncol(spvars_no_int)){
+      tmptrait <- scale(spvars_no_int[,i])
+      names(tmptrait) <- rownames(spvars_no_int)
+      vecA <- c()
+      vecB <- c()
+      for(j in 1:nrow(d)){
+        vecA[j] <- tmptrait[d[j, "spAid"]]
+        vecB[j] <- tmptrait[d[j, "spBid"]]
+      }
+      XA <- as.matrix(cbind(XA, vecA))
+      XB <- as.matrix(cbind(XB, vecB))
+      colnames(XA)[length(colnames(XA))] <- paste(names(spvars_no_int[i]), "A", sep="_")
+      colnames(XB)[length(colnames(XB))] <- paste(names(spvars_no_int[i]), "B", sep="_")
+    }
+  }
+
+  if(!missing("spvars_dist_int")){
+    for(i in 1:ncol(spvars_dist_int)){
+      tmptrait <- scale(spvars_dist_int[,i])
+      names(tmptrait) <- rownames(spvars_dist_int)
+      vecA <- c()
+      vecB <- c()
+      vecdy <- c()
+      for(j in 1:nrow(d)){
+        vecA[j] <- tmptrait[d[j, "spAid"]]
+        vecB[j] <- tmptrait[d[j, "spBid"]]
+        vecdy[j] <- abs(tmptrait[d[j, "spBid"]]-tmptrait[d[j, "spAid"]])
+      }
+      XA <- as.matrix(cbind(XA, vecA))
+      XB <- as.matrix(cbind(XB, vecB))
+      Xdy <- as.matrix(cbind(Xdy, vecdy))
+      colnames(XA)[length(colnames(XA))] <- paste(names(spvars_dist_int[i]), "A", sep="_")
+      colnames(XB)[length(colnames(XB))] <- paste(names(spvars_dist_int[i]), "B", sep="_")
+      colnames(Xdy)[length(colnames(Xdy))] <- paste(names(spvars_dist_int[i]), "dist", sep="_")
+    }
+  }
+
+  if(!missing("spvars_multi_int")){
+    for(i in 1:ncol(spvars_multi_int)){
+      tmptrait <- scale(spvars_multi_int[,i])
+      names(tmptrait) <- rownames(spvars_multi_int)
+      vecA <- c()
+      vecB <- c()
+      vecdy <- c()
+      for(j in 1:nrow(d)){
+        vecA[j] <- tmptrait[d[j, "spAid"]]
+        vecB[j] <- tmptrait[d[j, "spBid"]]
+        vecdy[j] <- tmptrait[d[j, "spBid"]]*tmptrait[d[j, "spAid"]]
+      }
+      XA <- as.matrix(cbind(XA, vecA))
+      XB <- as.matrix(cbind(XB, vecB))
+      Xdy <- as.matrix(cbind(Xdy, vecdy))
+      colnames(XA)[length(colnames(XA))] <- paste(names(spvars_multi_int[i]), "A", sep="_")
+      colnames(XB)[length(colnames(XB))] <- paste(names(spvars_multi_int[i]), "B", sep="_")
+      colnames(Xdy)[length(colnames(Xdy))] <- paste(names(spvars_multi_int[i]), "multi", sep="_")
+    }
+  }
+
+  if(!missing("pairvars")){
+    pairvars <- as.matrix(pairvars)
+    for(j in 1:nrow(pairvars)){
+      pairvars[j, c("spAid", "spBid")] <- sort(pairvars[j, c("spAid", "spBid")])
+    }
+    pairvars <- as.data.frame(pairvars)
+    pairvars <- pairvars[order(pairvars$spBid),]
+    pairvars <- pairvars[order(pairvars$spAid),]
+    pairvars$spAid <- NULL
+    pairvars$spBid <- NULL
+    for(k in 1:ncol(pairvars)){
+      pairvars[,k] <- scale(as.numeric(pairvars[,k]))
+    }
+    Xdy <- as.matrix(cbind(Xdy, pairvars))
+  }
+
+  if(ncol(Xdy)==2){
+    Xdyname <- colnames(Xdy)[2]
+  }
+  if(ncol(XA)==2){
+    XAname <- colnames(XA)[2]
+  }
+  if(ncol(XB)==2){
+    XBname <- colnames(XB)[2]
+  }
+
+  Xdy <- as.matrix(Xdy[,-1])
+  XA <- as.matrix(XA[,-1])
+  XB <- as.matrix(XB[,-1])
+
+  if(ncol(Xdy)==1){
+    colnames(Xdy) <- Xdyname
+  }
+  if(ncol(XA)==1){
+    colnames(XA) <- XAname
+  }
+  if(ncol(XB)==1){
+    colnames(XB) <- XBname
+  }
+  # save the summary statistics needed to return x variables to original scales
+  if(!missing(spvars_no_int)){
+    spvars_no_int_summs <- as.data.frame(cbind(apply(spvars_no_int, 2, mean), apply(spvars_no_int, 2, stats::sd)))
+    names(spvars_no_int_summs) <- c("mean", "sd")
+  }
+
+  if(!missing(spvars_dist_int)){
+    spvars_dist_summs <- as.data.frame(cbind(apply(spvars_dist_int, 2, mean), apply(spvars_dist_int, 2, stats::sd)))
+    names(spvars_dist_summs) <- c("mean", "sd")
+  }
+
+  if(!missing(spvars_multi_int)){
+    spvars_multi_summs <- as.data.frame(cbind(apply(spvars_multi_int, 2, mean), apply(spvars_multi_int, 2, stats::sd)))
+    names(spvars_multi_summs) <- c("mean", "sd")
+  }
+
+  if(!missing(pairvars)){
+    pairvars_summs <- as.data.frame(cbind(apply(pairvars, 2, mean), apply(pairvars, 2, stats::sd)))
+    names(pairvars_summs) <- c("mean", "sd")
+  }
+
+  # convert species IDs to integers for Stan
+  d$spAid_orig <- d$spAid
+  d$spBid_orig <- d$spBid
+  d$spAid <- match(d$spAid, colnames(presabs))
+  d$spBid <- match(d$spBid, colnames(presabs))
+
+  # save data frame of model inputs
+  input_df <- as.data.frame(cbind(d[c("spAid", "spBid", "spAid_orig", "spBid_orig", "both", "either")], Xdy, XA, XB))
+
+  ### build model
+  if(family=="binomial"){
+
+    if(rank==0){
+      datalist <- list(
+        n_nodes=ncol(presabs),
+        N=nrow(d),
+        Xdy_cols=ncol(Xdy),
+        Xsp_cols=ncol(XA),
+        spAid=d$spAid,
+        spBid=d$spBid,
+        Xdy=Xdy,
+        XA=XA,
+        XB=XB,
+        both=d$both,
+        either=d$either,
+        prior_intercept_scale=prior_intercept_scale,
+        prior_betas_scale=prior_betas_scale,
+        prior_sigma_addeff_rate=prior_sigma_addeff_rate)
+
+      stanmod <- rstan::stan(file="srm_binomial.stan",
+                      model_name="srm_binomial",
+                      data=datalist,
+                      cores=1,
+                      chains=1,
+                      refresh=500,
+                      warmup=warmup,
+                      iter=iter,
+                      verbose=F,
+                      control=list(adapt_delta=0.95))
+    }
+
+    if(rank>0){
+      datalist <- list(
+        n_nodes=ncol(presabs),
+        N=nrow(d),
+        Xdy_cols=ncol(Xdy),
+        Xsp_cols=ncol(XA),
+        spAid=d$spAid,
+        spBid=d$spBid,
+        Xdy=Xdy,
+        XA=XA,
+        XB=XB,
+        K=rank,
+        both=d$both,
+        either=d$either,
+        prior_intercept_scale=prior_intercept_scale,
+        prior_betas_scale=prior_betas_scale,
+        prior_sigma_addeff_rate=prior_sigma_addeff_rate,
+        prior_multi_cholesky_eta=prior_multi_cholesky_eta,
+        prior_sigma_multi_shape=prior_sigma_multi_shape,
+        prior_sigma_multi_scale=prior_sigma_multi_scale,
+        prior_lambda_scale=prior_lambda_scale)
+
+      stanmod <- rstan::stan(file="ame_binomial.stan",
+                      model_name="ame_binomial",
+                      data=datalist,
+                      cores=1,
+                      chains=1,
+                      refresh=500,
+                      warmup=warmup,
+                      iter=iter,
+                      verbose=F,
+                      control=list(adapt_delta=0.95))
+    }
+
+  }
+
+
+  if(family=="beta-binomial"){
+
+    if(rank==0){
+      datalist <- list(
+        n_nodes=ncol(presabs),
+        N=nrow(d),
+        Xdy_cols=ncol(Xdy),
+        Xsp_cols=ncol(XA),
+        spAid=d$spAid,
+        spBid=d$spBid,
+        Xdy=Xdy,
+        XA=XA,
+        XB=XB,
+        both=d$both,
+        either=d$either,
+        prior_intercept_scale=prior_intercept_scale,
+        prior_betas_scale=prior_betas_scale,
+        prior_sigma_addeff_rate=prior_sigma_addeff_rate,
+        prior_phi_rate=prior_phi_rate)
+
+      stanmod <- rstan::stan(file="srm_beta_binomial.stan",
+                      model_name="srm_beta_binomial",
+                      data=datalist,
+                      cores=1,
+                      chains=1,
+                      refresh=500,
+                      warmup=warmup,
+                      iter=iter,
+                      verbose=F,
+                      control=list(adapt_delta=0.95))
+    }
+
+    if(rank>0){
+      datalist <- list(
+        n_nodes=ncol(presabs),
+        N=nrow(d),
+        Xdy_cols=ncol(Xdy),
+        Xsp_cols=ncol(XA),
+        spAid=d$spAid,
+        spBid=d$spBid,
+        Xdy=Xdy,
+        XA=XA,
+        XB=XB,
+        K=rank,
+        both=d$both,
+        either=d$either,
+        prior_intercept_scale=prior_intercept_scale,
+        prior_betas_scale=prior_betas_scale,
+        prior_sigma_addeff_rate=prior_sigma_addeff_rate,
+        prior_multi_cholesky_eta=prior_multi_cholesky_eta,
+        prior_sigma_multi_shape=prior_sigma_multi_shape,
+        prior_sigma_multi_scale=prior_sigma_multi_scale,
+        prior_lambda_scale=prior_lambda_scale,
+        prior_phi_rate=prior_phi_rate)
+
+      stanmod <- rstan::stan(file="ame_beta_binomial.stan",
+                      model_name="ame_beta_binomial",
+                      data=datalist,
+                      cores=1,
+                      chains=1,
+                      refresh=500,
+                      warmup=warmup,
+                      iter=iter,
+                      verbose=F,
+                      control=list(adapt_delta=0.95))
+    }
+
+  }
+
+
+  if(family=="zi_binomial"){
+
+    if(rank==0){
+      datalist <- list(
+        n_nodes=ncol(presabs),
+        N=nrow(d),
+        Xdy_cols=ncol(Xdy),
+        Xsp_cols=ncol(XA),
+        spAid=d$spAid,
+        spBid=d$spBid,
+        Xdy=Xdy,
+        XA=XA,
+        XB=XB,
+        both=d$both,
+        either=d$either,
+        prior_intercept_scale=prior_intercept_scale,
+        prior_betas_scale=prior_betas_scale,
+        prior_sigma_addeff_rate=prior_sigma_addeff_rate)
+
+      stanmod <- rstan::stan(file="srm_zi_binomial.stan",
+                      model_name="srm_zi_binomial",
+                      data=datalist,
+                      cores=1,
+                      chains=1,
+                      refresh=500,
+                      warmup=warmup,
+                      iter=iter,
+                      verbose=F,
+                      control=list(adapt_delta=0.95))
+    }
+
+    if(rank>0){
+      datalist <- list(
+        n_nodes=ncol(presabs),
+        N=nrow(d),
+        Xdy_cols=ncol(Xdy),
+        Xsp_cols=ncol(XA),
+        spAid=d$spAid,
+        spBid=d$spBid,
+        Xdy=Xdy,
+        XA=XA,
+        XB=XB,
+        K=rank,
+        both=d$both,
+        either=d$either,
+        prior_intercept_scale=prior_intercept_scale,
+        prior_betas_scale=prior_betas_scale,
+        prior_sigma_addeff_rate=prior_sigma_addeff_rate,
+        prior_multi_cholesky_eta=prior_multi_cholesky_eta,
+        prior_sigma_multi_shape=prior_sigma_multi_shape,
+        prior_sigma_multi_scale=prior_sigma_multi_scale,
+        prior_lambda_scale=prior_lambda_scale)
+
+      stanmod <- rstan::stan(file="ame_zi_binomial.stan",
+                      model_name="ame_zi_binomial",
+                      data=datalist,
+                      cores=1,
+                      chains=1,
+                      refresh=500,
+                      warmup=warmup,
+                      iter=iter,
+                      verbose=F,
+                      control=list(adapt_delta=0.95))
+    }
+
+  }
+
+
+
+  ### extract posterior samples
+  stanmod_samp <- rstan::extract(stanmod)
+
+
+  ### assemble list of outputs
+  outlist <- list(stanmod, stanmod_samp, input_df, Xdy, XA, XB, family)
+  names(outlist) <- c("stanmod", "stanmod_samp", "d", "Xdy", "XA", "XB", "family")
+
+  if(!missing(spvars_no_int)){
+    outlist[[length(outlist)+1]] <- spvars_no_int_summs
+    names(outlist)[length(outlist)] <- "spvars_no_int_summs"
+  }
+
+  if(!missing(spvars_dist_int)){
+    outlist[[length(outlist)+1]] <- spvars_dist_summs
+    names(outlist)[length(outlist)] <- "spvars_dist_summs"
+  }
+
+  if(!missing(spvars_multi_int)){
+    outlist[[length(outlist)+1]] <- spvars_multi_summs
+    names(outlist)[length(outlist)] <- "spvars_multi_summs"
+  }
+
+  if(!missing(pairvars)){
+    outlist[[length(outlist)+1]] <- pairvars_summs
+    names(outlist)[length(outlist)] <- "pairvars_summs"
+  }
+
+
+
+
+  class(outlist) <- "compnet"
+  return(outlist)
+}
