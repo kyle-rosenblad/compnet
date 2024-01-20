@@ -4,3 +4,8 @@
 .httr-oauth
 .DS_Store
 .quarto
+*.o
+stanExports_*.cc
+stanExports_*.h
+*.so
+*.dll

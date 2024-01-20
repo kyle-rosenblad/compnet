@@ -3,30 +3,84 @@
 #' @importFrom utils combn
 #' @importFrom stats sd
 #' @export
-#' @param presabs Must be specified by user. Binary (0 or 1) presence-absence matrix with sites as rows and species as columns. Column names should be unique species names.
-#' @param spvars_no_int A matrix or data frame, in which rows are species and columns are traits to be included in the model as additive species effects only, with no interaction term. Row names should be unique species names, and column names should be unique trait names.
-#' @param spvars_dist_int A matrix or data frame, in which rows are species and columns are traits to be included in the model with a distance interaction term (i.e., the absolute value of the difference in trait values for each species pair). Row names should be unique species names, and column names should be unique trait names.
-#' @param spvars_multi_int A matrix or data frame, in which rows are species and columns are traits to be included in the model with a multiplicative interaction term (i.e., the product of the trait values for each species pair). Row names should be unique species names, and column names should be unique trait names.
-#' @param pairvars A matrix or data frame, in which rows are species pairs and columns are pair-level traits that do not have a species-level analog, e.g., phylogenetic distance. Row names should be unique species names, and column names should be unique trait names. There should also be two columns named "spAid" and "spBid" containing the unique names of the species in each pair.
-#' @param family Distribution family for the likelihood. Binomial, beta-binomial, and zero-inflated binomial are currently supported.
-#' @param rank Number of dimensions for the multiplicative latent factor term. Rank=0 (the default) yields a model with no multiplicative term.
-#' @param prior_intercept_scale Scale parameter for mean-zero Gaussian prior on the intercept term for the linear predictor.
-#' @param prior_betas_scale Scale parameter for mean-zero Gaussian priors on the coefficients of fixed effect terms in the linear predictor.
-#' @param prior_sigma_addeff_rate Rate parameter for exponential prior on the scale of the species-level Gaussian random effects (i.e., "row and column effects").
-#' @param prior_multi_cholesky_eta Eta parameter for Cholesky LKJ prior determining correlations among latent factors. Larger values imply greater skepticism of strong correlations.
-#' @param prior_sigma_multi_shape Shape parameter for gamma prior on scale of multiplicative latent factor effects.
-#' @param prior_sigma_multi_scale Scale parameter for gamma prior on scale of multiplicative latent factor effects.
-#' @param prior_lambda_scale Scale parameter for mean-zero Gaussian prior on diagonal values of Lambda, the matrix that determines how different species' values of the latent factors interact in the linear predictor.
-#' @param prior_phi_rate Rate parameter for exponential prior on phi, the "over/under-dispersion parameter" in beta-binomial models.
-#' @return Object of class "compnet", which is a list containing the stanfit model object, a named list of posterior samples for all model parameters, a data frame containing all input variables for the model, a matrix of dyadic X variables, a matrix of X variables pertaining to species A in each pair, a matrix of X variables pertaining to species B in each pair, a character string denoting the distribution family, and--when relevant--a matrix of means and standard deviations for the input trait data before centering and scaling.
-#' @details This function uses Stan, as accessed through the rstan package, to build a network regression model of interspecific competitive niche differentiation in a Bayesian framework. This function is designed to test the hypothesis that species are more likely to co-occur with other species that are functionally dissimilar. Functional dissimilarity can be represented directly by traits or by a proxy like phylogenetic distance. The core input data are a species-by-site presence-absence matrix and one or more species-level traits (e.g., plant leaf size) or pair-level traits (e.g., phylogenetic distance). Units of analysis are species pairs. The response variable can follow a binomial, beta-binomial, or zero-inflated binomial distribution. The number of trials is the number of sites occupied by at least one species in a pair, and the number of successes is the number of sites occupied by both species. If species-level traits are used, each trait can be non-interacting (i.e., there is no interaction term between species A's trait value and species B's), interacting via a typical multiplicative term, or interacting via an absolute value difference (i.e., "distance") term. The interaction terms are key to the core hypothesis. If competitive niche differentiation is occurring, then the probability of co-occurrence is expected to increase with trait or phylogenetic distance between species A and B, or with the product of their trait values, if a multiplicative interaction is specified instead of a distance interaction. Random effects are used to account for additive species-level dependencies and, optionally, higher-order dependencies involving multiple species (e.g., "the enemy of my enemy is my friend"). Higher-order dependencies are modeled using a number of latent variable specified by "rank". For more details on the random effects, see Hoff, P. (2021) Additive and multiplicative effects network models. Stat. Sci. 36, 34–50.
+#' @param presabs Must be specified by user. Binary (0 or 1) presence-absence matrix with sites as
+#'    rows and species as columns. Column names should be unique species names.
+#' @param spvars_no_int A matrix or data frame, in which rows are species and columns are traits to
+#'    be included in the model as additive species effects only, with no interaction term. Row names
+#'    should be unique species names, and column names should be unique trait names.
+#' @param spvars_dist_int A matrix or data frame, in which rows are species and columns are traits
+#'    to be included in the model with a distance interaction term (i.e., the absolute value of the
+#'    difference in trait values for each species pair). Row names should be unique species names,
+#'    and column names should be unique trait names.
+#' @param spvars_multi_int A matrix or data frame, in which rows are species and columns are traits
+#'    to be included in the model with a multiplicative interaction term (i.e., the product of the
+#'    trait values for each species pair). Row names should be unique species names, and column
+#'    names should be unique trait names.
+#' @param pairvars A matrix or data frame, in which rows are species pairs and columns are
+#'    pair-level traits that do not have a species-level analog, e.g., phylogenetic distance.
+#'    Row names should be unique species names, and column names should be unique trait names. There
+#'    should also be two columns named "spAid" and "spBid" containing the unique names of the
+#'    species in each pair.
+#' @param family Distribution family for the likelihood. Binomial, beta-binomial, and zero-inflated
+#'    binomial are currently supported.
+#' @param rank Number of dimensions for the multiplicative latent factor term. Rank=0 (the default)
+#'    yields a model with no multiplicative term.
+#' @param prior_intercept_scale Scale parameter for mean-zero Gaussian prior on the intercept term
+#'    for the linear predictor.
+#' @param prior_betas_scale Scale parameter for mean-zero Gaussian priors on the coefficients of
+#'    fixed effect terms in the linear predictor.
+#' @param prior_sigma_addeff_rate Rate parameter for exponential prior on the scale of the
+#'    species-level Gaussian random effects (i.e., "row and column effects").
+#' @param prior_multi_cholesky_eta Eta parameter for Cholesky LKJ prior determining correlations
+#'    among latent factors. Larger values imply greater skepticism of strong correlations.
+#' @param prior_sigma_multi_shape Shape parameter for gamma prior on scale of multiplicative
+#'    latent factor effects.
+#' @param prior_sigma_multi_scale Scale parameter for gamma prior on scale of multiplicative
+#'    latent factor effects.
+#' @param prior_lambda_scale Scale parameter for mean-zero Gaussian prior on diagonal values of
+#'    Lambda, the matrix that determines how different species' values of the latent factors
+#'    interact in the linear predictor.
+#' @param prior_phi_rate Rate parameter for exponential prior on phi, the "over/under-dispersion parameter"
+#'    in beta-binomial models.
+#' @return Object of class "compnet", which is a list containing the stanfit model object,
+#'    a named list of posterior samples for all model parameters, a data frame containing all
+#'    input variables for the model, a matrix of dyadic X variables, a matrix of X variables
+#'    pertaining to species A in each pair, a matrix of X variables pertaining to species B in
+#'    each pair, a character string denoting the distribution family, and--when relevant--a matrix
+#'    of means and standard deviations for the input trait data before centering and scaling.
+#' @details This function uses Stan, as accessed through the rstan package, to build a network
+#'    regression model of interspecific competitive niche differentiation in a Bayesian framework.
+#'    This function is designed to test the hypothesis that species are more likely to co-occur with
+#'    other species that are functionally dissimilar. Functional dissimilarity can be represented
+#'    directly by traits or by a proxy like phylogenetic distance. The core input data are a
+#'    species-by-site presence-absence matrix and one or more species-level traits
+#'    (e.g., plant leaf size) or pair-level traits (e.g., phylogenetic distance). Units of analysis
+#'    are species pairs. The response variable can follow a binomial, beta-binomial, or zero-inflated
+#'    binomial distribution. The number of trials is the number of sites occupied by at least one
+#'    species in a pair, and the number of successes is the number of sites occupied by both species.
+#'    If species-level traits are used, each trait can be non-interacting
+#'    (i.e., there is no interaction term between species A's trait value and species B's),
+#'    interacting via a typical multiplicative term, or interacting via an absolute value difference
+#'    (i.e., "distance") term. The interaction terms are key to the core hypothesis. If competitive
+#'    niche differentiation is occurring, then the probability of co-occurrence is expected to
+#'    increase with trait or phylogenetic distance between species A and B, or with the product of
+#'    their trait values, if a multiplicative interaction is specified instead of a distance interaction.
+#'    Random effects are used to account for additive species-level dependencies and, optionally,
+#'    higher-order dependencies involving multiple species (e.g., "the enemy of my enemy is my friend").
+#'    Higher-order dependencies are modeled using a number of latent variable specified by "rank".
+#'    For more details on the random effects, see Hoff, P. (2021) Additive and multiplicative effects
+#'    network models. Stat. Sci. 36, 34–50.
 #' @examples
 #'
 #' data(ex_presabs)
 #' data(ex_traits)
 #'
-#' ex_compnet <- compnet(presabs=ex_presabs, spvars_dist_int=ex_traits, warmup=100, iter=200)  # Quick demo run. Will prompt warnings. Run with default warmup and iter for good posterior sampling.
-#' ex_compnet2 <- compnet(presabs=ex_presabs, spvars_dist_int=ex_traits) # Full run for good posterior sampling. Takes several minutes in most environments.
+#' # Quick demo run. Will prompt warnings.
+#' # Run with default warmup and iter for good posterior sampling.
+#' ex_compnet <- compnet(presabs=ex_presabs, spvars_dist_int=ex_traits, warmup=100, iter=200)
+#'
+#' # Full run for good posterior sampling. Takes several minutes in most environments.
+#' ex_compnet2 <- compnet(presabs=ex_presabs, spvars_dist_int=ex_traits)
 #'
 #'
 
@@ -212,8 +266,7 @@ compnet <- function(presabs,
         prior_betas_scale=prior_betas_scale,
         prior_sigma_addeff_rate=prior_sigma_addeff_rate)
 
-      stanmod <- rstan::stan(file="srm_binomial.stan",
-                      model_name="srm_binomial",
+      stanmod <- rstan::sampling(stanmodels$srm_binomial,
                       data=datalist,
                       cores=1,
                       chains=1,
@@ -246,8 +299,7 @@ compnet <- function(presabs,
         prior_sigma_multi_scale=prior_sigma_multi_scale,
         prior_lambda_scale=prior_lambda_scale)
 
-      stanmod <- rstan::stan(file="ame_binomial.stan",
-                      model_name="ame_binomial",
+      stanmod <- rstan::sampling(stanmodels$ame_binomial,
                       data=datalist,
                       cores=1,
                       chains=1,
@@ -281,8 +333,7 @@ compnet <- function(presabs,
         prior_sigma_addeff_rate=prior_sigma_addeff_rate,
         prior_phi_rate=prior_phi_rate)
 
-      stanmod <- rstan::stan(file="srm_beta_binomial.stan",
-                      model_name="srm_beta_binomial",
+      stanmod <- rstan::sampling(stanmodels$srm_beta_binomial,
                       data=datalist,
                       cores=1,
                       chains=1,
@@ -316,8 +367,7 @@ compnet <- function(presabs,
         prior_lambda_scale=prior_lambda_scale,
         prior_phi_rate=prior_phi_rate)
 
-      stanmod <- rstan::stan(file="ame_beta_binomial.stan",
-                      model_name="ame_beta_binomial",
+      stanmod <- rstan::sampling(stanmodels$ame_beta_binomial,
                       data=datalist,
                       cores=1,
                       chains=1,
@@ -350,8 +400,7 @@ compnet <- function(presabs,
         prior_betas_scale=prior_betas_scale,
         prior_sigma_addeff_rate=prior_sigma_addeff_rate)
 
-      stanmod <- rstan::stan(file="srm_zi_binomial.stan",
-                      model_name="srm_zi_binomial",
+      stanmod <- rstan::sampling(stanmodels$srm_zi_binomial,
                       data=datalist,
                       cores=1,
                       chains=1,
@@ -384,8 +433,7 @@ compnet <- function(presabs,
         prior_sigma_multi_scale=prior_sigma_multi_scale,
         prior_lambda_scale=prior_lambda_scale)
 
-      stanmod <- rstan::stan(file="ame_zi_binomial.stan",
-                      model_name="ame_zi_binomial",
+      stanmod <- rstan::sampling(stanmodels$ame_zi_binomial,
                       data=datalist,
                       cores=1,
                       chains=1,

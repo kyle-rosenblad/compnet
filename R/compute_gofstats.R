@@ -1,15 +1,19 @@
-#' Compute summary statistics quantifying row/column-level and third order dependencies in a symmetric matrix with NA diagonals
+#' Compute summary statistics quantifying row/column-level and third order dependencies in a
+#'    symmetric matrix with NA diagonals
 #'
 #' @importFrom stats sd
 #' @export
 #' @param Y A symmetric matrix with NA diagonals
-#' @return A named vector containing: 1- the standard deviation of row means, and 2- The triadic dependency metric used by Hoff, Fosdick, & Volfovsky's "amen" package.
+#' @return A named vector containing: 1- the standard deviation of row means, and 2- The triadic
+#'    dependency metric used by Hoff, Fosdick, & Volfovsky's "amen" package.
 #' @examples
 #'
 #' data(ex_presabs)
 #' data(ex_traits)
 #'
-#' ex_compnet <- compnet(presabs=ex_presabs, spvars_dist_int=ex_traits, warmup=100, iter=200)  # Quick demo run. Will prompt warnings. Run with default warmup and iter for good posterior sampling.
+#' # Quick demo run. Will prompt warnings.
+#' # Run with default warmup and iter for good posterior sampling.
+#' ex_compnet <- compnet(presabs=ex_presabs, spvars_dist_int=ex_traits, warmup=100, iter=200)
 #'
 #' ex_compnet_summ <- summarize_compnet(ex_compnet)
 #' ex_compnet_summ
