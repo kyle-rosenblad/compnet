@@ -2,3 +2,5 @@
 ^\.Rproj\.user$
 ^\.github$
 ^LICENSE\.md$
+stanExports_*.cc
+stanExports_*.h
