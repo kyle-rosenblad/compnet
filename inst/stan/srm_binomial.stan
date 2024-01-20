@@ -1,15 +1,15 @@
 data{
   int n_nodes ;
   int N ; 
-  int spAid[N] ;  
-  int spBid[N] ;  
+  array[N] int spAid ;  
+  array[N] int spBid ;  
   int Xdy_cols ; 
   int Xsp_cols ;  
   matrix[N,Xdy_cols] Xdy ; 
   matrix[N,Xsp_cols] XA ;  
   matrix[N,Xsp_cols] XB ;  
-  int both[N] ; 
-  int either[N] ; 
+  array[N] int both ; 
+  array[N] int either ; 
   real<lower=0> prior_intercept_scale ;
   real<lower=0> prior_betas_scale ;
   real<lower=0> prior_sigma_addeff_rate ;
