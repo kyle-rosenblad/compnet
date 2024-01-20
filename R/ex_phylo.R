@@ -7,3 +7,4 @@
 #'   \item{spBid}{ID for species B in each pair}
 #'   \item{phylodist}{Phylogenetic distance between each species pair}
 #' }
+"ex_phylo"

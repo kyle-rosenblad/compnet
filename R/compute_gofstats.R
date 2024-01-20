@@ -13,7 +13,7 @@
 #'
 #' # Quick demo run. Will prompt warnings.
 #' # Run with default warmup and iter for good posterior sampling.
-#' ex_compnet <- compnet(presabs=ex_presabs, spvars_dist_int=ex_traits, warmup=100, iter=200)
+#' ex_compnet <- compnet(presabs=ex_presabs, spvars_dist_int=ex_traits, warmup=10, iter=20)
 #'
 #' ex_compnet_summ <- summarize_compnet(ex_compnet)
 #' ex_compnet_summ

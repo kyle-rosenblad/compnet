@@ -80,6 +80,10 @@ interact in the linear predictor.}
 
 \item{prior_phi_rate}{Rate parameter for exponential prior on phi, the "over/under-dispersion parameter"
 in beta-binomial models.}
+
+\item{warmup}{Number of warmup iterations for Stan.}
+
+\item{iter}{Number of posterior sampling iterations for Stan.}
 }
 \value{
 Object of class "compnet", which is a list containing the stanfit model object,
@@ -123,11 +127,7 @@ data(ex_traits)
 
 # Quick demo run. Will prompt warnings.
 # Run with default warmup and iter for good posterior sampling.
-ex_compnet <- compnet(presabs=ex_presabs, spvars_dist_int=ex_traits, warmup=100, iter=200)
-
-# Full run for good posterior sampling. Takes several minutes in most environments.
-ex_compnet2 <- compnet(presabs=ex_presabs, spvars_dist_int=ex_traits)
-
+ex_compnet <- compnet(presabs=ex_presabs, spvars_dist_int=ex_traits, warmup=10, iter=20)
 
 }
 \references{

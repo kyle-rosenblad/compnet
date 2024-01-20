@@ -10,7 +10,7 @@
 #' @param xlabel Optional character string to replace xvar when plotting.
 #' @param orig.scale Logical value indicating whether to back-transform trait data to the original
 #'    scale (T) or leave them with mean zero and unit variance (F).
-#' @param intlevels Vector of real values on the interval [0,1] indicating what levels of the x
+#' @param intlevels Vector of real values on the interval \eqn{[0,1]} indicating what levels of the x
 #'    variable to condition on for species B when plotting species A's mean response.
 #' @param ci_width A real number (0,1) describing the desired widths of credible bands. Defaults to 0.95.
 #' @param ymin Real number indicating the location of the bottom of the plot's y axis.
@@ -26,7 +26,7 @@
 #'
 #' # Quick demo run. Will prompt warnings.
 #' # Run with default warmup and iter for good posterior sampling.
-#' ex_compnet <- compnet(presabs=ex_presabs, spvars_dist_int=ex_traits, warmup=100, iter=200)
+#' ex_compnet <- compnet(presabs=ex_presabs, spvars_dist_int=ex_traits, warmup=10, iter=20)
 #' plotdata <- scatter_interaction(ex_compnet, xvar="ndtrait")
 
 #library(ggplot2)
@@ -98,7 +98,7 @@ scatter_interaction <- function(mod,
       length.out=grid_size))
 
   if(thin==TRUE){
-    samp_for_plot <- samp_for_plot[sample(1:nrow(samp_for_plot), replace=FALSE, size=thin_to),]
+    samp_for_plot <- samp_for_plot[sample(1:nrow(samp_for_plot), replace=FALSE, size=min(nrow(samp_for_plot),thin_to)),]
   }
 
   for(k in 1:length(intlevels)){
@@ -160,8 +160,8 @@ scatter_interaction <- function(mod,
   }
 
   ggplot2::ggplot()+
-    ggplot2::geom_ribbon(data=gridfinal, ggplot2::aes(x=.data$x, ymin=.data$qlow, ymax=.data$qhigh, group=intlevel, fill=intlevel), alpha=0.2)+
-    ggplot2::geom_line(data=gridfinal, ggplot2::aes(x=.data$x, y=.data$means, group=intlevel, color=intlevel), lwd=1)+
+    ggplot2::geom_ribbon(data=gridfinal, ggplot2::aes(x=.data$x, ymin=.data$qlow, ymax=.data$qhigh, group=.data$intlevel, fill=.data$intlevel), alpha=0.2)+
+    ggplot2::geom_line(data=gridfinal, ggplot2::aes(x=.data$x, y=.data$means, group=.data$intlevel, color=.data$intlevel), lwd=1)+
     ggplot2::scale_color_viridis_c(name=paste(xlabel, "\nSp. B", sep=""))+
     ggplot2::scale_fill_viridis_c(name=paste(xlabel, "\nSp. B", sep=""))+
     ggplot2::geom_point(data=d, alpha=0.2, ggplot2::aes(x=.data[[paste(xvar, "A", sep="_")]], y=.data$both/.data$either))+

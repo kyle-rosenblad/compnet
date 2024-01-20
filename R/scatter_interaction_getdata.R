@@ -7,7 +7,7 @@
 #'    the input data used to build the model.
 #' @param orig.scale Logical value indicating whether to back-transform trait data to the original
 #'    scale (T) or leave them with mean zero and unit variance (F).
-#' @param intlevels Vector of real values on the interval [0,1] indicating what levels of the x
+#' @param intlevels Vector of real values on the interval \eqn{[0,1]} indicating what levels of the x
 #'    variable to condition on for species B when plotting species A's mean response.
 #' @param ci_width A real number (0,1) describing the desired widths of credible bands. Defaults to 0.95.
 #' @param grid_size A positive integer defining the number of discrete steps to use in approximating
@@ -23,7 +23,7 @@
 #'
 #' # Quick demo run. Will prompt warnings.
 #' # Run with default warmup and iter for good posterior sampling.
-#' ex_compnet <- compnet(presabs=ex_presabs, spvars_dist_int=ex_traits, warmup=100, iter=200)
+#' ex_compnet <- compnet(presabs=ex_presabs, spvars_dist_int=ex_traits, warmup=10, iter=20)
 #'
 #' plotdata <- scatter_interaction_getdata(ex_compnet, xvar="ndtrait")
 
@@ -92,7 +92,7 @@ scatter_interaction_getdata <- function(mod,
       length.out=grid_size))
 
   if(thin==TRUE){
-    samp_for_plot <- samp_for_plot[sample(1:nrow(samp_for_plot), replace=FALSE, size=thin_to),]
+    samp_for_plot <- samp_for_plot[sample(1:nrow(samp_for_plot), replace=FALSE, size=min(nrow(samp_for_plot),thin_to)),]
   }
 
   for(k in 1:length(intlevels)){

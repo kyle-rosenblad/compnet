@@ -24,7 +24,7 @@ the input data used to build the model.}
 \item{orig.scale}{Logical value indicating whether to back-transform trait data to the original
 scale (T) or leave them with mean zero and unit variance (F).}
 
-\item{intlevels}{Vector of real values on the interval \link{0,1} indicating what levels of the x
+\item{intlevels}{Vector of real values on the interval \eqn{[0,1]} indicating what levels of the x
 variable to condition on for species B when plotting species A's mean response.}
 
 \item{ci_width}{A real number (0,1) describing the desired widths of credible bands. Defaults to 0.95.}
@@ -50,7 +50,7 @@ data(ex_traits)
 
 # Quick demo run. Will prompt warnings.
 # Run with default warmup and iter for good posterior sampling.
-ex_compnet <- compnet(presabs=ex_presabs, spvars_dist_int=ex_traits, warmup=100, iter=200)
+ex_compnet <- compnet(presabs=ex_presabs, spvars_dist_int=ex_traits, warmup=10, iter=20)
 
 plotdata <- scatter_interaction_getdata(ex_compnet, xvar="ndtrait")
 }

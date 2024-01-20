@@ -42,6 +42,8 @@
 #'    interact in the linear predictor.
 #' @param prior_phi_rate Rate parameter for exponential prior on phi, the "over/under-dispersion parameter"
 #'    in beta-binomial models.
+#' @param warmup Number of warmup iterations for Stan.
+#' @param iter Number of posterior sampling iterations for Stan.
 #' @return Object of class "compnet", which is a list containing the stanfit model object,
 #'    a named list of posterior samples for all model parameters, a data frame containing all
 #'    input variables for the model, a matrix of dyadic X variables, a matrix of X variables
@@ -77,11 +79,7 @@
 #'
 #' # Quick demo run. Will prompt warnings.
 #' # Run with default warmup and iter for good posterior sampling.
-#' ex_compnet <- compnet(presabs=ex_presabs, spvars_dist_int=ex_traits, warmup=100, iter=200)
-#'
-#' # Full run for good posterior sampling. Takes several minutes in most environments.
-#' ex_compnet2 <- compnet(presabs=ex_presabs, spvars_dist_int=ex_traits)
-#'
+#' ex_compnet <- compnet(presabs=ex_presabs, spvars_dist_int=ex_traits, warmup=10, iter=20)
 #'
 
 compnet <- function(presabs,

@@ -6,3 +6,4 @@
 #'   \item{ndtrait}{A trait driving competitive niche differentiation}
 #'   \item{domtrait}{A trait influencing competitive ability}
 #' }
+"ex_traits"

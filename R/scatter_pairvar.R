@@ -24,7 +24,7 @@
 #'
 #' # Quick demo run. Will prompt warnings.
 #' # Run with default warmup and iter for good posterior sampling.
-#' ex_compnet_phylo <- compnet(presabs=ex_presabs, pairvars=ex_phylo, warmup=100, iter=200)
+#' ex_compnet_phylo <- compnet(presabs=ex_presabs, pairvars=ex_phylo, warmup=10, iter=20)
 #'
 #' scatter_pairvar(ex_compnet_phylo, xvar="phylodist", ymax=0.25)
 
@@ -33,7 +33,6 @@ scatter_pairvar <- function(mod,
                             xlabel,
                             color="red",
                             orig.scale=T,
-                            intlevels=c(0.05,0.5,0.95),
                             ymin=0,
                             ymax=1,
                             ci_width=0.95,
@@ -66,7 +65,7 @@ scatter_pairvar <- function(mod,
   }
 
   # get beta and mean x values for other dyadic variables
-  if(ncol(ex_compnet_phylo$Xdy)>1){
+  if(ncol(mod$Xdy)>1){
     beta_dy_other <- as.matrix(samp_temp$beta_dy[,-colpos])
     Xdy_other_mean <- as.matrix(apply(as.matrix(mod$Xdy[,-colpos]), 2, mean))
     xbeta_other_dy <- beta_dy_other%*%Xdy_other_mean
@@ -81,7 +80,7 @@ scatter_pairvar <- function(mod,
       length.out=grid_size))
 
   if(thin==TRUE){
-    samp_for_plot <- samp_for_plot[sample(1:nrow(samp_for_plot), replace=FALSE, size=thin_to),]
+    samp_for_plot <- samp_for_plot[sample(1:nrow(samp_for_plot), replace=FALSE, size=min(nrow(samp_for_plot),thin_to)),]
   }
 
   for(i in 1:nrow(grid_for_plot)){

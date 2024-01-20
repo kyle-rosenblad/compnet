@@ -14,7 +14,7 @@ gofstats(mod, thin = T, thin_to = 300)
 \item{thin_to}{Logical value indicating the size of the subsample to take if thin=TRUE.}
 }
 \value{
-A named vector containing quantiles on the interval \link{0,1} for: 1- the standard deviation
+A named vector containing quantiles on the interval \eqn{[0,1]} for: 1- the standard deviation
 of row means, and 2- The triadic dependency metric used by Hoff, Fosdick, & Volfovsky's "amen"
 package. These values represent the proportion of the posterior predictive simulation that were
 less than the value for the observed data.
@@ -35,7 +35,7 @@ data(ex_traits)
 
 # Quick demo run. Will prompt warnings.
 # Run with default warmup and iter for good posterior sampling.
-ex_compnet <- compnet(presabs=ex_presabs, spvars_dist_int=ex_traits, warmup=100, iter=200)
+ex_compnet <- compnet(presabs=ex_presabs, spvars_dist_int=ex_traits, warmup=10, iter=20)
 
 gofstats(ex_compnet)
 

@@ -4,7 +4,7 @@
 #' @param mod An object of class "compnet" created by the compnet() function.
 #' @param thin Logical value indicating whether to take a random subsample of posterior draws.
 #' @param thin_to Logical value indicating the size of the subsample to take if thin=TRUE.
-#' @return A named vector containing quantiles on the interval [0,1] for: 1- the standard deviation
+#' @return A named vector containing quantiles on the interval \eqn{[0,1]} for: 1- the standard deviation
 #'    of row means, and 2- The triadic dependency metric used by Hoff, Fosdick, & Volfovsky's "amen"
 #'    package. These values represent the proportion of the posterior predictive simulation that were
 #'    less than the value for the observed data.
@@ -19,7 +19,7 @@
 #'
 #' # Quick demo run. Will prompt warnings.
 #' # Run with default warmup and iter for good posterior sampling.
-#' ex_compnet <- compnet(presabs=ex_presabs, spvars_dist_int=ex_traits, warmup=100, iter=200)
+#' ex_compnet <- compnet(presabs=ex_presabs, spvars_dist_int=ex_traits, warmup=10, iter=20)
 #'
 #' gofstats(ex_compnet)
 #'
@@ -31,7 +31,7 @@ gofstats <- function(mod,
   d$pboth <- d$both/d$either
   dsquare <- matrix(NA, nrow=length(unique(c(d$spAid, d$spBid))), ncol=length(unique(c(d$spAid, d$spBid))))
   for(i in 1:nrow(dsquare)){
-    tempvec <- subset(d, spAid==i | spBid==i)$pboth
+    tempvec <- subset(d, d$spAid==i | d$spBid==i)$pboth
     if(i==1){
       tempvec <- c(NA, tempvec)
     }
@@ -64,7 +64,7 @@ gofstats <- function(mod,
     dsquaretemp <- matrix(NA, nrow=length(unique(c(d$spAid, d$spBid))), ncol=length(unique(c(d$spAid, d$spBid))))
 
     for(i in 1:nrow(dsquaretemp)){
-      tempvec <- subset(dtemp, spAid==i | spBid==i)$pboth2
+      tempvec <- subset(dtemp, dtemp$spAid==i | dtemp$spBid==i)$pboth2
       if(i==1){
         tempvec <- c(NA, tempvec)
       }

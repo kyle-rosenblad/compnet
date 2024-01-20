@@ -8,7 +8,6 @@ scatter_pairvar_getdata(
   mod,
   xvar,
   orig.scale = T,
-  intlevels = c(0.05, 0.5, 0.95),
   ci_width = 0.95,
   grid_size = 100,
   thin = TRUE,
@@ -45,7 +44,7 @@ data(ex_phylo)
 
 # Quick demo run. Will prompt warnings.
 # Run with default warmup and iter for good posterior sampling.
-ex_compnet_phylo <- compnet(presabs=ex_presabs, pairvars=ex_phylo, warmup=100, iter=200)
+ex_compnet_phylo <- compnet(presabs=ex_presabs, pairvars=ex_phylo, warmup=10, iter=20)
 
 scatter_pairvar_getdata(ex_compnet_phylo, xvar="phylodist")
 }

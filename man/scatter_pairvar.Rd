@@ -10,7 +10,6 @@ scatter_pairvar(
   xlabel,
   color = "red",
   orig.scale = T,
-  intlevels = c(0.05, 0.5, 0.95),
   ymin = 0,
   ymax = 1,
   ci_width = 0.95,
@@ -57,7 +56,7 @@ data(ex_phylo)
 
 # Quick demo run. Will prompt warnings.
 # Run with default warmup and iter for good posterior sampling.
-ex_compnet_phylo <- compnet(presabs=ex_presabs, pairvars=ex_phylo, warmup=100, iter=200)
+ex_compnet_phylo <- compnet(presabs=ex_presabs, pairvars=ex_phylo, warmup=10, iter=20)
 
 scatter_pairvar(ex_compnet_phylo, xvar="phylodist", ymax=0.25)
 }
