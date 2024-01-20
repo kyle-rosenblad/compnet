@@ -3,10 +3,13 @@
 #' @importFrom stats quantile
 #' @export
 #' @param mod An object of class "compnet" created by the compnet() function.
-#' @param xvar Character string for the name of the trait to be used. Must match the trait name in the input data used to build the model.
-#' @param orig.scale Logical value indicating whether to back-transform trait data to the original scale (T) or leave them with mean zero and unit variance (F).
+#' @param xvar Character string for the name of the trait to be used. Must match the trait name in
+#'    the input data used to build the model.
+#' @param orig.scale Logical value indicating whether to back-transform trait data to the original
+#'    scale (T) or leave them with mean zero and unit variance (F).
 #' @param ci_width A real number (0,1) describing the desired widths of credible band. Defaults to 0.95.
-#' @param grid_size A positive integer defining the number of discrete steps to use in approximating the shape of mean prediction curves and credible bands. Defaults to 100.
+#' @param grid_size A positive integer defining the number of discrete steps to use in approximating
+#'    the shape of mean prediction curves and credible bands. Defaults to 100.
 #' @param thin Logical value determining whether to use a random subsample of the full posterior sample.
 #' @param thin_to Integer value determining how many random samples to draw from the full posterior sample if thin=TRUE.
 #' @return A ggplot2 graphic.
@@ -14,14 +17,15 @@
 #' data(ex_presabs)
 #' data(ex_phylo)
 #'
-#' ex_compnet_phylo <- compnet(presabs=ex_presabs, pairvars=ex_phylo, warmup=100, iter=200) # Quick demo run. Will prompt warnings. Run with default warmup and iter for good posterior sampling.
+#' # Quick demo run. Will prompt warnings.
+#' # Run with default warmup and iter for good posterior sampling.
+#' ex_compnet_phylo <- compnet(presabs=ex_presabs, pairvars=ex_phylo, warmup=10, iter=20)
 #'
-#' scatter_pairvar(ex_compnet_phylo, xvar="phylodist", ymax=0.25)
+#' scatter_pairvar_getdata(ex_compnet_phylo, xvar="phylodist")
 
-scatter_pairvar <- function(mod,
+scatter_pairvar_getdata <- function(mod,
                             xvar,
                             orig.scale=T,
-                            intlevels=c(0.05,0.5,0.95),
                             ci_width=0.95,
                             grid_size=100,
                             thin=TRUE,
@@ -52,7 +56,7 @@ scatter_pairvar <- function(mod,
   }
 
   # get beta and mean x values for other dyadic variables
-  if(ncol(ex_compnet_phylo$Xdy)>1){
+  if(ncol(mod$Xdy)>1){
     beta_dy_other <- as.matrix(samp_temp$beta_dy[,-colpos])
     Xdy_other_mean <- as.matrix(apply(as.matrix(mod$Xdy[,-colpos]), 2, mean))
     xbeta_other_dy <- beta_dy_other%*%Xdy_other_mean
@@ -67,7 +71,7 @@ scatter_pairvar <- function(mod,
       length.out=grid_size))
 
   if(thin==TRUE){
-    samp_for_plot <- samp_for_plot[sample(1:nrow(samp_for_plot), replace=FALSE, size=thin_to),]
+    samp_for_plot <- samp_for_plot[sample(1:nrow(samp_for_plot), replace=FALSE, size=min(nrow(samp_for_plot),thin_to)),]
   }
 
   for(i in 1:nrow(grid_for_plot)){

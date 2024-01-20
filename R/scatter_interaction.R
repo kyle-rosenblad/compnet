@@ -1,17 +1,22 @@
 #' Make an automated plot of the interactive effect of two species' values of the same trait.
 #'
 #' @importFrom stats quantile
-#' @importFrom ggplot2 ggplot aes geom_ribbon geom_line scale_color_viridis_c scale_fill_viridis_c geom_point xlab ylab ylim theme_bw theme
+#' @importFrom ggplot2 ggplot aes geom_ribbon geom_line scale_color_viridis_c scale_fill_viridis_c
+#'    geom_point xlab ylab ylim theme_bw theme
 #' @export
 #' @param mod An object of class "compnet" created by the compnet() function.
-#' @param xvar Character string for the name of the trait to be used. Must match the trait name in the input data used to build the model.
+#' @param xvar Character string for the name of the trait to be used. Must match the trait name in
+#'    the input data used to build the model.
 #' @param xlabel Optional character string to replace xvar when plotting.
-#' @param orig.scale Logical value indicating whether to back-transform trait data to the original scale (T) or leave them with mean zero and unit variance (F).
-#' @param intlevels Vector of real values on the interval [0,1] indicating what levels of the x variable to condition on for species B when plotting species A's mean response.
+#' @param orig.scale Logical value indicating whether to back-transform trait data to the original
+#'    scale (T) or leave them with mean zero and unit variance (F).
+#' @param intlevels Vector of real values on the interval \eqn{[0,1]} indicating what levels of the x
+#'    variable to condition on for species B when plotting species A's mean response.
 #' @param ci_width A real number (0,1) describing the desired widths of credible bands. Defaults to 0.95.
 #' @param ymin Real number indicating the location of the bottom of the plot's y axis.
 #' @param ymax Real number indicating the location of the top of the plot's y axis.
-#' @param grid_size A positive integer defining the number of discrete steps to use in approximating the shape of mean prediction curves and credible bands. Defaults to 100.
+#' @param grid_size A positive integer defining the number of discrete steps to use in approximating
+#'    the shape of mean prediction curves and credible bands. Defaults to 100.
 #' @param thin Logical value determining whether to use a random subsample of the full posterior sample.
 #' @param thin_to Integer value determining how many random samples to draw from the full posterior sample if thin=TRUE.
 #' @return A ggplot2 graphic.
@@ -19,11 +24,12 @@
 #' data(ex_presabs)
 #' data(ex_traits)
 #'
-#' ex_compnet <- compnet(presabs=ex_presabs, spvars_dist_int=ex_traits, warmup=100, iter=200) # Quick demo run. Will prompt warnings. Run with default warmup and iter for good posterior sampling.
-#'
+#' # Quick demo run. Will prompt warnings.
+#' # Run with default warmup and iter for good posterior sampling.
+#' ex_compnet <- compnet(presabs=ex_presabs, spvars_dist_int=ex_traits, warmup=10, iter=20)
 #' plotdata <- scatter_interaction(ex_compnet, xvar="ndtrait")
 
-library(ggplot2)
+#library(ggplot2)
 scatter_interaction <- function(mod,
                                 xvar,
                                 xlabel,
@@ -92,7 +98,7 @@ scatter_interaction <- function(mod,
       length.out=grid_size))
 
   if(thin==TRUE){
-    samp_for_plot <- samp_for_plot[sample(1:nrow(samp_for_plot), replace=FALSE, size=thin_to),]
+    samp_for_plot <- samp_for_plot[sample(1:nrow(samp_for_plot), replace=FALSE, size=min(nrow(samp_for_plot),thin_to)),]
   }
 
   for(k in 1:length(intlevels)){
@@ -154,8 +160,8 @@ scatter_interaction <- function(mod,
   }
 
   ggplot2::ggplot()+
-    ggplot2::geom_ribbon(data=gridfinal, ggplot2::aes(x=.data$x, ymin=.data$qlow, ymax=.data$qhigh, group=intlevel, fill=intlevel), alpha=0.2)+
-    ggplot2::geom_line(data=gridfinal, ggplot2::aes(x=.data$x, y=.data$means, group=intlevel, color=intlevel), lwd=1)+
+    ggplot2::geom_ribbon(data=gridfinal, ggplot2::aes(x=.data$x, ymin=.data$qlow, ymax=.data$qhigh, group=.data$intlevel, fill=.data$intlevel), alpha=0.2)+
+    ggplot2::geom_line(data=gridfinal, ggplot2::aes(x=.data$x, y=.data$means, group=.data$intlevel, color=.data$intlevel), lwd=1)+
     ggplot2::scale_color_viridis_c(name=paste(xlabel, "\nSp. B", sep=""))+
     ggplot2::scale_fill_viridis_c(name=paste(xlabel, "\nSp. B", sep=""))+
     ggplot2::geom_point(data=d, alpha=0.2, ggplot2::aes(x=.data[[paste(xvar, "A", sep="_")]], y=.data$both/.data$either))+
@@ -165,4 +171,4 @@ scatter_interaction <- function(mod,
     ggplot2::theme_bw()+
     ggplot2::theme(aspect.ratio=1)
 }
-scatter_interaction(mod=mod,xvar="ndtrait")
+#scatter_interaction(mod=mod,xvar="ndtrait")

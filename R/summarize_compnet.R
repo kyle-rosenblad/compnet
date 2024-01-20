@@ -3,13 +3,16 @@
 #' @importFrom stats quantile
 #' @export
 #' @param mod Object of class "compnet", which is created by the compnet function.
+#' @param ci_width A real number (0,1) of the desired interval width. Defaults to 0.95.
 #' @return A data frame summarizing means and credible intervals for standardized effect sizes of fixed effects.
 #' @examples
 #'
 #' data(ex_presabs)
 #' data(ex_traits)
 #'
-#' ex_compnet <- compnet(presabs=ex_presabs, spvars_dist_int=ex_traits, warmup=100, iter=200)  # Quick demo run. Will prompt warnings. Run with default warmup and iter for good posterior sampling.
+#' # Quick demo run. Will prompt warnings.
+#' # Run with default warmup and iter for good posterior sampling.
+#' ex_compnet <- compnet(presabs=ex_presabs, spvars_dist_int=ex_traits, warmup=10, iter=20)
 #'
 #' ex_compnet_summ <- summarize_compnet(ex_compnet)
 #' ex_compnet_summ

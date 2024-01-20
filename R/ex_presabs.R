@@ -2,3 +2,4 @@
 #'
 #'
 #' Matrix with 100 rows and 24 columns containing 0 (absence) or 1 (presence)
+"ex_presabs"

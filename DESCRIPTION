@@ -1,25 +1,24 @@
 Package: compnet
-Title: Network models of interspecific competition
+Title: Network Models of Interspecific Competition
 Version: 0.0.0.9000
-Authors@R: 
+Authors@R:
     person("Kyle", "Rosenblad", , "kyle_rosenblad@berkeley.edu", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0001-8778-7413"))
-Description: The package's core goal is to quantify the effect of functional similarity between species on the probability of co-occurrence. If the data contain a signal of competitive niche differentiation, then functionally dissimilar species pairs will be more likely to co-occur. Compnet uses hierarchical Bayesian network regression models to quantify this effect with presence-absence data and species-level trait data (e.g., plant leaf size) and/or pair-level trait data (e.g., phylogenetic distance). Various random effects structures are used to deal with the types of non-independence found in network data.
-License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
-    license
+Description: Quantify the effect of functional similarity between species on the probability of co-occurrence. If the data contain a signal of competitive niche differentiation, then functionally dissimilar species pairs will be more likely to co-occur. Compnet uses hierarchical Bayesian network regression models to quantify this effect with presence-absence data and species-level trait data (e.g., plant leaf size) and/or pair-level trait data (e.g., phylogenetic distance). Various random effects structures are used to deal with the types of non-independence found in network data.
+License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.3
-Biarch: true
-Depends: 
+RoxygenNote: 7.3.0
+Depends:
     R (>= 3.4.0)
-Imports: 
+Imports:
     methods,
+    ggplot2,
     Rcpp (>= 0.12.0),
     RcppParallel (>= 5.0.1),
     rstan (>= 2.18.1),
     rstantools (>= 2.3.1.1)
-LinkingTo: 
+LinkingTo:
     BH (>= 1.66.0),
     Rcpp (>= 0.12.0),
     RcppEigen (>= 0.3.3.3.0),
