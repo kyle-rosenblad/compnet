@@ -29,5 +29,6 @@ SystemRequirements: GNU make
 LazyData: true
 Suggests: 
     knitr,
-    rmarkdown
+    rmarkdown,
+    DHARMa
 VignetteBuilder: knitr

@@ -91,6 +91,58 @@ nd_1_mod_gofstats
 
 ```
 
-Much better. Before accepting this model, let's use the 'DHARMa' package to run some additional checks for general model fit problems.
+Much better. Before we accept this model, I recommend using the 'DHARMa' package to run some additional checks for general model fit problems. 'DHARMa' doesn't automatically install with 'compnet', and you don't need to use it if you have your own model diagnostic workflow.
 
+To use this code on your own models, just change the name of the 'compnet' object ("nd_1_mod" in this case).
+
+```{r}
+library(DHARMa)
+nd_1_mod_ppred <- compnet::postpredsamp(nd_1_mod)
+fpr <- apply(nd_1_mod_ppred, 1, mean)
+nd_1_mod_dharma <- createDHARMa(simulatedResponse = nd_1_mod_ppred,
+                                observedResponse = nd_1_mod$d$both/nd_1_mod$d$either,
+                                fittedPredictedResponse = fpr,
+                                integerResponse = TRUE)
+testDispersion(nd_1_mod_dharma)
+testQuantiles(nd_1_mod_dharma)
+testUniformity(nd_1_mod_dharma)
+testZeroInflation(nd_1_mod_dharma)
+```
+
+Good thing we checked! We've got overdispersion, uneven quantiles, and strong deviations from the expected shape of our model's binomial distribution. Often when we see these kinds of problems, we might be tempted to use a different distribution, like beta-binomial or zero-inflated binomial. 'compnet' supports those, but we won't use them here.
+
+Instead, we're going to think harder about what predictors we're using in our model. So far, we've just been using "ndtrait", the trait that we think drives competitive niche differentiation. In general, competitive niche differentiation is expected to produce heterophily--i.e., species with different trait values co-occur most often. However, we've got data for another trait called "domtrait", which we think might influence competitive ability. In general, competitive hierarchies produce homophily--i.e., species co-occur most frequently with other species of similar competitive ability. If there's an association between "ndtrait" and "domtrait", then the homophily caused by "domtrait" might mask the heterophily caused by "ndtrait". Let's see if there's an association:
+
+```{r}
+cor(ex_traits)
+```
+
+There is! What can we do about it? Let's include "domtrait" as a covariate. Adjusting for a suspected confounder can help us in our quest for an unbiased estimate of the effect of "ndtrait" on co-occurrence probabilities. (We can never do perfect causal inference with observational data, but it's worth getting as close as we can. That's another topic.) It can also improve overall model fit.
+
+Let's try a new model with both "ndtrait" and "domtrait" as distance-interacting traits. 'rank' = 0 gave us trouble before, so we'll start with 'rank' = 1.
+
+```{r}
+nd_dom_1_mod <- compnet(presabs=ex_presabs,
+                        spvars_dist_int=ex_traits,
+                        rank=1)
+
+nd_dom_1_mod_gofstats <- gofstats(nd_dom_1_mod)
+nd_dom_1_mod_gofstats
+
+nd_dom_1_mod_ppred <- compnet::postpredsamp(nd_dom_1_mod)
+fpr <- apply(nd_dom_1_mod_ppred, 1, mean)
+nd_dom_1_mod_dharma <- createDHARMa(simulatedResponse = nd_dom_1_mod_ppred,
+                                observedResponse = nd_dom_1_mod$d$both/nd_dom_1_mod$d$either,
+                                fittedPredictedResponse = fpr,
+                                integerResponse = TRUE)
+testDispersion(nd_dom_1_mod_dharma)
+testQuantiles(nd_dom_1_mod_dharma)
+testUniformity(nd_dom_1_mod_dharma)
+testZeroInflation(nd_dom_1_mod_dharma)
+
+```
+All the checks look much better. Let's explore the results. First we'll take a quick look at the coefficients on our predictors of interest:
+```{r}
+summarize_compnet(nd_dom_1_mod)
+```
 
