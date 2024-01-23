@@ -100,7 +100,7 @@ library(DHARMa)
 nd_1_mod_ppred <- compnet::postpredsamp(nd_1_mod)
 fpr <- apply(nd_1_mod_ppred, 1, mean)
 nd_1_mod_dharma <- createDHARMa(simulatedResponse = nd_1_mod_ppred,
-                                observedResponse = nd_1_mod$d$both/nd_1_mod$d$either,
+                                observedResponse = nd_1_mod$d$both,
                                 fittedPredictedResponse = fpr,
                                 integerResponse = TRUE)
 testDispersion(nd_1_mod_dharma)
@@ -109,7 +109,7 @@ testUniformity(nd_1_mod_dharma)
 testZeroInflation(nd_1_mod_dharma)
 ```
 
-Good thing we checked! We've got overdispersion, uneven quantiles, and strong deviations from the expected shape of our model's binomial distribution. Often when we see these kinds of problems, we might be tempted to use a different distribution, like beta-binomial or zero-inflated binomial. 'compnet' supports those, but we won't use them here.
+This all looks fine. Often when we see these kinds of problems, we might be tempted to use a different distribution, like beta-binomial or zero-inflated binomial. 'compnet' supports those, but we won't use them here.
 
 Instead, we're going to think harder about what predictors we're using in our model. So far, we've just been using "ndtrait", the trait that we think drives competitive niche differentiation. In general, competitive niche differentiation is expected to produce heterophily--i.e., species with different trait values co-occur most often. However, we've got data for another trait called "domtrait", which we think might influence competitive ability. In general, competitive hierarchies produce homophily--i.e., species co-occur most frequently with other species of similar competitive ability. If there's an association between "ndtrait" and "domtrait", then the homophily caused by "domtrait" might mask the heterophily caused by "ndtrait". Let's see if there's an association:
 
@@ -132,7 +132,7 @@ nd_dom_1_mod_gofstats
 nd_dom_1_mod_ppred <- compnet::postpredsamp(nd_dom_1_mod)
 fpr <- apply(nd_dom_1_mod_ppred, 1, mean)
 nd_dom_1_mod_dharma <- createDHARMa(simulatedResponse = nd_dom_1_mod_ppred,
-                                observedResponse = nd_dom_1_mod$d$both/nd_dom_1_mod$d$either,
+                                observedResponse = nd_dom_1_mod$d$both,
                                 fittedPredictedResponse = fpr,
                                 integerResponse = TRUE)
 testDispersion(nd_dom_1_mod_dharma)
