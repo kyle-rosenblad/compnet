@@ -213,4 +213,44 @@ scatter_interaction(nd_1_mod, xvar="ndtrait")
 scatter_interaction(nd_dom_1_mod, xvar="ndtrait")
 ```
 
-The pattern is noticeably, if not wildly, stronger.
+The pattern is noticeably, if not wildly, stronger in the new model.
+
+# Phylogenetic distance model
+
+Sometimes we might not have trait data, or we might not be sure which traits make sense to use in our models. If we think phylogenetic distance serves as a reasonable proxy for resource use overlap, then we could use phylogenetic distance is a predictor in our 'compnet' model. Let's try this for our example data set.
+
+First, we'll load the phylogenetic distance data and have a look at them.
+
+```{r}
+data("ex_phylo")
+head(ex_phylo)
+```
+Rows represent species pairs. In addition to the phylodist column, there are two columns containing unique species names for each pair. These names must match the names in our presence-absence matrix.
+
+Let's build the model now. Phylogenetic distance is a species-pair-level variable (not a species-level variable), so we'll tell 'buildcompnet' we want to use 'ex_phylo' using the 'pairvars' argument.
+
+Since we already know how to increase the model rank, I'll skip to the rank that produces acceptable model-check results.
+
+
+```{r}
+phylo_1_mod <- buildcompnet(presabs=ex_presabs,
+                            pairvars=ex_phylo,
+                            rank=1)
+```
+
+Run our model checks:
+
+```{r}
+gofstats(phylo_0_mod)
+
+phylo_0_mod_ppred <- postpredsamp(phylo_0_mod)
+fpr <- apply(phylo_0_mod_ppred, 1, mean)
+phylo_0_mod_dharma <- createDHARMa(simulatedResponse = phylo_0_mod_ppred,
+                                observedResponse = phylo_0_mod$d$both,
+                                fittedPredictedResponse = fpr,
+                                integerResponse = TRUE)
+testDispersion(phylo_0_mod_dharma, plot=FALSE)
+testQuantiles(phylo_0_mod_dharma, plot=FALSE)
+testUniformity(phylo_0_mod_dharma, plot=FALSE)
+testZeroInflation(phylo_0_mod_dharma, plot=FALSE)
+```
