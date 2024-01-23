@@ -58,7 +58,7 @@ ex_traits[1:3,]
 
 ```
 
-# Building a compnet model with one species trait
+# Model with one species trait
 
 In the example data set, "ndtrait" is a trait that we think might drive competitive niche differentiation, and "domtrait" is a trait that we think might influence competitive ability. First we'll build a model with just ndtrait, since competitive niche differentiation is the process we're interested in.
 
@@ -66,34 +66,45 @@ If "ndtrait" is driving competitive niche differentiation, then we expect that s
 
 Let's build our first distance interaction model. We'll call it 'nd_0_mod' because we're using ndtrait as a predictor, and we're using the default 'rank' value of 0. (We'll discuss the importance of this rank = 0 decision shortly.) While the model is being built, Stan (the statistical software under the hood) gives progress updates.
 
+Stan uses an algorithm called NUTS to estimate our results for us. If we don't let NUTS run for enough iterations, we can't trust our results. Stan will tell us so and provide links that can help fix it. Before we try to build a good model, let's see what that looks like by deliberately telling NUTS to do a really small number of iterations:
+
+```{r}
+badmod <- compnet(presabs=ex_presabs,
+                  spvars_dist_int=ex_traits[c("ndtrait")],
+                  warmup=100,
+                  iter=200)
+```
+
+Now let's give NUTS a chance to do a good job:
+
 ```{r}
 nd_0_mod <- compnet(presabs=ex_presabs,
-        spvars_dist_int=ex_traits)
+        spvars_dist_int=ex_traits[c("ndtrait")])
 ```
+
 Before we try to interpret any results, let's see if this model provides a reasonable fit to the data. One of our main concerns with network data is the multiple forms of non-independence that can arise, as discussed in the Introduction. Let's use the 'gofstats' function to check how well our model accounts for these types of non-independence in the example data set:
 
 ```{r}
 nd_0_mod_gofstats <- gofstats(nd_0_mod)
 nd_0_mod_gofstats
 ```
-The first 'p-value', 'p.sd.rowmeans', tells us about non-independence driven by the fact that all species pairs that include a given species share features in common. Our 'p.sd.rowmeans' is pretty low, which means that when we simulate data from the model we've built ('gofstats' did this in the background), most of the simulated data have at least as much of this kind of non-independence as the real data. That's good; it means our model is accounting for this form of non-independence among species pairs. Anything that's not super-high (around maybe 0.9ish or more) is fine.
 
-The second value, 'p.cycle.dep', tells us about higher-order multi-species patterns, which can be abstract and complicated, but a good example is the saying, "the enemy of my enemy is my friend". Our 'p.cycle.dep' is somewhat high. This means that when we simulate data from our model, most of the simulated data sets have less high-order non-independence than the real data. This suggests our model is missing something.
+The first 'p-value', 'p.sd.rowmeans', tells us about non-independence driven by the fact that all species pairs that include a given species share features in common. Our 'p.sd.rowmeans' is pretty low, which means that when we simulate data from the model we've built ('gofstats' did this in the background), most of the simulated data have at least as much of this kind of non-independence as the real data. That's good; it means our model is accounting for this form of non-independence among species pairs. Anything that's not super-high (around maybe 0.9ish or more) is usually fine.
 
-That's where 'rank' comes in. The 'rank' argument tells 'compnet' how many latent (i.e., unmeasured) variables to use in representing high-order patterns of non-independence among species pairs. Depending on your prior exposure to latent variable models, that sentence might not be very helpful. The key point is that increasing 'rank' can help with problematically high values of 'p.cycle.dep'. Our current model used the default 'rank' value of 0, so it may not be surprising that the model didn't do a great job accounting for high-order non-independence. Let's try again with a 'rank' of 1. This takes about a minute and a half on my laptop.
+The second value, 'p.cycle.dep', tells us about higher-order multi-species patterns, which can be abstract and complicated, but a good example is the saying, "the enemy of my enemy is my friend". Our 'p.cycle.dep' isn't too bad. It's telling us that when we simulate data from our model, about 62% of the simulated data sets have less high-order non-independence than the real data. I wouldn't usually worry about this, but for the sake of illustration, let's try increasing 'rank', which is what we do when there's a problem.
+
+The 'rank' argument tells 'compnet' how many latent (i.e., unmeasured) variables to use in representing high-order patterns of non-independence among species pairs. Depending on your prior exposure to latent variable models, that sentence might not be very helpful. The key point is that increasing 'rank' can help with problematically high values of 'p.cycle.dep'. Our current model used the default 'rank' value of 0, so it may not be surprising that the model didn't do a great job accounting for high-order non-independence. Let's try again with a 'rank' of 1. This takes about a minute and a half on my laptop.
 
 ```{r}
 nd_1_mod <- compnet(presabs=ex_presabs,
-        spvars_dist_int=ex_traits,
+        spvars_dist_int=ex_traits[c("ndtrait")],
         rank=1)
 nd_1_mod_gofstats <- gofstats(nd_1_mod)
 nd_1_mod_gofstats
 
 ```
 
-Much better. Before we accept this model, I recommend using the 'DHARMa' package to run some additional checks for general model fit problems. 'DHARMa' doesn't automatically install with 'compnet', and you don't need to use it if you have your own model diagnostic workflow.
-
-To use this code on your own models, just change the name of the 'compnet' object ("nd_1_mod" in this case).
+Our gofstats look fine again. Before we accept this model, I recommend using the 'DHARMa' package to run some additional checks for general model fit problems. 'DHARMa' doesn't automatically install with 'compnet', and you don't need to use it if you have your own model diagnostic workflow. We'll check for overdispersion, quantile deviations, uniformity, and zero inflation. You can read more about these in the 'DHARMa' vignette: LINK. To use this code on your own models, just change the name of the 'compnet' object ("nd_1_mod" in this case).
 
 ```{r}
 library(DHARMa)
@@ -109,9 +120,31 @@ testUniformity(nd_1_mod_dharma)
 testZeroInflation(nd_1_mod_dharma)
 ```
 
-This all looks fine. Often when we see these kinds of problems, we might be tempted to use a different distribution, like beta-binomial or zero-inflated binomial. 'compnet' supports those, but we won't use them here.
+This all looks fine. Let's explore our results. First we'll have a quick look at the coefficients for our predictors of interest:
 
-Instead, we're going to think harder about what predictors we're using in our model. So far, we've just been using "ndtrait", the trait that we think drives competitive niche differentiation. In general, competitive niche differentiation is expected to produce heterophily--i.e., species with different trait values co-occur most often. However, we've got data for another trait called "domtrait", which we think might influence competitive ability. In general, competitive hierarchies produce homophily--i.e., species co-occur most frequently with other species of similar competitive ability. If there's an association between "ndtrait" and "domtrait", then the homophily caused by "domtrait" might mask the heterophily caused by "ndtrait". Let's see if there's an association:
+```{r}
+summarize_compnet(nd_1_mod)
+```
+
+Now let's see those as violin plots:
+
+```{r}
+fixedeff_violins(nd_1_mod)
+```
+
+Now we'll make a scatterplot of the species-pair-level data, with the trait value for "Species A" on the x axis (A vs B is arbitrary) and co-occurrence probability on the y axis. We'll include a curve for the mean expectation, with 95% credible intervals. There will be multiple curves and credible intervals, each representing a different value of the chosen trait value for "Species B" in a given species pair. By default, this function will generate the plot by conditioning on the mean values of all other predictor variables for other traits. (In this model, there are no other traits).
+
+```{r}
+scatter_interaction(nd_1_mod, xvar="ndtrait")
+```
+
+Cool! When Species A has a low value of "ndtrait", its co-occurrence probability increases with Species B's "ndtrait" value. Classic heterophily--this suggests competitive niche differentiation. Similarly, when Species A's "ndtrait" value is high, co-occurrence probability decreases with Species B's value. Perhaps coolest of all, when Species A has an intermediate value of "ndtrait", co-occurrence probability is highest at the extremes and lowest in the middle. (Incidentally, this is the kind of pattern that multiplicative interaction models--as opposed to distance interaction models--struggle to represent.) Overall, this pattern strongly indicates competitive niche differentiation, as we may have already suspected based on the strongly positive violin plot for the "ndtrait" distance effect.
+
+# Building a compnet model with two predictors
+
+When might we want to use multiple traits in the same model? For one, we might want to use this strategy to deal with a suspected confounder or "lurking variable".
+
+So far, we've just been using "ndtrait", the trait that we think drives competitive niche differentiation. In general, competitive niche differentiation is expected to produce heterophily--i.e., species with different trait values co-occur most often. However, we've got data for another trait called "domtrait", which we think might influence competitive ability. In general, competitive hierarchies produce homophily--i.e., species co-occur most frequently with other species of similar competitive ability. If there's an association between "ndtrait" and "domtrait", then the homophily caused by "domtrait" might weaken the signal of heterophily caused by "ndtrait". Let's see if there's an association:
 
 ```{r}
 cor(ex_traits)
@@ -119,12 +152,34 @@ cor(ex_traits)
 
 There is! What can we do about it? Let's include "domtrait" as a covariate. Adjusting for a suspected confounder can help us in our quest for an unbiased estimate of the effect of "ndtrait" on co-occurrence probabilities. (We can never do perfect causal inference with observational data, but it's worth getting as close as we can. That's another topic.) It can also improve overall model fit.
 
-Let's try a new model with both "ndtrait" and "domtrait" as distance-interacting traits. 'rank' = 0 gave us trouble before, so we'll start with 'rank' = 1.
+Let's try a new model with both "ndtrait" and "domtrait" as distance-interacting traits. Let's start with rank=0.
+
+```{r}
+nd_dom_0_mod <- compnet(presabs=ex_presabs,
+                        spvars_dist_int=ex_traits)
+
+nd_dom_0_mod_gofstats <- gofstats(nd_dom_0_mod)
+nd_dom_0_mod_gofstats
+
+nd_dom_0_mod_ppred <- compnet::postpredsamp(nd_dom_0_mod)
+fpr <- apply(nd_dom_0_mod_ppred, 1, mean)
+nd_dom_0_mod_dharma <- createDHARMa(simulatedResponse = nd_dom_0_mod_ppred,
+                                observedResponse = nd_dom_0_mod$d$both,
+                                fittedPredictedResponse = fpr,
+                                integerResponse = TRUE)
+testDispersion(nd_dom_0_mod_dharma)
+testQuantiles(nd_dom_0_mod_dharma)
+testUniformity(nd_dom_0_mod_dharma)
+testZeroInflation(nd_dom_0_mod_dharma)
+
+```
+
+We've got some issues with high-order non-independence, overdispersion, and quantile deviations. Let's try 'rank' = 1.
 
 ```{r}
 nd_dom_1_mod <- compnet(presabs=ex_presabs,
                         spvars_dist_int=ex_traits,
-                        rank=1)
+                        rank = 1)
 
 nd_dom_1_mod_gofstats <- gofstats(nd_dom_1_mod)
 nd_dom_1_mod_gofstats
@@ -141,8 +196,17 @@ testUniformity(nd_dom_1_mod_dharma)
 testZeroInflation(nd_dom_1_mod_dharma)
 
 ```
-All the checks look much better. Let's explore the results. First we'll take a quick look at the coefficients on our predictors of interest:
+
+Much better! Let's have a quick look at our results and compare to the model with no covariate adjustment:
+
 ```{r}
+summarize_compnet(nd_1_mod)
 summarize_compnet(nd_dom_1_mod)
 ```
 
+The coefficient of the "ndtrait" distance term is greater! Let's see if the scatterplots look much different:
+
+```{r}
+scatter_interaction(nd_1_mod, xvar="ndtrait")
+scatter_interaction(nd_dom_1_mod, xvar="ndtrait")
+```
