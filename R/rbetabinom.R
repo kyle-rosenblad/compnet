@@ -11,13 +11,7 @@
 #' @return A vector of draws from the specified beta-binomial distribution.
 #' @examples
 #'
-#' data(ex_presabs)
-#' data(ex_traits)
-#'
-#' # Quick demo run. Will prompt warnings.
-#' # Run with default warmup and iter for good posterior sampling.
-#' ex_compnet <- compnet(presabs=ex_presabs, spvars_dist_int=ex_traits, warmup=10, iter=20)
-#' ex_compnet_pps <- postpredsamp(ex_compnet)
+#' bbdraws <- rbetabinom(n=100, size=10, prob=0.3, phi=2)
 #'
 rbetabinom <- function(n, size, prob, phi){
   samp <- stats::rbinom(n=n,

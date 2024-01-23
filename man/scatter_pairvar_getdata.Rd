@@ -15,7 +15,7 @@ scatter_pairvar_getdata(
 )
 }
 \arguments{
-\item{mod}{An object of class "compnet" created by the compnet() function.}
+\item{mod}{An object of class "compnet" created by the buildcompnet() function.}
 
 \item{xvar}{Character string for the name of the trait to be used. Must match the trait name in
 the input data used to build the model.}
@@ -44,7 +44,7 @@ data(ex_phylo)
 
 # Quick demo run. Will prompt warnings.
 # Run with default warmup and iter for good posterior sampling.
-ex_compnet_phylo <- compnet(presabs=ex_presabs, pairvars=ex_phylo, warmup=10, iter=20)
+ex_compnet_phylo <- buildcompnet(presabs=ex_presabs, pairvars=ex_phylo, warmup=10, iter=20)
 
 scatter_pairvar_getdata(ex_compnet_phylo, xvar="phylodist")
 }

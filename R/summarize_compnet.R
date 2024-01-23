@@ -2,7 +2,7 @@
 #'
 #' @importFrom stats quantile
 #' @export
-#' @param mod Object of class "compnet", which is created by the compnet function.
+#' @param mod Object of class "compnet", which is created by the buildcompnet() function.
 #' @param ci_width A real number (0,1) of the desired interval width. Defaults to 0.95.
 #' @return A data frame summarizing means and credible intervals for standardized effect sizes of fixed effects.
 #' @examples
@@ -12,7 +12,7 @@
 #'
 #' # Quick demo run. Will prompt warnings.
 #' # Run with default warmup and iter for good posterior sampling.
-#' ex_compnet <- compnet(presabs=ex_presabs, spvars_dist_int=ex_traits, warmup=10, iter=20)
+#' ex_compnet <- buildcompnet(presabs=ex_presabs, spvars_dist_int=ex_traits, warmup=10, iter=20)
 #'
 #' ex_compnet_summ <- summarize_compnet(ex_compnet)
 #' ex_compnet_summ

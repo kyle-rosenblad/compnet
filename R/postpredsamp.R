@@ -2,7 +2,7 @@
 #'
 #' @importFrom stats rbinom
 #' @export
-#' @param mod Object of class "compnet", which is created by the compnet() function.
+#' @param mod Object of class "compnet", which is created by the buildcompnet() function.
 #' @return A matrix of posterior predictive samples with a row for each observation and a column for each sample.
 #' @examples
 #'
@@ -11,7 +11,7 @@
 #'
 #' # Quick demo run. Will prompt warnings.
 #' # Run with default warmup and iter for good posterior sampling.
-#' ex_compnet <- compnet(presabs=ex_presabs, spvars_dist_int=ex_traits, warmup=10, iter=20)
+#' ex_compnet <- buildcompnet(presabs=ex_presabs, spvars_dist_int=ex_traits, warmup=10, iter=20)
 #' ex_compnet_pps <- postpredsamp(ex_compnet)
 #'
 

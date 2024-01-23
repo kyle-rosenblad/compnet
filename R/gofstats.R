@@ -1,7 +1,7 @@
 #' Report quantiles of gofstats values for observed data relative to posterior predictive distribution
 #'
 #' @export
-#' @param mod An object of class "compnet" created by the compnet() function.
+#' @param mod An object of class "compnet" created by the buildcompnet() function.
 #' @param thin Logical value indicating whether to take a random subsample of posterior draws.
 #' @param thin_to Logical value indicating the size of the subsample to take if thin=TRUE.
 #' @return A named vector containing quantiles on the interval \eqn{[0,1]} for: 1- the standard deviation
@@ -19,7 +19,7 @@
 #'
 #' # Quick demo run. Will prompt warnings.
 #' # Run with default warmup and iter for good posterior sampling.
-#' ex_compnet <- compnet(presabs=ex_presabs, spvars_dist_int=ex_traits, warmup=10, iter=20)
+#' ex_compnet <- buildcompnet(presabs=ex_presabs, spvars_dist_int=ex_traits, warmup=10, iter=20)
 #'
 #' gofstats(ex_compnet)
 #'

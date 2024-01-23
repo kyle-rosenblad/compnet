@@ -69,7 +69,7 @@ Let's build our first distance interaction model. We'll call it 'nd_0_mod' becau
 Stan uses an algorithm called NUTS to estimate our results for us. If we don't let NUTS run for enough iterations, we can't trust our results. Stan will tell us so and provide links that can help fix it. Before we try to build a good model, let's see what that looks like by deliberately telling NUTS to do a really small number of iterations:
 
 ```{r}
-badmod <- compnet(presabs=ex_presabs,
+shortrun <- buildcompnet(presabs=ex_presabs,
                   spvars_dist_int=ex_traits[c("ndtrait")],
                   warmup=100,
                   iter=200)
@@ -78,7 +78,7 @@ badmod <- compnet(presabs=ex_presabs,
 Now let's give NUTS a chance to do a good job:
 
 ```{r}
-nd_0_mod <- compnet(presabs=ex_presabs,
+nd_0_mod <- buildcompnet(presabs=ex_presabs,
         spvars_dist_int=ex_traits[c("ndtrait")])
 ```
 
@@ -96,7 +96,7 @@ The second value, 'p.cycle.dep', tells us about higher-order multi-species patte
 The 'rank' argument tells 'compnet' how many latent (i.e., unmeasured) variables to use in representing high-order patterns of non-independence among species pairs. Depending on your prior exposure to latent variable models, that sentence might not be very helpful. The key point is that increasing 'rank' can help with problematically high values of 'p.cycle.dep'. Our current model used the default 'rank' value of 0, so it may not be surprising that the model didn't do a great job accounting for high-order non-independence. Let's try again with a 'rank' of 1. This takes about a minute and a half on my laptop.
 
 ```{r}
-nd_1_mod <- compnet(presabs=ex_presabs,
+nd_1_mod <- buildcompnet(presabs=ex_presabs,
         spvars_dist_int=ex_traits[c("ndtrait")],
         rank=1)
 nd_1_mod_gofstats <- gofstats(nd_1_mod)
@@ -108,7 +108,7 @@ Our gofstats look fine again. Before we accept this model, I recommend using the
 
 ```{r}
 library(DHARMa)
-nd_1_mod_ppred <- compnet::postpredsamp(nd_1_mod)
+nd_1_mod_ppred <- postpredsamp(nd_1_mod)
 fpr <- apply(nd_1_mod_ppred, 1, mean)
 nd_1_mod_dharma <- createDHARMa(simulatedResponse = nd_1_mod_ppred,
                                 observedResponse = nd_1_mod$d$both,
@@ -120,13 +120,15 @@ testUniformity(nd_1_mod_dharma)
 testZeroInflation(nd_1_mod_dharma)
 ```
 
-This all looks fine. Let's explore our results. First we'll have a quick look at the coefficients for our predictors of interest:
+This all looks fine. To keep this vignette brief, we'll suppress the plots that accompany the DHARMa tests from now on, but I recommend always having a look for your own projects.
+
+Now let's explore our results. First we'll have a quick look at the coefficients for our predictors of interest:
 
 ```{r}
 summarize_compnet(nd_1_mod)
 ```
 
-Now let's see those as violin plots:
+Let's see those as violin plots:
 
 ```{r}
 fixedeff_violins(nd_1_mod)
@@ -140,7 +142,7 @@ scatter_interaction(nd_1_mod, xvar="ndtrait")
 
 Cool! When Species A has a low value of "ndtrait", its co-occurrence probability increases with Species B's "ndtrait" value. Classic heterophily--this suggests competitive niche differentiation. Similarly, when Species A's "ndtrait" value is high, co-occurrence probability decreases with Species B's value. Perhaps coolest of all, when Species A has an intermediate value of "ndtrait", co-occurrence probability is highest at the extremes and lowest in the middle. (Incidentally, this is the kind of pattern that multiplicative interaction models--as opposed to distance interaction models--struggle to represent.) Overall, this pattern strongly indicates competitive niche differentiation, as we may have already suspected based on the strongly positive violin plot for the "ndtrait" distance effect.
 
-# Building a compnet model with two predictors
+# Model with two traits
 
 When might we want to use multiple traits in the same model? For one, we might want to use this strategy to deal with a suspected confounder or "lurking variable".
 
@@ -150,34 +152,34 @@ So far, we've just been using "ndtrait", the trait that we think drives competit
 cor(ex_traits)
 ```
 
-There is! What can we do about it? Let's include "domtrait" as a covariate. Adjusting for a suspected confounder can help us in our quest for an unbiased estimate of the effect of "ndtrait" on co-occurrence probabilities. (We can never do perfect causal inference with observational data, but it's worth getting as close as we can. That's another topic.) It can also improve overall model fit.
+There is. What can we do about it? Let's include "domtrait" as a covariate. Adjusting for a suspected confounder can help us in our quest for an unbiased estimate of the effect of "ndtrait" on co-occurrence probabilities. (We can never do perfect causal inference with observational data, but it's worth getting as close as we can. That's another topic.)
 
-Let's try a new model with both "ndtrait" and "domtrait" as distance-interacting traits. Let's start with rank=0.
+Let's try a new model with both "ndtrait" and "domtrait" as distance-interacting traits. Let's start with rank=0. We'll also run gofstats() and 'DHARMa' checks.
 
 ```{r}
-nd_dom_0_mod <- compnet(presabs=ex_presabs,
+nd_dom_0_mod <- buildcompnet(presabs=ex_presabs,
                         spvars_dist_int=ex_traits)
 
 nd_dom_0_mod_gofstats <- gofstats(nd_dom_0_mod)
 nd_dom_0_mod_gofstats
 
-nd_dom_0_mod_ppred <- compnet::postpredsamp(nd_dom_0_mod)
+nd_dom_0_mod_ppred <- postpredsamp(nd_dom_0_mod)
 fpr <- apply(nd_dom_0_mod_ppred, 1, mean)
 nd_dom_0_mod_dharma <- createDHARMa(simulatedResponse = nd_dom_0_mod_ppred,
                                 observedResponse = nd_dom_0_mod$d$both,
                                 fittedPredictedResponse = fpr,
                                 integerResponse = TRUE)
-testDispersion(nd_dom_0_mod_dharma)
-testQuantiles(nd_dom_0_mod_dharma)
-testUniformity(nd_dom_0_mod_dharma)
-testZeroInflation(nd_dom_0_mod_dharma)
+testDispersion(nd_dom_0_mod_dharma, plot=FALSE)
+testQuantiles(nd_dom_0_mod_dharmam, plot=FALSE)
+testUniformity(nd_dom_0_mod_dharma, plot=FALSE)
+testZeroInflation(nd_dom_0_mod_dharma, plot=FALSE)
 
 ```
 
 We've got some issues with high-order non-independence, overdispersion, and quantile deviations. Let's try 'rank' = 1.
 
 ```{r}
-nd_dom_1_mod <- compnet(presabs=ex_presabs,
+nd_dom_1_mod <- buildcompnet(presabs=ex_presabs,
                         spvars_dist_int=ex_traits,
                         rank = 1)
 
@@ -190,10 +192,10 @@ nd_dom_1_mod_dharma <- createDHARMa(simulatedResponse = nd_dom_1_mod_ppred,
                                 observedResponse = nd_dom_1_mod$d$both,
                                 fittedPredictedResponse = fpr,
                                 integerResponse = TRUE)
-testDispersion(nd_dom_1_mod_dharma)
-testQuantiles(nd_dom_1_mod_dharma)
-testUniformity(nd_dom_1_mod_dharma)
-testZeroInflation(nd_dom_1_mod_dharma)
+testDispersion(nd_dom_1_mod_dharma, plot=FALSE)
+testQuantiles(nd_dom_1_mod_dharma, plot=FALSE)
+testUniformity(nd_dom_1_mod_dharma, plot=FALSE)
+testZeroInflation(nd_dom_1_mod_dharma, plot=FALSE)
 
 ```
 
@@ -204,9 +206,11 @@ summarize_compnet(nd_1_mod)
 summarize_compnet(nd_dom_1_mod)
 ```
 
-The coefficient of the "ndtrait" distance term is greater! Let's see if the scatterplots look much different:
+The coefficient of the "ndtrait" distance term is greater in the new model. This suggests our covariate adjustment strategy helped to "unmask" the true effect of "ndtrait" on co-occurrence probability. Let's see if the scatterplots look much different:
 
 ```{r}
 scatter_interaction(nd_1_mod, xvar="ndtrait")
 scatter_interaction(nd_dom_1_mod, xvar="ndtrait")
 ```
+
+The pattern is noticeably, if not wildly, stronger.

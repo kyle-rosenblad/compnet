@@ -7,7 +7,7 @@
 gofstats(mod, thin = T, thin_to = 300)
 }
 \arguments{
-\item{mod}{An object of class "compnet" created by the compnet() function.}
+\item{mod}{An object of class "compnet" created by the buildcompnet() function.}
 
 \item{thin}{Logical value indicating whether to take a random subsample of posterior draws.}
 
@@ -35,7 +35,7 @@ data(ex_traits)
 
 # Quick demo run. Will prompt warnings.
 # Run with default warmup and iter for good posterior sampling.
-ex_compnet <- compnet(presabs=ex_presabs, spvars_dist_int=ex_traits, warmup=10, iter=20)
+ex_compnet <- buildcompnet(presabs=ex_presabs, spvars_dist_int=ex_traits, warmup=10, iter=20)
 
 gofstats(ex_compnet)
 

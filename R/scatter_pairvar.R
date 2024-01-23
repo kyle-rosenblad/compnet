@@ -3,7 +3,7 @@
 #' @importFrom stats quantile
 #' @importFrom ggplot2 ggplot aes geom_ribbon geom_line geom_point xlab ylab ylim theme_bw theme
 #' @export
-#' @param mod An object of class "compnet" created by the compnet() function.
+#' @param mod An object of class "compnet" created by the buildcompnet() function.
 #' @param color Color to use in plotting.
 #' @param xvar Character string for the name of the trait to be used. Must match the trait name in
 #'    the input data used to build the model.
@@ -24,7 +24,7 @@
 #'
 #' # Quick demo run. Will prompt warnings.
 #' # Run with default warmup and iter for good posterior sampling.
-#' ex_compnet_phylo <- compnet(presabs=ex_presabs, pairvars=ex_phylo, warmup=10, iter=20)
+#' ex_compnet_phylo <- buildcompnet(presabs=ex_presabs, pairvars=ex_phylo, warmup=10, iter=20)
 #'
 #' scatter_pairvar(ex_compnet_phylo, xvar="phylodist", ymax=0.25)
 

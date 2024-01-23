@@ -2,7 +2,7 @@
 #'
 #' @importFrom stats quantile
 #' @export
-#' @param mod An object of class "compnet" created by the compnet() function.
+#' @param mod An object of class "compnet" created by the buildcompnet() function.
 #' @param xvar Character string for the name of the trait to be used. Must match the trait name in
 #'    the input data used to build the model.
 #' @param orig.scale Logical value indicating whether to back-transform trait data to the original
@@ -23,7 +23,7 @@
 #'
 #' # Quick demo run. Will prompt warnings.
 #' # Run with default warmup and iter for good posterior sampling.
-#' ex_compnet <- compnet(presabs=ex_presabs, spvars_dist_int=ex_traits, warmup=10, iter=20)
+#' ex_compnet <- buildcompnet(presabs=ex_presabs, spvars_dist_int=ex_traits, warmup=10, iter=20)
 #'
 #' plotdata <- scatter_interaction_getdata(ex_compnet, xvar="ndtrait")
 

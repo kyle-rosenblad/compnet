@@ -2,7 +2,7 @@
 #'
 #' @importFrom ggplot2 ggplot aes geom_hline geom_violin xlab ylab theme_bw
 #' @export
-#' @param mod An object of class "compnet" created by the compnet() function.
+#' @param mod An object of class "compnet" created by the buildcompnet() function.
 #' @return A ggplot2 graphic showing violin plots of standarized effect sizes for fixed effects in a compnet model.
 #' @examples
 #'
@@ -11,7 +11,7 @@
 #'
 #' # Quick demo run. Will prompt warnings.
 #' # Run with default warmup and iter for good posterior sampling.
-#' ex_compnet <- compnet(presabs=ex_presabs, spvars_dist_int=ex_traits, warmup=10, iter=20)
+#' ex_compnet <- buildcompnet(presabs=ex_presabs, spvars_dist_int=ex_traits, warmup=10, iter=20)
 #' fixedeff_violins(ex_compnet)
 #'
 

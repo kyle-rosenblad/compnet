@@ -7,7 +7,7 @@
 summarize_compnet(mod, ci_width = 0.95)
 }
 \arguments{
-\item{mod}{Object of class "compnet", which is created by the compnet function.}
+\item{mod}{Object of class "compnet", which is created by the buildcompnet() function.}
 
 \item{ci_width}{A real number (0,1) of the desired interval width. Defaults to 0.95.}
 }
@@ -24,7 +24,7 @@ data(ex_traits)
 
 # Quick demo run. Will prompt warnings.
 # Run with default warmup and iter for good posterior sampling.
-ex_compnet <- compnet(presabs=ex_presabs, spvars_dist_int=ex_traits, warmup=10, iter=20)
+ex_compnet <- buildcompnet(presabs=ex_presabs, spvars_dist_int=ex_traits, warmup=10, iter=20)
 
 ex_compnet_summ <- summarize_compnet(ex_compnet)
 ex_compnet_summ

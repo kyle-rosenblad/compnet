@@ -7,7 +7,7 @@
 fixedeff_violins(mod)
 }
 \arguments{
-\item{mod}{An object of class "compnet" created by the compnet() function.}
+\item{mod}{An object of class "compnet" created by the buildcompnet() function.}
 }
 \value{
 A ggplot2 graphic showing violin plots of standarized effect sizes for fixed effects in a compnet model.
@@ -22,7 +22,7 @@ data(ex_traits)
 
 # Quick demo run. Will prompt warnings.
 # Run with default warmup and iter for good posterior sampling.
-ex_compnet <- compnet(presabs=ex_presabs, spvars_dist_int=ex_traits, warmup=10, iter=20)
+ex_compnet <- buildcompnet(presabs=ex_presabs, spvars_dist_int=ex_traits, warmup=10, iter=20)
 fixedeff_violins(ex_compnet)
 
 }

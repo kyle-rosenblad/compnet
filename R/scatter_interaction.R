@@ -4,7 +4,7 @@
 #' @importFrom ggplot2 ggplot aes geom_ribbon geom_line scale_color_viridis_c scale_fill_viridis_c
 #'    geom_point xlab ylab ylim theme_bw theme
 #' @export
-#' @param mod An object of class "compnet" created by the compnet() function.
+#' @param mod An object of class "compnet" created by the buildcompnet() function.
 #' @param xvar Character string for the name of the trait to be used. Must match the trait name in
 #'    the input data used to build the model.
 #' @param xlabel Optional character string to replace xvar when plotting.
@@ -26,7 +26,7 @@
 #'
 #' # Quick demo run. Will prompt warnings.
 #' # Run with default warmup and iter for good posterior sampling.
-#' ex_compnet <- compnet(presabs=ex_presabs, spvars_dist_int=ex_traits, warmup=10, iter=20)
+#' ex_compnet <- buildcompnet(presabs=ex_presabs, spvars_dist_int=ex_traits, warmup=10, iter=20)
 #' plotdata <- scatter_interaction(ex_compnet, xvar="ndtrait")
 
 #library(ggplot2)
