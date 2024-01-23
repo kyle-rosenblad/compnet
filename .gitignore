@@ -9,3 +9,4 @@ stanExports_*.cc
 stanExports_*.h
 *.so
 *.dll
+inst/doc

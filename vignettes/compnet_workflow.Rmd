@@ -1,0 +1,96 @@
+---
+title: "The Compnet Workflow"
+author: "Kyle Rosenblad [website](https://www.kylerosenblad.org/)"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{compnet_workflow}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(compnet)
+```
+
+# Introduction
+
+Our goal is to quantify the effect of competitive niche differentiation on community assembly for a group of species. Competitive niche differentiation is a process whereby functional dissimilarity between species promotes co-occurrence through decreased overlap in resource use. Our available data include a species-by-site presence-absence matrix, as well as one or more species-level variables (e.g., plant rooting depth) and/or variables that only pertain to pairs of species (e.g., phylogenetic distance).
+
+Before using 'compnet', we'll translate our general goal into a quantitative "estimand" (i.e., something we're aiming to estimate with our model). Our estimand will be the effect of functional dissimilarity between species (as quantified via one or more traits; see above) on the probability of co-occurrence. We will define the probability of co-occurrence for a species pair as the probability that both species in the pair co-occur at a given site, given that at least one of them is present.
+
+To estimate the effect of functional dissimilarity on co-occurrence probabilities, we will use a regression model, in which the units of analysis are species pairs. The response variable is the ratio of sites with both species to sites with at least species. The predictor(s) can encompass traits that we think might drive competitive niche differentiation (e.g., plant species' rooting depth), or pair-level variables that could serve as a proxy for functional dissimilarity (e.g., phylogenetic distance). We can include as many predictors as we want, and we'll take advantage of this fact later, when we adjust for a suspected confounding variable.
+
+Using species pairs as units of analysis can cause problems for typical regression models, and 'compnet' has tools for dealing with these problems. When we build a regression model (e.g., a linear regression, GLM, GLMM, etc.), we usually assume that the errors are independently distributed. This assumption will likely be violated if we model species pairs in a network naively as "independent" observations. The simplest problem is that all pairs that include a given species might share features in common. All 'compnet' models include components designed to account for this kind of pattern. Additionally, there can be higher-order patterns of non-independence among species pairs--e.g., "the enemy of my enemy is my friend". 'compnet' also has optional components for dealing with these higher-order patterns, which we will demonstrate below.
+
+Let's get started!
+
+# Data prep
+
+```{r}
+library(compnet) # Load and attach the package
+set.seed(287) # Ensure reproducibility
+
+# Load an example presence-absence matrix:
+data("ex_presabs")
+
+# View the first few rows and columns.
+# Rows are sites, and columns are species.
+# rownames and colnames are specified accordingly.
+ex_presabs[1:3, 1:3]
+```
+
+```{r}
+
+# Load example species-level trait data:
+data("ex_traits")
+
+# View the first few species.
+# Rows are species, and columns are traits.
+# rownames and colnames are specified accordingly.
+ex_traits[1:3,]
+
+```
+
+# Building a compnet model with one species trait
+
+In the example data set, "ndtrait" is a trait that we think might drive competitive niche differentiation, and "domtrait" is a trait that we think might influence competitive ability. First we'll build a model with just ndtrait, since competitive niche differentiation is the process we're interested in.
+
+If "ndtrait" is driving competitive niche differentiation, then we expect that species pairs who differ strongly in this trait will be more likely to co-occur. We'll model this effect by including a "distance interaction" for "ndtrait". In other words, for each species pair, our model will use species A's value of "ndtrait", species B's value, and the absolute value of the difference between these two. This last term directly captures the effect we're interested in, which is called "heterophily" in the social sciences (i.e., things that are different being attracted to each other). Social scientists often model heterophily using a multiplicative interaction term instead of a distance term, but I generally find this approach less optimal for studying competitive niche differentiation. (Nonetheless, 'compnet' also allows you to use a multiplicative interaction by specifying 'sp_vars_multi_int' instead of 'sp_vars_dist_int'. You can also use a mix of distance-interacting traits and multiplicatively-interacting traits in the same model. Lastly, and even more technically, when we increase the 'rank' argument above 0, we are modeling multiplicative interactions among latent variables under the hood. Feel free to ignore that last sentence if it's not helpful for your understanding.)
+
+Let's build our first distance interaction model. We'll call it 'nd_0_mod' because we're using ndtrait as a predictor, and we're using the default 'rank' value of 0. (We'll discuss the importance of this rank = 0 decision shortly.) While the model is being built, Stan (the statistical software under the hood) gives progress updates.
+
+```{r}
+nd_0_mod <- compnet(presabs=ex_presabs,
+        spvars_dist_int=ex_traits)
+```
+Before we try to interpret any results, let's see if this model provides a reasonable fit to the data. One of our main concerns with network data is the multiple forms of non-independence that can arise, as discussed in the Introduction. Let's use the 'gofstats' function to check how well our model accounts for these types of non-independence in the example data set:
+
+```{r}
+nd_0_mod_gofstats <- gofstats(nd_0_mod)
+nd_0_mod_gofstats
+```
+The first 'p-value', 'p.sd.rowmeans', tells us about non-independence driven by the fact that all species pairs that include a given species share features in common. Our 'p.sd.rowmeans' is pretty low, which means that when we simulate data from the model we've built ('gofstats' did this in the background), most of the simulated data have at least as much of this kind of non-independence as the real data. That's good; it means our model is accounting for this form of non-independence among species pairs. Anything that's not super-high (around maybe 0.9ish or more) is fine.
+
+The second value, 'p.cycle.dep', tells us about higher-order multi-species patterns, which can be abstract and complicated, but a good example is the saying, "the enemy of my enemy is my friend". Our 'p.cycle.dep' is somewhat high. This means that when we simulate data from our model, most of the simulated data sets have less high-order non-independence than the real data. This suggests our model is missing something.
+
+That's where 'rank' comes in. The 'rank' argument tells 'compnet' how many latent (i.e., unmeasured) variables to use in representing high-order patterns of non-independence among species pairs. Depending on your prior exposure to latent variable models, that sentence might not be very helpful. The key point is that increasing 'rank' can help with problematically high values of 'p.cycle.dep'. Our current model used the default 'rank' value of 0, so it may not be surprising that the model didn't do a great job accounting for high-order non-independence. Let's try again with a 'rank' of 1. This takes about a minute and a half on my laptop.
+
+```{r}
+nd_1_mod <- compnet(presabs=ex_presabs,
+        spvars_dist_int=ex_traits,
+        rank=1)
+nd_1_mod_gofstats <- gofstats(nd_1_mod)
+nd_1_mod_gofstats
+
+```
+
+Much better. Before accepting this model, let's use the 'DHARMa' package to run some additional checks for general model fit problems.
+
+
