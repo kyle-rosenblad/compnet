@@ -44,6 +44,7 @@
 #'    in beta-binomial models.
 #' @param warmup Number of warmup iterations for Stan.
 #' @param iter Number of posterior sampling iterations for Stan.
+#' @param adapt_delta A parameter that tunes Stan's posterior sampling algorithm. Increasing closer to 1 can help avoid divergent transitions.
 #' @return Object of class "compnet", which is a list containing the stanfit model object,
 #'    a named list of posterior samples for all model parameters, a data frame containing all
 #'    input variables for the model, a matrix of dyadic X variables, a matrix of X variables
@@ -97,8 +98,9 @@ buildcompnet <- function(presabs,
                     prior_sigma_multi_scale=1,
                     prior_lambda_scale=5,
                     prior_phi_rate=1,
-                    warmup=2500,
-                    iter=7500
+                    warmup=1000,
+                    iter=2000,
+                    adapt_delta=0.8
 ){
 
   ### data prep
@@ -268,11 +270,10 @@ buildcompnet <- function(presabs,
                       data=datalist,
                       cores=1,
                       chains=1,
-                      refresh=500,
                       warmup=warmup,
                       iter=iter,
                       verbose=F,
-                      control=list(adapt_delta=0.95))
+                      control=list(adapt_delta=adapt_delta))
     }
 
     if(rank>0){
@@ -301,11 +302,10 @@ buildcompnet <- function(presabs,
                       data=datalist,
                       cores=1,
                       chains=1,
-                      refresh=500,
                       warmup=warmup,
                       iter=iter,
                       verbose=F,
-                      control=list(adapt_delta=0.95))
+                      control=list(adapt_delta=adapt_delta))
     }
 
   }
@@ -335,11 +335,10 @@ buildcompnet <- function(presabs,
                       data=datalist,
                       cores=1,
                       chains=1,
-                      refresh=500,
                       warmup=warmup,
                       iter=iter,
                       verbose=F,
-                      control=list(adapt_delta=0.95))
+                      control=list(adapt_delta=adapt_delta))
     }
 
     if(rank>0){
@@ -369,11 +368,10 @@ buildcompnet <- function(presabs,
                       data=datalist,
                       cores=1,
                       chains=1,
-                      refresh=500,
                       warmup=warmup,
                       iter=iter,
                       verbose=F,
-                      control=list(adapt_delta=0.95))
+                      control=list(adapt_delta=adapt_delta))
     }
 
   }
@@ -402,11 +400,10 @@ buildcompnet <- function(presabs,
                       data=datalist,
                       cores=1,
                       chains=1,
-                      refresh=500,
                       warmup=warmup,
                       iter=iter,
                       verbose=F,
-                      control=list(adapt_delta=0.95))
+                      control=list(adapt_delta=adapt_delta))
     }
 
     if(rank>0){
@@ -435,11 +432,10 @@ buildcompnet <- function(presabs,
                       data=datalist,
                       cores=1,
                       chains=1,
-                      refresh=500,
                       warmup=warmup,
                       iter=iter,
                       verbose=F,
-                      control=list(adapt_delta=0.95))
+                      control=list(adapt_delta=adapt_delta))
     }
 
   }

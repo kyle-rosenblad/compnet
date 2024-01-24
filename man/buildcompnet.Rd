@@ -20,8 +20,9 @@ buildcompnet(
   prior_sigma_multi_scale = 1,
   prior_lambda_scale = 5,
   prior_phi_rate = 1,
-  warmup = 2500,
-  iter = 7500
+  warmup = 1000,
+  iter = 2000,
+  adapt_delta = 0.8
 )
 }
 \arguments{
@@ -82,6 +83,8 @@ in beta-binomial models.}
 \item{warmup}{Number of warmup iterations for Stan.}
 
 \item{iter}{Number of posterior sampling iterations for Stan.}
+
+\item{adapt_delta}{A parameter that tunes Stan's posterior sampling algorithm. Increasing closer to 1 can help avoid divergent transitions.}
 }
 \value{
 Object of class "compnet", which is a list containing the stanfit model object,
