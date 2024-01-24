@@ -32,3 +32,4 @@ Suggests:
     rmarkdown,
     DHARMa
 VignetteBuilder: knitr
+URL: https://kyle-rosenblad.github.io/compnet/

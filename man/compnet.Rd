@@ -11,6 +11,13 @@ A DESCRIPTION OF THE PACKAGE
 \references{
 Stan Development Team (NA). RStan: the R interface to Stan. R package version 2.32.3. https://mc-stan.org
 }
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://kyle-rosenblad.github.io/compnet/}
+}
+
+}
 \author{
 \strong{Maintainer}: Kyle Rosenblad \email{kyle_rosenblad@berkeley.edu} (\href{https://orcid.org/0000-0001-8778-7413}{ORCID})
 

@@ -4,3 +4,6 @@
 ^LICENSE\.md$
 stanExports_*.cc
 stanExports_*.h
+^_pkgdown\.yml$
+^docs$
+^pkgdown$

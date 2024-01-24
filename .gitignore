@@ -10,3 +10,4 @@ stanExports_*.h
 *.so
 *.dll
 inst/doc
+docs
