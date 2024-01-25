@@ -9,7 +9,7 @@ scatter_pairvar(
   xvar,
   xlabel,
   color = "red",
-  orig.scale = T,
+  orig.scale = TRUE,
   ymin = 0,
   ymax = 1,
   ci_width = 0.95,
@@ -29,7 +29,7 @@ the input data used to build the model.}
 \item{color}{Color to use in plotting.}
 
 \item{orig.scale}{Logical value indicating whether to back-transform trait data to the original
-scale (T) or leave them with mean zero and unit variance (F).}
+scale (TRUE) or leave them with mean zero and unit variance (FALSE).}
 
 \item{ymin}{Real number indicating the location of the bottom of the plot's y axis.}
 

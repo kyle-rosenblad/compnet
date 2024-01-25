@@ -7,7 +7,7 @@
 scatter_pairvar_getdata(
   mod,
   xvar,
-  orig.scale = T,
+  orig.scale = TRUE,
   ci_width = 0.95,
   grid_size = 100,
   thin = TRUE,
@@ -21,7 +21,7 @@ scatter_pairvar_getdata(
 the input data used to build the model.}
 
 \item{orig.scale}{Logical value indicating whether to back-transform trait data to the original
-scale (T) or leave them with mean zero and unit variance (F).}
+scale (TRUE) or leave them with mean zero and unit variance (FALSE).}
 
 \item{ci_width}{A real number (0,1) describing the desired widths of credible band. Defaults to 0.95.}
 
