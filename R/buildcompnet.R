@@ -178,7 +178,8 @@ buildcompnet <- function(presabs,
   }
 
   if(!missing("pairvars")){
-    pairvars.orig <- pairvars
+    pairvars.orig <- as.data.frame(pairvars)
+    pairvars.orig[c("spAid", "spBid")] <- NULL
     pairvars <- as.matrix(pairvars)
     for(j in 1:nrow(pairvars)){
       pairvars[j, c("spAid", "spBid")] <- sort(pairvars[j, c("spAid", "spBid")])
