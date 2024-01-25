@@ -35,10 +35,12 @@ postpredsamp <- function(mod){
                                         prob=postpredsamp[i,])
     }
     postpredsamp2 <- postpredsamp
-    postpredsamp2 <- stats::rbinom(n=length(postpredsamp2),
-                                   size=1,
-                                   prob=postpredsamp2)
-    postpredsamp <- postpredsamp%*%postpredsamp2
+    for(i in 1:nrow(postpredsamp2)){
+      postpredsamp[i,] <- stats::rbinom(n=ncol(postpredsamp2),
+                                        size=1,
+                                        prob=1-mod$stanmod_samp$zi)
+    }
+    postpredsamp <- postpredsamp*postpredsamp2
   }
 
   if(mod$family=="binomial"){
