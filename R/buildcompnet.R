@@ -178,6 +178,7 @@ buildcompnet <- function(presabs,
   }
 
   if(!missing("pairvars")){
+    pairvars.orig <- pairvars
     pairvars <- as.matrix(pairvars)
     for(j in 1:nrow(pairvars)){
       pairvars[j, c("spAid", "spBid")] <- sort(pairvars[j, c("spAid", "spBid")])
@@ -233,7 +234,7 @@ buildcompnet <- function(presabs,
   }
 
   if(!missing(pairvars)){
-    pairvars_summs <- as.data.frame(cbind(apply(pairvars, 2, mean), apply(pairvars, 2, stats::sd)))
+    pairvars_summs <- as.data.frame(cbind(apply(pairvars.orig, 2, mean), apply(pairvars.orig, 2, stats::sd)))
     names(pairvars_summs) <- c("mean", "sd")
   }
 
