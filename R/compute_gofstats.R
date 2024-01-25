@@ -6,18 +6,7 @@
 #' @param Y A symmetric matrix with NA diagonals
 #' @return A named vector containing: 1- the standard deviation of row means, and 2- The triadic
 #'    dependency metric used by Hoff, Fosdick, & Volfovsky's "amen" package.
-#' @examples
-#'
-#' data(ex_presabs)
-#' data(ex_traits)
-#'
-#' # Quick demo run. Will prompt warnings.
-#' # Run with default warmup and iter for good posterior sampling.
-#' ex_compnet <- buildcompnet(presabs=ex_presabs, spvars_dist_int=ex_traits, warmup=10, iter=20)
-#'
-#' ex_compnet_summ <- summarize_compnet(ex_compnet)
-#' ex_compnet_summ
-#'
+#' @details Internal helper function.
 
 compute_gofstats<-function(Y)
 {
