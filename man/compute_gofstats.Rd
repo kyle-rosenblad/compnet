@@ -18,16 +18,6 @@ dependency metric used by Hoff, Fosdick, & Volfovsky's "amen" package.
 Compute summary statistics quantifying row/column-level and third order dependencies in a
 symmetric matrix with NA diagonals
 }
-\examples{
-
-data(ex_presabs)
-data(ex_traits)
-
-# Quick demo run. Will prompt warnings.
-# Run with default warmup and iter for good posterior sampling.
-ex_compnet <- buildcompnet(presabs=ex_presabs, spvars_dist_int=ex_traits, warmup=10, iter=20)
-
-ex_compnet_summ <- summarize_compnet(ex_compnet)
-ex_compnet_summ
-
+\details{
+Internal helper function.
 }
