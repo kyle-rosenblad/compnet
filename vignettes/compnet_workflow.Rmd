@@ -57,7 +57,7 @@ ex_traits[1:3,]
 
 ```
 
-# Model with one species trait (5-10 min.)
+# Model with one species trait
 
 In the example data set, "ndtrait" is a trait that we think might drive competitive niche differentiation (e.g., plant rooting depth), and "domtrait" is a trait that we think might influence competitive ability (e.g., plant height). First we'll build a model with just "ndtrait", as competitive niche differentiation is the process we're interested in.
 
@@ -150,7 +150,7 @@ scatter_interaction(nd_1_mod, xvar="ndtrait", xlabel="ND Trait")
 
 Cool! When Species B has a low value of "ndtrait", the co-occurrence probability increases with Species A's "ndtrait" value. In other words, if you have a low value of "ndtrait", you'll be more likely to co-occur with other species that have high values. This pattern is consistent with competitive niche differentiation. Similarly, when Species B's "ndtrait" value is high, co-occurrence probability decreases with Species A's value. Additionally, when Species B has an intermediate value of "ndtrait", co-occurrence probability is higher when Species A's value is at either extreme, with a dip in the middle. (This is the pattern that multiplicative interaction models--as opposed to distance interaction models--struggle to represent.) Overall, this plot exemplifies the results we expect for a metacommunity shaped by competitive niche differentiation.
 
-# Model with two traits (8-15 min.)
+# Model with two traits
 
 When might we want to use multiple traits in the same model? For one, we might want to use this strategy to deal with a suspected confounder or "lurking variable".
 
@@ -227,7 +227,7 @@ scatter_interaction(nd_dom_1_mod, xvar="ndtrait", xlabel="ND Trait")
 
 The effect is noticeably, if modestly, stronger in the new model that incorporated covariate adjustment.
 
-# Phylogenetic distance model (8-15 min.)
+# Phylogenetic distance model
 
 Sometimes we might not have trait data, or we might not be sure which traits make sense to use in our models. If we think phylogenetic distance serves as a reasonable proxy for resource use overlap, then we could use phylogenetic distance is a predictor in our 'compnet' model. Let's try this approach with the example data set.
 
@@ -308,4 +308,4 @@ Not much of an effect. We can regard this as a warning that phylogenetic distanc
 
 # Alternative distributions
 
-As alternatives to the binomial likelihood, 'compnet' models can also be built with [beta-binomial](https://cran.r-project.org/web/packages/brms/vignettes/brms_customfamilies.html) or [zero-inflated binomial](https://r-nimble.org/nimbleExamples/zero_inflated_poisson.html) likelihoods by changing the 'family' argument in buildcompnet(). These options can sometimes help resolve the kinds of problems that 'DHARMa' checks reveal, like overdispersion or zero-inflation. Before turning to fancy solutions like these, it's often worthwhile to rethink our choices of predictor variables. However, that doesn't always work, so it's nice to have fancier model structures available in case we need them.
+As alternatives to the binomial likelihood, 'compnet' models can also be built with [beta-binomial](https://cran.r-project.org/web/packages/brms/vignettes/brms_customfamilies.html) or [zero-inflated binomial](https://r-nimble.org/nimbleExamples/zero_inflated_poisson.html) likelihoods by changing the 'family' argument in buildcompnet() to "beta-binomial" or "zi_binomial". These options can sometimes help resolve the kinds of problems that 'DHARMa' checks reveal, like overdispersion or zero-inflation. Before turning to fancy solutions like these, it's often worthwhile to rethink our choices of predictor variables. However, that doesn't always work, so it's nice to have fancier model structures available in case we need them.
