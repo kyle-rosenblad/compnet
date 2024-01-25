@@ -102,7 +102,7 @@ nd_1_mod <- buildcompnet(presabs=ex_presabs,
         rank=1,
         warmup=300,
         iter=1000,
-        adapt_delta=0.9)
+        adapt_delta=0.95)
 nd_1_mod_gofstats <- gofstats(nd_1_mod)
 nd_1_mod_gofstats
 
