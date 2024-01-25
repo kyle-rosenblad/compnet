@@ -21,8 +21,8 @@
 #'    Row names should be unique species names, and column names should be unique trait names. There
 #'    should also be two columns named "spAid" and "spBid" containing the unique names of the
 #'    species in each pair.
-#' @param family Distribution family for the likelihood. Binomial, beta-binomial, and zero-inflated
-#'    binomial are currently supported.
+#' @param family Distribution family for the likelihood. Binomial (default), beta-binomial ("beta-binomial"),
+#' and zero-inflated binomial ("zi_binomial") are currently supported.
 #' @param rank Number of dimensions for the multiplicative latent factor term. Rank=0 (the default)
 #'    yields a model with no multiplicative term.
 #' @param prior_intercept_scale Scale parameter for mean-zero Gaussian prior on the intercept term
