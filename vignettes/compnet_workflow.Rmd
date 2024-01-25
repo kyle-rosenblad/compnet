@@ -186,7 +186,7 @@ testZeroInflation(nd_dom_0_mod_dharma, plot=FALSE)
 
 ```
 
-We've got some issues with high-order non-independence and overdispersion, so let's try again with 'rank' = 1.
+We've got some issues with high-order non-independence, overdispersion, and quantile deviations. Let's try again with 'rank' = 1.
 
 ```{r}
 nd_dom_1_mod <- buildcompnet(presabs=ex_presabs,
