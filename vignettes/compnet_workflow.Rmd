@@ -245,8 +245,8 @@ Let's build the model now. Phylogenetic distance is a species-pair-level variabl
 ```{r}
 phylo_0_mod <- buildcompnet(presabs=ex_presabs,
                             pairvars=ex_phylo,
-                            warmup=400,
-                            iter=1200)
+                            warmup=1000,
+                            iter=2000)
 ```
 
 Run our model checks:
