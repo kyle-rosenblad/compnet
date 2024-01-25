@@ -92,9 +92,9 @@ nd_0_mod_gofstats
 
 The first 'p-value', 'p.sd.rowmeans', tells us about patterns driven by the fact that all species pairs including a given species share features in common. Our 'p.sd.rowmeans' is low, which means when we simulate data from the model we've built ('gofstats' did this in the background), most of the simulated data have at least as much of this kind of non-independence as the real data. That's good; it means our model is accounting for this form of non-independence among species pairs. Anything that's not super-high (around maybe 0.9ish or more) is fine.
 
-The second value, 'p.cycle.dep', tells us about higher-order multi-species patterns. These can be abstract and complicated. A good example is the saying, "the enemy of my enemy is my friend". Our 'p.cycle.dep' isn't too bad. It's telling us that when we simulate data from our model, around two thirds of the simulated data sets have less high-order non-independence than the real data. We wouldn't usually worry about a value like this, but for the sake of illustration, let's try increasing 'rank', which can be helpful when 'p.cycle.dep' is problematically high.
+The second value, 'p.cycle.dep', tells us about higher-order multi-species patterns. These can be abstract and challenging to conceptualize. A good example is the saying, "the enemy of my enemy is my friend". Our 'p.cycle.dep' looks fine. It's telling us that when we simulate data from our model, around two thirds of the simulated data sets have less high-order non-independence than the real data. We wouldn't usually worry about a 'p.cycle.dep' value like this, but for the sake of illustration, let's try increasing 'rank', which can be helpful when 'p.cycle.dep' is problematically high.
 
-Also, notice I adjusted 'adapt_delta' to make sampling to run smoothly. In particular, this strategy can help when Stan gives warnings about "divergent transitions". To see what those look like, you could try running this model with adapt_delta back at its default value of 0.8, or lower.
+Also, notice I had to adjust 'adapt_delta' to make sampling to run smoothly for this model. Adjusting 'adapt_delta' can help when Stan gives warnings about "divergent transitions". To see the warnings, you could try running this model with 'adapt_delta' at an inadvisably low level like 0.7.
 
 ```{r}
 nd_1_mod <- buildcompnet(presabs=ex_presabs,
@@ -112,7 +112,7 @@ Unsurprisingly, our gofstats look fine.
 
 Before we move forward with this model, I recommend using the 'DHARMa' package to run some additional checks for model fit problems. 'DHARMa' doesn't automatically install with 'compnet'. If you have your own model diagnostic workflow, you don't need to use it.
 
-We'll use 'DHARMa' to check for overdispersion, quantile deviations, uniformity, and zero inflation. You can read more about these issues and their accompanying tests in the 'DHARMa' [vignette](https://cran.r-project.org/web/packages/DHARMa/vignettes/DHARMa.html). In general, we should be wary of tiny p-values, warning messages, and visual patterns that deviate strongly from the expected patterns shown in DHARMa's output graphs. One important caveat: when you have a very large data set, you can get tiny p-values even when the deviations from the expected patterns are trivial.
+We'll use 'DHARMa' to check for overdispersion, quantile deviations, uniformity, and zero inflation. You can read more about these issues and their accompanying tests in the 'DHARMa' [vignette](https://cran.r-project.org/web/packages/DHARMa/vignettes/DHARMa.html). In general, we should be wary of tiny p-values, warning messages, and visual patterns that deviate strongly from the expected patterns shown in DHARMa's output graphs. However, when you have a very large data set, you can get tiny p-values even when the deviations from the expected patterns are trivial. The diagnostic plots are key in these cases.
 
 ```{r}
 library(DHARMa)
@@ -142,7 +142,7 @@ Let's see those as violin plots:
 fixedeff_violins(nd_1_mod)
 ```
 
-Now we'll make a scatterplot, in which each point is a species pair. The x axis will represent the trait value for "Species A" (A vs B is arbitrary), and the y axis will represent co-occurrence probability. We'll include curves for the mean expectation with 95% credible intervals. There will be multiple curves, each conditioned on a different value of the focal trait for "Species B". By default, the scatter_interaction() function will generate the plot by conditioning on the mean values of all other predictor variables for other traits. (In this example model, there are no other traits).
+Now we'll make a scatterplot, in which each point is a species pair. The x axis will represent the trait value for "Species A" (A vs B is arbitrary), and the y axis will represent co-occurrence probability. We'll include curves for the mean expectation with 95% credible intervals. There will be multiple curves, each conditioned on a different value of the focal trait for "Species B". By default, the scatter_interaction() function will generate the plot by conditioning on the mean values of all other predictor variables pertaining to other traits. (In this example model, "ndtrait" is the only trait.)
 
 ```{r fig.height=6, fig.width=6}
 scatter_interaction(nd_1_mod, xvar="ndtrait", xlabel="ND Trait")
@@ -160,7 +160,7 @@ So far, we've just been using "ndtrait", the trait that we think drives competit
 cor(ex_traits)
 ```
 
-There is. What can we do about it? Let's include "domtrait" as a covariate. Adjusting for a suspected confounder can help us in our quest for an unbiased estimate of the effect of "ndtrait" on co-occurrence probabilities. (We can never do perfect causal inference with observational data, but it's worth getting as close as we can. That's another topic.)
+There is. What can we do about it? Let's include "domtrait" as a covariate. Including a suspected confounder as a covariate can help us in our quest for an unbiased estimate of the effect of "ndtrait" on co-occurrence probabilities. (We can never do perfect causal inference with observational data, but it's worth getting as close as we can. That's another topic.)
 
 Let's try a new model using both "ndtrait" and "domtrait" with distance interactions. We'll start with rank=0. When the model's built, we'll run gofstats() and 'DHARMa' checks.
 
@@ -231,7 +231,7 @@ The effect is noticeably, if modestly, stronger in the new model that incorporat
 
 Sometimes we might not have trait data, or we might not be sure which traits make sense to use in our models. If we think phylogenetic distance serves as a reasonable proxy for resource use overlap, then we could use phylogenetic distance is a predictor in our 'compnet' model. Let's try this approach with the example data set.
 
-First, we'll load the phylogenetic distance data and have a look at them.
+First, we'll load the phylogenetic distance data and have a look.
 
 ```{r}
 data("ex_phylo")
