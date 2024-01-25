@@ -9,7 +9,7 @@
 #'    the input data used to build the model.
 #' @param xlabel Optional character string to replace xvar when plotting.
 #' @param orig.scale Logical value indicating whether to back-transform trait data to the original
-#'    scale (T) or leave them with mean zero and unit variance (F).
+#'    scale (TRUE) or leave them with mean zero and unit variance (FALSE).
 #' @param ci_width A real number (0,1) describing the desired widths of credible band. Defaults to 0.95.
 #' @param ymin Real number indicating the location of the bottom of the plot's y axis.
 #' @param ymax Real number indicating the location of the top of the plot's y axis.
@@ -32,7 +32,7 @@ scatter_pairvar <- function(mod,
                             xvar,
                             xlabel,
                             color="red",
-                            orig.scale=T,
+                            orig.scale=TRUE,
                             ymin=0,
                             ymax=1,
                             ci_width=0.95,
@@ -102,7 +102,7 @@ scatter_pairvar <- function(mod,
   gridfinal <- grid_for_plot
 
   d <- mod$d
-  if(orig.scale==T){
+  if(orig.scale==TRUE){
     gridfinal$x <- gridfinal$x*mod$pairvars_summs[xvar,"sd"] + mod$pairvars_summs[xvar,"mean"]
     d[[xvar]] <- d[[xvar]]*mod$pairvars_summs[xvar,"sd"] + mod$pairvars_summs[xvar,"mean"]
   }

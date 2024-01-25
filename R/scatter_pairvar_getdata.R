@@ -6,7 +6,7 @@
 #' @param xvar Character string for the name of the trait to be used. Must match the trait name in
 #'    the input data used to build the model.
 #' @param orig.scale Logical value indicating whether to back-transform trait data to the original
-#'    scale (T) or leave them with mean zero and unit variance (F).
+#'    scale (TRUE) or leave them with mean zero and unit variance (FALSE).
 #' @param ci_width A real number (0,1) describing the desired widths of credible band. Defaults to 0.95.
 #' @param grid_size A positive integer defining the number of discrete steps to use in approximating
 #'    the shape of mean prediction curves and credible bands. Defaults to 100.
@@ -25,7 +25,7 @@
 
 scatter_pairvar_getdata <- function(mod,
                             xvar,
-                            orig.scale=T,
+                            orig.scale=TRUE,
                             ci_width=0.95,
                             grid_size=100,
                             thin=TRUE,
@@ -93,7 +93,7 @@ scatter_pairvar_getdata <- function(mod,
   gridfinal <- grid_for_plot
 
   d <- mod$d
-  if(orig.scale==T){
+  if(orig.scale==TRUE){
     gridfinal$x <- gridfinal$x*mod$pairvars_summs[xvar,"sd"] + mod$pairvars_summs[xvar,"mean"]
     d[[xvar]] <- d[[xvar]]*mod$pairvars_summs[xvar,"sd"] + mod$pairvars_summs[xvar,"mean"]
   }

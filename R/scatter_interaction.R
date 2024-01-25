@@ -9,7 +9,7 @@
 #'    the input data used to build the model.
 #' @param xlabel Optional character string to replace xvar when plotting.
 #' @param orig.scale Logical value indicating whether to back-transform trait data to the original
-#'    scale (T) or leave them with mean zero and unit variance (F).
+#'    scale (TRUE) or leave them with mean zero and unit variance (FALSE).
 #' @param intlevels Vector of real values on the interval \eqn{[0,1]} indicating what levels of the x
 #'    variable to condition on for species B when plotting species A's mean response.
 #' @param ci_width A real number (0,1) describing the desired widths of credible bands. Defaults to 0.95.
@@ -33,7 +33,7 @@
 scatter_interaction <- function(mod,
                                 xvar,
                                 xlabel,
-                                orig.scale=T,
+                                orig.scale=TRUE,
                                 intlevels=c(0.05,0.5,0.95),
                                 ymin=0,
                                 ymax=1,
@@ -142,7 +142,7 @@ scatter_interaction <- function(mod,
   }
 
   d <- mod$d
-  if(orig.scale==T){
+  if(orig.scale==TRUE){
     if(xvar%in%rownames(mod$spvars_dist_summs)){
       gridfinal$x <- gridfinal$x*mod$spvars_dist_summs[xvar,"sd"] + mod$spvars_dist_summs[xvar,"mean"]
       gridfinal$intlevel <- gridfinal$intlevel*mod$spvars_dist_summs[xvar,"sd"] + mod$spvars_dist_summs[xvar,"mean"]
