@@ -4,7 +4,7 @@ Version: 0.0.0.9000
 Authors@R:
     person("Kyle", "Rosenblad", , "kyle_rosenblad@berkeley.edu", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0001-8778-7413"))
-Description: Quantify the effect of functional similarity between species on the probability of co-occurrence. If the data contain a signal of competitive niche differentiation, then functionally dissimilar species pairs will be more likely to co-occur. Compnet uses hierarchical Bayesian network regression models to quantify this effect with presence-absence data and species-level trait data (e.g., plant leaf size) and/or pair-level trait data (e.g., phylogenetic distance). Various random effects structures are used to deal with the types of non-independence found in network data.
+Description: Quantify the effect of functional similarity between species on the probability of co-occurrence. If the data contain a signal of competitive niche differentiation, then functionally dissimilar species pairs will be more likely to co-occur. 'compnet' uses hierarchical Bayesian network regression models to quantify this effect with presence-absence data and species-level trait data (e.g., plant leaf size) and/or pair-level trait data (e.g., phylogenetic distance). Various random effects structures are used to deal with the types of non-independence found in network data. First [install rstan](https://github.com/stan-dev/rstan/wiki/RStan-Getting-Started). Then, in R, run devtools::install_github("kyle-rosenblad/compnet").
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
