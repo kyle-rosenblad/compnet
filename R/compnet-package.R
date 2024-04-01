@@ -1,6 +1,6 @@
 #' The 'compnet' package.
 #'
-#' @description A DESCRIPTION OF THE PACKAGE
+#' @description Network models of interspecific competition
 #'
 #' @name compnet
 #' @aliases compnet-package

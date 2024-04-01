@@ -6,7 +6,7 @@
 \alias{compnet-package}
 \title{The 'compnet' package.}
 \description{
-A DESCRIPTION OF THE PACKAGE
+Network models of interspecific competition
 }
 \references{
 Stan Development Team (NA). RStan: the R interface to Stan. R package version 2.32.3. https://mc-stan.org
