@@ -166,7 +166,7 @@ Let's try a new model using both "ndtrait" and "domtrait" with distance interact
 
 ```{r}
 nd_dom_0_mod <- buildcompnet(presabs=ex_presabs,
-                        spvars_dist_int=ex_traits,
+                        spvars_dist_int=ex_traits[c("ndtrait", "domtrait")],
                         warmup=400,
                         iter=1200)
 
@@ -190,7 +190,7 @@ We've got some issues with high-order non-independence, overdispersion, and quan
 
 ```{r}
 nd_dom_1_mod <- buildcompnet(presabs=ex_presabs,
-                        spvars_dist_int=ex_traits,
+                        spvars_dist_int=ex_traits[c("ndtrait", "domtrait")],
                         rank = 1,
                         warmup=500,
                         iter=1500)
