@@ -44,7 +44,7 @@ scatter_interaction <- function(mod,
 
   ### error for categorical xvar or pairvar or non-interacting continuous trait
   if(xvar%in%rownames(mod$spvars_multi_summs)==FALSE &
-     xvar%in%rownames(mod$spvars_dist_summs)){
+     xvar%in%rownames(mod$spvars_dist_summs)==FALSE){
     stop("This function only supports continuous traits with multiplicative or distance interactions. see ?scatter_interaction()")
   }
 
