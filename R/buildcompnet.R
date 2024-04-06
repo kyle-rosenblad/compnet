@@ -103,6 +103,31 @@ buildcompnet <- function(presabs,
                     adapt_delta=0.8
 ){
 
+  ### errors for incorrectly formatted input data
+  if(!missing("spvars_no_int")){
+    if(!identical(sort(rownames(spvars_no_int)), sort(colnames(presabs)))){
+      stop("Please check the formatting of your presence-absence and trait data. see ?buildcompnet()")
+    }
+  }
+
+  if(!missing("spvars_multi_int")){
+    if(!identical(sort(rownames(spvars_multi_int)), sort(colnames(presabs)))){
+      stop("Please check the formatting of your presence-absence and trait data. see ?buildcompnet()")
+    }
+  }
+  if(!missing("spvars_dist_int")){
+    if(!identical(sort(rownames(spvars_dist_int)), sort(colnames(presabs)))){
+      stop("Please check the formatting of your presence-absence and trait data. see ?buildcompnet()")
+    }
+  }
+
+  if(!missing("pairvars")){
+    tmpsplist <- unique(c(pairvars[c("spAid")], pairvars[c("spBid")]))
+    if(!identical(sort(tmpsplist), sort(colnames(presabs)))){
+      stop("Please check the formatting of your presence-absence and trait data. see ?buildcompnet()")
+    }
+  }
+
   ### data prep
   dyads <- t(utils::combn(colnames(presabs),2))
   d <- as.data.frame(dyads)
