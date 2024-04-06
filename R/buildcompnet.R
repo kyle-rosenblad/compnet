@@ -229,8 +229,8 @@ buildcompnet <- function(presabs,
           dummiesB[j, k] <- as.numeric(tmptrait[d[j, "spBid"]] == cats[k])
         }
       }
-      colnames(dummiesA) <- paste(names(spvars_cat_no_int[i]), cats, "dummyA", sep="_")
-      colnames(dummiesB) <- paste(names(spvars_cat_no_int[i]), cats, "dummyB", sep="_")
+      colnames(dummiesA) <- paste(names(spvars_cat_no_int[i]), cats, "dummy_A", sep="_")
+      colnames(dummiesB) <- paste(names(spvars_cat_no_int[i]), cats, "dummy_B", sep="_")
       XA <- as.matrix(cbind(XA, dummiesA))
       XB <- as.matrix(cbind(XB, dummiesB))
     }
@@ -253,8 +253,8 @@ buildcompnet <- function(presabs,
       for(j in 1:nrow(d)){
         vecdy[j] <- as.numeric(tmptrait[d[j, "spBid"]] == tmptrait[d[j, "spAid"]])
       }
-      colnames(dummiesA) <- paste(names(spvars_cat_int[i]), cats, "dummyA", sep="_")
-      colnames(dummiesB) <- paste(names(spvars_cat_int[i]), cats, "dummyB", sep="_")
+      colnames(dummiesA) <- paste(names(spvars_cat_int[i]), cats, "dummy_A", sep="_")
+      colnames(dummiesB) <- paste(names(spvars_cat_int[i]), cats, "dummy_B", sep="_")
       XA <- as.matrix(cbind(XA, dummiesA))
       XB <- as.matrix(cbind(XB, dummiesB))
       Xdy <- as.matrix(cbind(Xdy, vecdy))
