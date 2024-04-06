@@ -87,6 +87,8 @@ buildcompnet <- function(presabs,
                     spvars_no_int=NULL,
                     spvars_dist_int=NULL,
                     spvars_multi_int=NULL,
+                    spvars_cat_no_int=NULL,
+                    spvars_cat_int=NULL,
                     pairvars=NULL,
                     family="binomial",
                     rank=0,
@@ -117,6 +119,18 @@ buildcompnet <- function(presabs,
   }
   if(!missing("spvars_dist_int")){
     if(!identical(sort(rownames(spvars_dist_int)), sort(colnames(presabs)))){
+      stop("Please check the formatting of your presence-absence and trait data. see ?buildcompnet()")
+    }
+  }
+
+  if(!missing("spvars_cat_no_int")){
+    if(!identical(sort(rownames(spvars_cat_no_int)), sort(colnames(presabs)))){
+      stop("Please check the formatting of your presence-absence and trait data. see ?buildcompnet()")
+    }
+  }
+
+  if(!missing("spvars_cat_int")){
+    if(!identical(sort(rownames(spvars_cat_int)), sort(colnames(presabs)))){
       stop("Please check the formatting of your presence-absence and trait data. see ?buildcompnet()")
     }
   }
@@ -202,6 +216,52 @@ buildcompnet <- function(presabs,
     }
   }
 
+  if(!missing("spvars_cat_no_int")){
+    for(i in 1:ncol(spvars_cat_no_int)){
+      tmptrait <- factor(spvars_cat_no_int[,i])
+      names(tmptrait) <- rownames(spvars_cat_no_int)
+      cats <- levels(tmptrait)
+      dummiesA <- matrix(NA, nrow=nrow(d), ncol=length(cats))
+      dummiesB <- matrix(NA, nrow=nrow(d), ncol=length(cats))
+      for(k in 1:length(cats)){
+        for(j in 1:nrow(d)){
+          dummiesA[j, k] <- as.numeric(tmptrait[d[j, "spAid"]] == cats[k])
+          dummiesB[j, k] <- as.numeric(tmptrait[d[j, "spBid"]] == cats[k])
+        }
+      }
+      colnames(dummiesA) <- paste(names(spvars_cat_no_int[i]), cats, "dummyA", sep="_")
+      colnames(dummiesB) <- paste(names(spvars_cat_no_int[i]), cats, "dummyB", sep="_")
+      XA <- as.matrix(cbind(XA, dummiesA))
+      XB <- as.matrix(cbind(XB, dummiesB))
+    }
+  }
+
+  if(!missing("spvars_cat_int")){
+    for(i in 1:ncol(spvars_cat_int)){
+      tmptrait <- factor(spvars_cat_int[,i])
+      names(tmptrait) <- rownames(spvars_cat_int)
+      cats <- levels(tmptrait)
+      dummiesA <- matrix(NA, nrow=nrow(d), ncol=length(cats))
+      dummiesB <- matrix(NA, nrow=nrow(d), ncol=length(cats))
+      for(k in 1:length(cats)){
+        for(j in 1:nrow(d)){
+          dummiesA[j, k] <- as.numeric(tmptrait[d[j, "spAid"]] == cats[k])
+          dummiesB[j, k] <- as.numeric(tmptrait[d[j, "spBid"]] == cats[k])
+        }
+      }
+      vecdy <- c()
+      for(j in 1:nrow(d)){
+        vecdy[j] <- as.numeric(tmptrait[d[j, "spBid"]] == tmptrait[d[j, "spAid"]])
+      }
+      colnames(dummiesA) <- paste(names(spvars_cat_int[i]), cats, "dummyA", sep="_")
+      colnames(dummiesB) <- paste(names(spvars_cat_int[i]), cats, "dummyB", sep="_")
+      XA <- as.matrix(cbind(XA, dummiesA))
+      XB <- as.matrix(cbind(XB, dummiesB))
+      Xdy <- as.matrix(cbind(Xdy, vecdy))
+      colnames(Xdy)[length(colnames(Xdy))] <- paste(names(spvars_cat_int[i]), "int", sep="_")
+    }
+  }
+
   if(!missing("pairvars")){
     pairvars.orig <- as.data.frame(pairvars)
     pairvars.orig[c("spAid", "spBid")] <- NULL
@@ -220,6 +280,7 @@ buildcompnet <- function(presabs,
     Xdy <- as.matrix(cbind(Xdy, pairvars))
   }
 
+  ### deal with column names in X matrices for special case where we only have one X variable
   if(ncol(Xdy)==2){
     Xdyname <- colnames(Xdy)[2]
   }
@@ -243,7 +304,7 @@ buildcompnet <- function(presabs,
   if(ncol(XB)==1){
     colnames(XB) <- XBname
   }
-  # save the summary statistics needed to return x variables to original scales
+  # save the summary statistics needed to return continuous x variables to original scales
   if(!missing(spvars_no_int)){
     spvars_no_int_summs <- as.data.frame(cbind(apply(spvars_no_int, 2, mean), apply(spvars_no_int, 2, stats::sd)))
     names(spvars_no_int_summs) <- c("mean", "sd")
