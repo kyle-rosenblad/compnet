@@ -9,6 +9,8 @@ buildcompnet(
   spvars_no_int = NULL,
   spvars_dist_int = NULL,
   spvars_multi_int = NULL,
+  spvars_cat_no_int = NULL,
+  spvars_cat_int = NULL,
   pairvars = NULL,
   family = "binomial",
   rank = 0,

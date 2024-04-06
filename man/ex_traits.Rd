@@ -5,7 +5,7 @@
 \alias{ex_traits}
 \title{Species-level data for two traits in a simulated metacommunity dataset with 24 species}
 \format{
-An object of class \code{data.frame} with 24 rows and 2 columns.
+An object of class \code{data.frame} with 24 rows and 3 columns.
 }
 \usage{
 ex_traits
@@ -13,8 +13,9 @@ ex_traits
 \description{
 A data frame with 24 rows and 2 columns:
 \describe{
-\item{ndtrait}{A trait driving competitive niche differentiation}
-\item{domtrait}{A trait influencing competitive ability}
+\item{ndtrait}{A continuous trait driving competitive niche differentiation}
+\item{domtrait}{A continuous trait influencing competitive ability}
+\item{ctrait}{A categorical trait influencing competitive niche differentiation}
 }
 }
 \keyword{datasets}
