@@ -59,7 +59,7 @@ ex_traits[1:3,]
 
 # Model with one species trait
 
-In the example data set, "ndtrait" is a trait that we think might drive competitive niche differentiation (e.g., plant rooting depth), and "domtrait" is a trait that we think might influence competitive ability (e.g., plant height). First we'll build a model with just "ndtrait", as competitive niche differentiation is the process we're interested in.
+In the example data set, "ndtrait" is a trait that we think might drive competitive niche differentiation (e.g., plant rooting depth), and "domtrait" is a trait that we think might influence competitive ability (e.g., plant height). "ctrait" is a categorical trait that we also suspect of driving competitive niche differentiation. First we'll build a model with just "ndtrait", as competitive niche differentiation is the process we're interested in.
 
 If "ndtrait" is driving competitive niche differentiation, then we expect species pairs who differ strongly in this trait to co-occur most often. We'll model the effect of "ndtrait" on co-occurrence probability using a "distance interaction" term. In other words, for each species pair, our model will use species A's value of "ndtrait", species B's value, and the absolute value of the difference between these two values. This last term directly captures the effect we're interested in, which is called "heterophily" in the social sciences (i.e., things that are different being attracted to each other). Social scientists often model heterophily using a multiplicative interaction term instead of a distance term. Here we use a distance interaction term because it captures certain features of the competitive niche differentiation process that multiplicative interaction terms can't represent. (We'll see an example later.) However, multiplicative interaction terms can provide other advantages (which we'll also note below). To use a multiplicative interaction term, just use 'spvars_multi_int' instead of 'spvars_dist_int' in the example code.
 
@@ -157,7 +157,7 @@ When might we want to use multiple traits in the same model? For one, we might w
 So far, we've just been using "ndtrait", the trait that we think drives competitive niche differentiation. In general, competitive niche differentiation is expected to produce heterophily, a pattern whereby species with different trait values co-occur most often. However, we've got data for another trait called "domtrait", which we think might influence competitive ability. In general, competitive hierarchies produce homophily--i.e., species co-occur most frequently with other species of similar competitive ability. If there's an association between "ndtrait" and "domtrait", then the homophily caused by "domtrait" might be masking the heterophily caused by "ndtrait". (To use a plant-based example, maybe rooting depth drives niche differentiation, plant height drives competitive ability, and the two traits are positively associated.) Let's see if there's an association between the two traits:
 
 ```{r}
-cor(ex_traits)
+cor(ex_traits[c("ndtrait", "domtrait")])
 ```
 
 There is. What can we do about it? Let's include "domtrait" as a covariate. Including a suspected confounder as a covariate can help us in our quest for an unbiased estimate of the effect of "ndtrait" on co-occurrence probabilities. (We can never do perfect causal inference with observational data, but it's worth getting as close as we can. That's another topic.)
