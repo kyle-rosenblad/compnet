@@ -30,6 +30,12 @@ scatter_pairvar_getdata <- function(mod,
                             grid_size=100,
                             thin=TRUE,
                             thin_to=100){
+
+  ### error for when xvar is not a pairvar
+  if(xvar%in%rownames(mod$pairvars_summs)==FALSE){
+    stop("This function only supports dyad-level traits (i.e., pairvars). see ?scatter_pairvar_getdata()")
+  }
+
   lowquant <- (1-ci_width)/2
   highquant <- 1-lowquant
   samp_temp <- mod$stanmod_samp

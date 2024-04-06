@@ -41,6 +41,13 @@ scatter_interaction <- function(mod,
                                 grid_size=100,
                                 thin=TRUE,
                                 thin_to=100){
+
+  ### error for categorical xvar or pairvar or non-interacting continuous trait
+  if(xvar%in%rownames(mod$spvars_multi_summs)==FALSE &
+     xvar%in%rownames(mod$spvars_dist_summs)){
+    stop("This function only supports continuous traits with multiplicative or distance interactions. see ?scatter_interaction()")
+  }
+
   intlevels <- sort(intlevels)
 
   lowquant <- (1-ci_width)/2
