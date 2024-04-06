@@ -231,8 +231,8 @@ buildcompnet <- function(presabs,
       }
       colnames(dummiesA) <- paste(names(spvars_cat_no_int[i]), cats, "dummy_A", sep="_")
       colnames(dummiesB) <- paste(names(spvars_cat_no_int[i]), cats, "dummy_B", sep="_")
-      XA <- as.matrix(cbind(XA, dummiesA))
-      XB <- as.matrix(cbind(XB, dummiesB))
+      XA <- as.matrix(cbind(XA, dummiesA[,-1])) # drop first category as reference
+      XB <- as.matrix(cbind(XB, dummiesB[,-1])) # drop first category as reference
     }
   }
 
@@ -255,8 +255,8 @@ buildcompnet <- function(presabs,
       }
       colnames(dummiesA) <- paste(names(spvars_cat_int[i]), cats, "dummy_A", sep="_")
       colnames(dummiesB) <- paste(names(spvars_cat_int[i]), cats, "dummy_B", sep="_")
-      XA <- as.matrix(cbind(XA, dummiesA))
-      XB <- as.matrix(cbind(XB, dummiesB))
+      XA <- as.matrix(cbind(XA, dummiesA[,-1])) # drop first category as reference
+      XB <- as.matrix(cbind(XB, dummiesB[,-1])) # drop first category as reference
       Xdy <- as.matrix(cbind(Xdy, vecdy))
       colnames(Xdy)[length(colnames(Xdy))] <- paste(names(spvars_cat_int[i]), "int", sep="_")
     }

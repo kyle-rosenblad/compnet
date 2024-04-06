@@ -243,7 +243,7 @@ summarize_compnet(c_1_mod)
 ```
  After the intercept, we see the results for the interaction term. This is a binary indicator that equals 1 when a species pair has the same value of the categorical trait and equals 0 when they have different values. We have strong evidence that the coefficient is negative, which suggests having the same value of "ctrait" makes co-occurrence less likely. This is the pattern we expect from competitive niche differentiation.
  
- The "dummy" rows are coefficients corresponding to species-level effects for each category of "ctrait". The last category, "c" (alphabetically), doesn't get a coefficient because it is automatically designed the "reference category". The effects for "a" and "b" can be viewed as contrasts relative to the reference category.
+ The "dummy" rows are coefficients corresponding to species-level effects for each category of "ctrait". The first category, "a", doesn't get a coefficient because it is automatically designated the "reference category". The effects for "b" and "c" can be viewed as contrasts relative to the reference category.
  
 # Phylogenetic distance model
 
