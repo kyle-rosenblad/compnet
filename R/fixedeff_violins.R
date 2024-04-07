@@ -11,7 +11,7 @@
 #'
 #' # Quick demo run. Will prompt warnings.
 #' # Run with default warmup and iter for good posterior sampling.
-#' ex_compnet <- buildcompnet(presabs=ex_presabs, spvars_dist_int=ex_traits, warmup=10, iter=20)
+#' ex_compnet <- buildcompnet(presabs=ex_presabs, spvars_dist_int=ex_traits[c("ndtrait")], warmup=10, iter=20)
 #' fixedeff_violins(ex_compnet)
 #'
 
