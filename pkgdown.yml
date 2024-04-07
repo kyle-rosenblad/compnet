@@ -3,7 +3,7 @@ pkgdown: 2.0.7
 pkgdown_sha: ~
 articles:
   compnet_workflow: compnet_workflow.html
-last_built: 2024-04-07T04:18Z
+last_built: 2024-04-07T05:00Z
 urls:
   reference: https://kyle-rosenblad.github.io/compnet/reference
   article: https://kyle-rosenblad.github.io/compnet/articles
