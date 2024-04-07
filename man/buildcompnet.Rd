@@ -45,6 +45,14 @@ to be included in the model with a multiplicative interaction term (i.e., the pr
 trait values for each species pair). Row names should be unique species names, and column
 names should be unique trait names.}
 
+\item{spvars_cat_no_int}{A matrix or data frame, in which rows are species and columns are categorical traits to
+be included in the model as additive species effects only, with no interaction term. Row names
+should be unique species names, and column names should be unique trait names.}
+
+\item{spvars_cat_int}{A matrix or data frame, in which rows are species and columns are categorical traits to
+be included in the model with a binary "same or different" interaction term. Row names
+should be unique species names, and column names should be unique trait names.}
+
 \item{pairvars}{A matrix or data frame, in which rows are species pairs and columns are
 pair-level traits that do not have a species-level analog, e.g., phylogenetic distance.
 Row names should be unique species names, and column names should be unique trait names. There
