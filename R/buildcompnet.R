@@ -136,7 +136,7 @@ buildcompnet <- function(presabs,
   }
 
   if(!missing("pairvars")){
-    tmpsplist <- unique(c(pairvars[c("spAid")], pairvars[c("spBid")]))
+    tmpsplist <- unique(c(as.data.frame(pairvars)$spAid, as.data.frame(pairvars)$spBid))
     if(!identical(sort(tmpsplist), sort(colnames(presabs)))){
       stop("Please check the formatting of your presence-absence and trait data. see ?buildcompnet()")
     }
