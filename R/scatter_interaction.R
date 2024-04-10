@@ -119,14 +119,14 @@ scatter_interaction <- function(mod,
         beta_dy_tmp <- samp_for_plot[j, "beta_dy"]
         xbeta_other_tmp <- samp_for_plot[j, "xbeta_other"]
         if(xvar%in%rownames(mod$spvars_dist_summs)){
-          ytmp <- (alpha_tmp +
+          ytmp <- expit(alpha_tmp +
                           xbeta_other_tmp +
                           beta_sp_tmp*intlevels[k] +
                           beta_sp_tmp*grid_for_plot[i,"x"] +
                           beta_dy_tmp*abs(grid_for_plot[i,"x"] - intlevels[k]))
         }
         if(xvar%in%rownames(mod$spvars_multi_summs)){
-          ytmp <- (alpha_tmp +
+          ytmp <- expit(alpha_tmp +
                           xbeta_other_tmp +
                           beta_sp_tmp*intlevels[k] +
                           beta_sp_tmp*grid_for_plot[i,"x"] +
@@ -148,9 +148,9 @@ scatter_interaction <- function(mod,
     }
   }
 
-  gridfinal$qlow <- expit(gridfinal$qlow)
-  gridfinal$means <- expit(gridfinal$means)
-  gridfinal$qhigh <- expit(gridfinal$qhigh)
+  gridfinal$qlow <- (gridfinal$qlow)
+  gridfinal$means <- (gridfinal$means)
+  gridfinal$qhigh <- (gridfinal$qhigh)
 
   d <- mod$d
   if(orig.scale==TRUE){

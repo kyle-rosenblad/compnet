@@ -96,7 +96,7 @@ scatter_pairvar <- function(mod,
       alpha_tmp <- samp_for_plot[j, "alpha"]
       beta_tmp <- samp_for_plot[j, "beta"]
       xbeta_other_tmp <- samp_for_plot[j, "xbeta_other"]
-      ytmp <- (alpha_tmp +
+      ytmp <- expit(alpha_tmp +
                       xbeta_other_tmp +
                       beta_tmp*grid_for_plot[i,"x"])
       yvec <- c(yvec, ytmp)
@@ -107,9 +107,9 @@ scatter_pairvar <- function(mod,
   }
   gridfinal <- grid_for_plot
 
-  gridfinal$qlow <- expit(gridfinal$qlow)
-  gridfinal$means <- expit(gridfinal$means)
-  gridfinal$qhigh <- expit(gridfinal$qhigh)
+  gridfinal$qlow <- (gridfinal$qlow)
+  gridfinal$means <- (gridfinal$means)
+  gridfinal$qhigh <- (gridfinal$qhigh)
 
   d <- mod$d
   if(orig.scale==TRUE){
