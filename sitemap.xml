@@ -1,75 +1,27 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://kyle-rosenblad.github.io/compnet/404.html</loc>
-  </url>
-  <url>
-    <loc>https://kyle-rosenblad.github.io/compnet/LICENSE-text.html</loc>
-  </url>
-  <url>
-    <loc>https://kyle-rosenblad.github.io/compnet/LICENSE.html</loc>
-  </url>
-  <url>
-    <loc>https://kyle-rosenblad.github.io/compnet/articles/compnet_workflow.html</loc>
-  </url>
-  <url>
-    <loc>https://kyle-rosenblad.github.io/compnet/articles/index.html</loc>
-  </url>
-  <url>
-    <loc>https://kyle-rosenblad.github.io/compnet/authors.html</loc>
-  </url>
-  <url>
-    <loc>https://kyle-rosenblad.github.io/compnet/index.html</loc>
-  </url>
-  <url>
-    <loc>https://kyle-rosenblad.github.io/compnet/reference/buildcompnet.html</loc>
-  </url>
-  <url>
-    <loc>https://kyle-rosenblad.github.io/compnet/reference/compnet.html</loc>
-  </url>
-  <url>
-    <loc>https://kyle-rosenblad.github.io/compnet/reference/compute_gofstats.html</loc>
-  </url>
-  <url>
-    <loc>https://kyle-rosenblad.github.io/compnet/reference/ex_phylo.html</loc>
-  </url>
-  <url>
-    <loc>https://kyle-rosenblad.github.io/compnet/reference/ex_presabs.html</loc>
-  </url>
-  <url>
-    <loc>https://kyle-rosenblad.github.io/compnet/reference/ex_traits.html</loc>
-  </url>
-  <url>
-    <loc>https://kyle-rosenblad.github.io/compnet/reference/expit.html</loc>
-  </url>
-  <url>
-    <loc>https://kyle-rosenblad.github.io/compnet/reference/fixedeff_violins.html</loc>
-  </url>
-  <url>
-    <loc>https://kyle-rosenblad.github.io/compnet/reference/gofstats.html</loc>
-  </url>
-  <url>
-    <loc>https://kyle-rosenblad.github.io/compnet/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>https://kyle-rosenblad.github.io/compnet/reference/postpredsamp.html</loc>
-  </url>
-  <url>
-    <loc>https://kyle-rosenblad.github.io/compnet/reference/rbetabinom.html</loc>
-  </url>
-  <url>
-    <loc>https://kyle-rosenblad.github.io/compnet/reference/scatter_interaction.html</loc>
-  </url>
-  <url>
-    <loc>https://kyle-rosenblad.github.io/compnet/reference/scatter_interaction_getdata.html</loc>
-  </url>
-  <url>
-    <loc>https://kyle-rosenblad.github.io/compnet/reference/scatter_pairvar.html</loc>
-  </url>
-  <url>
-    <loc>https://kyle-rosenblad.github.io/compnet/reference/scatter_pairvar_getdata.html</loc>
-  </url>
-  <url>
-    <loc>https://kyle-rosenblad.github.io/compnet/reference/summarize_compnet.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>https://kyle-rosenblad.github.io/compnet/404.html</loc></url>
+<url><loc>https://kyle-rosenblad.github.io/compnet/LICENSE-text.html</loc></url>
+<url><loc>https://kyle-rosenblad.github.io/compnet/LICENSE.html</loc></url>
+<url><loc>https://kyle-rosenblad.github.io/compnet/articles/compnet_workflow.html</loc></url>
+<url><loc>https://kyle-rosenblad.github.io/compnet/articles/index.html</loc></url>
+<url><loc>https://kyle-rosenblad.github.io/compnet/authors.html</loc></url>
+<url><loc>https://kyle-rosenblad.github.io/compnet/index.html</loc></url>
+<url><loc>https://kyle-rosenblad.github.io/compnet/reference/buildcompnet.html</loc></url>
+<url><loc>https://kyle-rosenblad.github.io/compnet/reference/compnet.html</loc></url>
+<url><loc>https://kyle-rosenblad.github.io/compnet/reference/compute_gofstats.html</loc></url>
+<url><loc>https://kyle-rosenblad.github.io/compnet/reference/ex_phylo.html</loc></url>
+<url><loc>https://kyle-rosenblad.github.io/compnet/reference/ex_presabs.html</loc></url>
+<url><loc>https://kyle-rosenblad.github.io/compnet/reference/ex_traits.html</loc></url>
+<url><loc>https://kyle-rosenblad.github.io/compnet/reference/expit.html</loc></url>
+<url><loc>https://kyle-rosenblad.github.io/compnet/reference/fixedeff_violins.html</loc></url>
+<url><loc>https://kyle-rosenblad.github.io/compnet/reference/gofstats.html</loc></url>
+<url><loc>https://kyle-rosenblad.github.io/compnet/reference/index.html</loc></url>
+<url><loc>https://kyle-rosenblad.github.io/compnet/reference/postpredsamp.html</loc></url>
+<url><loc>https://kyle-rosenblad.github.io/compnet/reference/rbetabinom.html</loc></url>
+<url><loc>https://kyle-rosenblad.github.io/compnet/reference/scatter_interaction.html</loc></url>
+<url><loc>https://kyle-rosenblad.github.io/compnet/reference/scatter_interaction_getdata.html</loc></url>
+<url><loc>https://kyle-rosenblad.github.io/compnet/reference/scatter_pairvar.html</loc></url>
+<url><loc>https://kyle-rosenblad.github.io/compnet/reference/scatter_pairvar_getdata.html</loc></url>
+<url><loc>https://kyle-rosenblad.github.io/compnet/reference/summarize_compnet.html</loc></url>
 </urlset>
+
