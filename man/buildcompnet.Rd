@@ -55,7 +55,7 @@ should be unique species names, and column names should be unique trait names.}
 
 \item{pairvars}{A matrix or data frame, in which rows are species pairs and columns are
 pair-level traits that do not have a species-level analog, e.g., phylogenetic distance.
-Row names should be unique species names, and column names should be unique trait names. There
+Column names should be unique trait names. There
 should also be two columns named "spAid" and "spBid" containing the unique names of the
 species in each pair.}
 

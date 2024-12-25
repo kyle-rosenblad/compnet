@@ -8,7 +8,7 @@ Description: The goal: quantify the effect of functional similarity between spec
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.0
+RoxygenNote: 7.3.2
 Depends:
     R (>= 3.4.0)
 Imports:
