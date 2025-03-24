@@ -59,8 +59,8 @@ Column names should be unique trait names. There
 should also be two columns named "spAid" and "spBid" containing the unique names of the
 species in each pair.}
 
-\item{family}{Distribution family for the likelihood. Binomial (default), beta-binomial ("beta-binomial"),
-and zero-inflated binomial ("zi_binomial") are currently supported.}
+\item{family}{Distribution family for the likelihood. Binomial (default) and beta-binomial ("beta-binomial")
+are currently supported.}
 
 \item{rank}{Number of dimensions for the multiplicative latent factor term. Rank=0 (the default)
 yields a model with no multiplicative term.}
@@ -115,8 +115,8 @@ other species that are functionally dissimilar. Functional dissimilarity can be 
 directly by traits or by a proxy like phylogenetic distance. The core input data are a
 species-by-site presence-absence matrix and one or more species-level traits
 (e.g., plant leaf size) or pair-level traits (e.g., phylogenetic distance). Units of analysis
-are species pairs. The response variable can follow a binomial, beta-binomial, or zero-inflated
-binomial distribution. The number of trials is the number of sites occupied by at least one
+are species pairs. The response variable can follow a binomial or beta-binomial
+distribution. The number of trials is the number of sites occupied by at least one
 species in a pair, and the number of successes is the number of sites occupied by both species.
 If species-level traits are used, each trait can be non-interacting
 (i.e., there is no interaction term between species A's trait value and species B's),
