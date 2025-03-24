@@ -115,8 +115,8 @@ species in each pair.</p></dd>
 
 
 <dt id="arg-family">family<a class="anchor" aria-label="anchor" href="#arg-family"></a></dt>
-<dd><p>Distribution family for the likelihood. Binomial (default), beta-binomial ("beta-binomial"),
-and zero-inflated binomial ("zi_binomial") are currently supported.</p></dd>
+<dd><p>Distribution family for the likelihood. Binomial (default) and beta-binomial ("beta-binomial")
+are currently supported.</p></dd>
 
 
 <dt id="arg-rank">rank<a class="anchor" aria-label="anchor" href="#arg-rank"></a></dt>
@@ -195,8 +195,8 @@ other species that are functionally dissimilar. Functional dissimilarity can be 
 directly by traits or by a proxy like phylogenetic distance. The core input data are a
 species-by-site presence-absence matrix and one or more species-level traits
 (e.g., plant leaf size) or pair-level traits (e.g., phylogenetic distance). Units of analysis
-are species pairs. The response variable can follow a binomial, beta-binomial, or zero-inflated
-binomial distribution. The number of trials is the number of sites occupied by at least one
+are species pairs. The response variable can follow a binomial or beta-binomial
+distribution. The number of trials is the number of sites occupied by at least one
 species in a pair, and the number of successes is the number of sites occupied by both species.
 If species-level traits are used, each trait can be non-interacting
 (i.e., there is no interaction term between species A's trait value and species B's),
@@ -224,8 +224,8 @@ network models. Stat. Sci. 36, 34–50.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> SAMPLING FOR MODEL 'srm_binomial' NOW (CHAIN 1).</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: Gradient evaluation took 0.000146 seconds</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 1.46 seconds.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: Gradient evaluation took 0.000158 seconds</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 1.58 seconds.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: Adjust your expectations accordingly!</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: </span>
