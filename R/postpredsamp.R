@@ -27,22 +27,6 @@ postpredsamp <- function(mod){
     }
   }
 
-  if(mod$family=="zi_binomial"){
-    postpredsamp <- t(mod$stanmod_samp$pboth)
-    for(i in 1:nrow(postpredsamp)){
-      postpredsamp[i,] <- stats::rbinom(n=ncol(postpredsamp),
-                                        size=mod$d[i, "either"],
-                                        prob=postpredsamp[i,])
-    }
-    postpredsamp2 <- postpredsamp
-    for(i in 1:nrow(postpredsamp2)){
-      postpredsamp[i,] <- stats::rbinom(n=ncol(postpredsamp2),
-                                        size=1,
-                                        prob=1-mod$stanmod_samp$zi)
-    }
-    postpredsamp <- postpredsamp*postpredsamp2
-  }
-
   if(mod$family=="binomial"){
     postpredsamp <- t(mod$stanmod_samp$pboth)
     for(i in 1:nrow(postpredsamp)){

@@ -27,8 +27,8 @@
 #'    Column names should be unique trait names. There
 #'    should also be two columns named "spAid" and "spBid" containing the unique names of the
 #'    species in each pair.
-#' @param family Distribution family for the likelihood. Binomial (default), beta-binomial ("beta-binomial"),
-#' and zero-inflated binomial ("zi_binomial") are currently supported.
+#' @param family Distribution family for the likelihood. Binomial (default) and beta-binomial ("beta-binomial")
+#' are currently supported.
 #' @param rank Number of dimensions for the multiplicative latent factor term. Rank=0 (the default)
 #'    yields a model with no multiplicative term.
 #' @param prior_intercept_scale Scale parameter for mean-zero Gaussian prior on the intercept term
@@ -64,8 +64,8 @@
 #'    directly by traits or by a proxy like phylogenetic distance. The core input data are a
 #'    species-by-site presence-absence matrix and one or more species-level traits
 #'    (e.g., plant leaf size) or pair-level traits (e.g., phylogenetic distance). Units of analysis
-#'    are species pairs. The response variable can follow a binomial, beta-binomial, or zero-inflated
-#'    binomial distribution. The number of trials is the number of sites occupied by at least one
+#'    are species pairs. The response variable can follow a binomial or beta-binomial
+#'    distribution. The number of trials is the number of sites occupied by at least one
 #'    species in a pair, and the number of successes is the number of sites occupied by both species.
 #'    If species-level traits are used, each trait can be non-interacting
 #'    (i.e., there is no interaction term between species A's trait value and species B's),
@@ -471,68 +471,6 @@ buildcompnet <- function(presabs,
   }
 
 
-  if(family=="zi_binomial"){
-
-    if(rank==0){
-      datalist <- list(
-        n_nodes=ncol(presabs),
-        N=nrow(d),
-        Xdy_cols=ncol(Xdy),
-        Xsp_cols=ncol(XA),
-        spAid=d$spAid,
-        spBid=d$spBid,
-        Xdy=Xdy,
-        XA=XA,
-        XB=XB,
-        both=d$both,
-        either=d$either,
-        prior_intercept_scale=prior_intercept_scale,
-        prior_betas_scale=prior_betas_scale,
-        prior_sigma_addeff_rate=prior_sigma_addeff_rate)
-
-      stanmod <- rstan::sampling(stanmodels$srm_zi_binomial,
-                      data=datalist,
-                      cores=1,
-                      chains=1,
-                      warmup=warmup,
-                      iter=iter,
-                      verbose=F,
-                      control=list(adapt_delta=adapt_delta))
-    }
-
-    if(rank>0){
-      datalist <- list(
-        n_nodes=ncol(presabs),
-        N=nrow(d),
-        Xdy_cols=ncol(Xdy),
-        Xsp_cols=ncol(XA),
-        spAid=d$spAid,
-        spBid=d$spBid,
-        Xdy=Xdy,
-        XA=XA,
-        XB=XB,
-        K=rank,
-        both=d$both,
-        either=d$either,
-        prior_intercept_scale=prior_intercept_scale,
-        prior_betas_scale=prior_betas_scale,
-        prior_sigma_addeff_rate=prior_sigma_addeff_rate,
-        prior_multi_cholesky_eta=prior_multi_cholesky_eta,
-        prior_sigma_multi_shape=prior_sigma_multi_shape,
-        prior_sigma_multi_scale=prior_sigma_multi_scale,
-        prior_lambda_scale=prior_lambda_scale)
-
-      stanmod <- rstan::sampling(stanmodels$ame_zi_binomial,
-                      data=datalist,
-                      cores=1,
-                      chains=1,
-                      warmup=warmup,
-                      iter=iter,
-                      verbose=F,
-                      control=list(adapt_delta=adapt_delta))
-    }
-
-  }
 
 
 
