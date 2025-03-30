@@ -423,7 +423,7 @@ buildcompnet <- function(presabs,
   lowneff <- rownames(subset(fitsumm, n_eff<100))
   test_neff_warnings_ok <- sum(grepl(pattern="U", x=lowneff))/length(lowneff)
   if(test_neff_warnings_ok==1){
-    print("For this model, Stan issued warnings about low Bulk and/or Tail ESS. ",
+    print(paste0("For this model, Stan issued warnings about low Bulk and/or Tail ESS. ",
           "In this case, these ESS warnings were issued exclusively due to poor sampling of nuisance parameters that ",
           "are expected to be poorly identified. Extensive simulation testing ",
           "indicates that if low ESS is only occurring in these parameters, inference ",
@@ -431,7 +431,7 @@ buildcompnet <- function(presabs,
           "use case. Thus, if Stan didn't issue any other warnings, you can ignore these ones. ",
           "If you still want to solve the ESS problem, you can try running ",
           "the model for more iterations (i.e., increasing the iter parameter), but this ",
-          "may require running the model for quite a long time.")
+          "may require running the model for quite a long time."))
   }
 
   class(outlist) <- "compnet"
