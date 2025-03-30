@@ -3,7 +3,7 @@ title: "The 'compnet' workflow"
 author: "[Kyle Rosenblad](https://www.kylerosenblad.org/)"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{compnet_workflow}
+  %\VignetteIndexEntry{The 'compnet' workflow}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
