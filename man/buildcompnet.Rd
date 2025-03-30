@@ -12,19 +12,14 @@ buildcompnet(
   spvars_cat_no_int = NULL,
   spvars_cat_int = NULL,
   pairvars = NULL,
-  family = "binomial",
   rank = 0,
   prior_intercept_scale = 5,
   prior_betas_scale = 5,
   prior_sigma_addeff_rate = 1,
-  prior_multi_cholesky_eta = 5,
-  prior_sigma_multi_shape = 1,
-  prior_sigma_multi_scale = 1,
   prior_lambda_scale = 5,
-  prior_phi_rate = 1,
   warmup = 1000,
   iter = 2000,
-  adapt_delta = 0.8
+  adapt_delta = 0.99
 )
 }
 \arguments{
@@ -59,9 +54,6 @@ Column names should be unique trait names. There
 should also be two columns named "spAid" and "spBid" containing the unique names of the
 species in each pair.}
 
-\item{family}{Distribution family for the likelihood. Binomial (default) and beta-binomial ("beta-binomial")
-are currently supported.}
-
 \item{rank}{Number of dimensions for the multiplicative latent factor term. Rank=0 (the default)
 yields a model with no multiplicative term.}
 
@@ -74,21 +66,9 @@ fixed effect terms in the linear predictor.}
 \item{prior_sigma_addeff_rate}{Rate parameter for exponential prior on the scale of the
 species-level Gaussian random effects (i.e., "row and column effects").}
 
-\item{prior_multi_cholesky_eta}{Eta parameter for Cholesky LKJ prior determining correlations
-among latent factors. Larger values imply greater skepticism of strong correlations.}
-
-\item{prior_sigma_multi_shape}{Shape parameter for gamma prior on scale of multiplicative
-latent factor effects.}
-
-\item{prior_sigma_multi_scale}{Scale parameter for gamma prior on scale of multiplicative
-latent factor effects.}
-
 \item{prior_lambda_scale}{Scale parameter for mean-zero Gaussian prior on diagonal values of
 Lambda, the matrix that determines how different species' values of the latent factors
 interact in the linear predictor.}
-
-\item{prior_phi_rate}{Rate parameter for exponential prior on phi, the "over/under-dispersion parameter"
-in beta-binomial models.}
 
 \item{warmup}{Number of warmup iterations for Stan.}
 
@@ -101,7 +81,7 @@ Object of class "compnet", which is a list containing the stanfit model object,
 a named list of posterior samples for all model parameters, a data frame containing all
 input variables for the model, a matrix of dyadic X variables, a matrix of X variables
 pertaining to species A in each pair, a matrix of X variables pertaining to species B in
-each pair, a character string denoting the distribution family, and--when relevant--a matrix
+each pair, and--when relevant--a matrix
 of means and standard deviations for the input trait data before centering and scaling.
 }
 \description{
@@ -115,7 +95,7 @@ other species that are functionally dissimilar. Functional dissimilarity can be 
 directly by traits or by a proxy like phylogenetic distance. The core input data are a
 species-by-site presence-absence matrix and one or more species-level traits
 (e.g., plant leaf size) or pair-level traits (e.g., phylogenetic distance). Units of analysis
-are species pairs. The response variable can follow a binomial or beta-binomial
+are species pairs. The response variable follows a binomial
 distribution. The number of trials is the number of sites occupied by at least one
 species in a pair, and the number of successes is the number of sites occupied by both species.
 If species-level traits are used, each trait can be non-interacting

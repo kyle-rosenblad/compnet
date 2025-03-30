@@ -17,24 +17,14 @@
 
 postpredsamp <- function(mod){
 
-  if(mod$family=="beta-binomial"){
-    postpredsamp <- t(mod$stanmod_samp$pboth)
-    for(i in 1:nrow(postpredsamp)){
-      postpredsamp[i,] <- rbetabinom(n=ncol(postpredsamp),
-                                     size=mod$d[i, "either"],
-                                     prob=postpredsamp[i,],
-                                     phi=mod$stanmod_samp$phi)
-    }
+
+  postpredsamp <- t(mod$stanmod_samp$pboth)
+  for(i in 1:nrow(postpredsamp)){
+    postpredsamp[i,] <- stats::rbinom(n=ncol(postpredsamp),
+                                      size=mod$d[i, "either"],
+                                      prob=postpredsamp[i,])
   }
 
-  if(mod$family=="binomial"){
-    postpredsamp <- t(mod$stanmod_samp$pboth)
-    for(i in 1:nrow(postpredsamp)){
-      postpredsamp[i,] <- stats::rbinom(n=ncol(postpredsamp),
-                                        size=mod$d[i, "either"],
-                                        prob=postpredsamp[i,])
-    }
-  }
 
   return(postpredsamp)
 }
