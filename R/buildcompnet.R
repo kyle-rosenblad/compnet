@@ -414,24 +414,24 @@ buildcompnet <- function(presabs,
     names(outlist)[length(outlist)] <- "pairvars_summs"
   }
 
-  print("compnet uses Stan under the hood. When Stan finished fitting your model, \
-        it may have printed warnings. Sometimes, these warnings point to a real issue requiring investigation. \
-        Please see the links provided in Stan's output, as well as the compnet website: \
-        https://kyle-rosenblad.github.io/compnet/")
+  print(paste0("compnet uses Stan under the hood. When Stan finished fitting your model, ",
+        "it may have printed warnings. Sometimes, these warnings point to a real issue requiring investigation. ",
+        "Please see the links provided in Stan's output, as well as the compnet website:",
+        "https://kyle-rosenblad.github.io/compnet/"))
 
   fitsumm <- as.data.frame(rstan::summary(stanmod)$summary)
   lowneff <- rownames(subset(fitsumm, n_eff<100))
   test_neff_warnings_ok <- sum(grepl(pattern="U", x=lowneff))/length(lowneff)
   if(test_neff_warnings_ok==1){
-    print("For this model, Stan issued warnings about low Bulk and/or Tail ESS. \
-          In this case, these ESS warnings were issued exclusively due to poor sampling of nuisance parameters that \
-          are expected to be poorly identified. Extensive simulation testing \
-          indicates that if low ESS is only occurring in these parameters, inference \
-          is fine for the other parameters in the model--i.e., the ones we care about in compnet's \
-          use case. Thus, if Stan didn't issue any other warnings, you can ignore these ones. \
-          If you still want to solve the ESS problem, you can try running \
-          the model for more iterations (i.e., increasing the iter parameter), but this \
-          may require running the model for quite a long time.")
+    print("For this model, Stan issued warnings about low Bulk and/or Tail ESS. ",
+          "In this case, these ESS warnings were issued exclusively due to poor sampling of nuisance parameters that ",
+          "are expected to be poorly identified. Extensive simulation testing ",
+          "indicates that if low ESS is only occurring in these parameters, inference ",
+          "is fine for the other parameters in the model--i.e., the ones we care about in compnet's ",
+          "use case. Thus, if Stan didn't issue any other warnings, you can ignore these ones. ",
+          "If you still want to solve the ESS problem, you can try running ",
+          "the model for more iterations (i.e., increasing the iter parameter), but this ",
+          "may require running the model for quite a long time.")
   }
 
   class(outlist) <- "compnet"
