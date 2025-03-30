@@ -63,7 +63,7 @@ In the example data set, "ndtrait" is a trait that we think might drive competit
 
 If "ndtrait" is driving competitive niche differentiation, then we expect species pairs who differ strongly in this trait to co-occur most often. We'll model the effect of "ndtrait" on co-occurrence probability using a "distance interaction" term. In other words, for each species pair, our model will use species A's value of "ndtrait", species B's value, and the absolute value of the difference between these two values. This last term directly captures the effect we're interested in, which is called "heterophily" in the social sciences (i.e., things that are different being attracted to each other). Social scientists often model heterophily using a multiplicative interaction term instead of a distance term. Here we use a distance interaction term because it captures certain features of the competitive niche differentiation process that multiplicative interaction terms can't represent. (We'll see an example later.) However, multiplicative interaction terms can provide other advantages (which we'll also note below). To use a multiplicative interaction term, just use 'spvars_multi_int' instead of 'spvars_dist_int' in the example code.
 
-Stan, the statistical software under the hood, uses an algorithm called NUTS to estimate our results for us. If we don't let NUTS run for enough iterations, we can't trust our results. Stan will tell us if we didn't let our model run long enough, and it will provide web links to help resources.
+Stan, the statistical software under the hood, uses a Hamiltonian Monte Carlo (HMC) algorithm to estimate our results for us. If we don't let the HMC sampler run for enough iterations, we can't trust our results. Stan will tell us if we didn't let our model run long enough, and it will provide web links to help resources.
 
 Before we try to build a good model, let's deliberately tell NUTS to do a very small number of iterations so we can see what those warnings look like:
 
@@ -92,17 +92,16 @@ nd_0_mod_gofstats
 
 The first 'p-value', 'p.sd.rowmeans', tells us about patterns driven by the fact that all species pairs including a given species share features in common. Our 'p.sd.rowmeans' is low, which means when we simulate data from the model we've built ('gofstats' did this in the background), most of the simulated data have at least as much of this kind of non-independence as the real data. That's good; it means our model is accounting for this form of non-independence among species pairs. Anything that's not super-high (around maybe 0.9ish or more) is fine.
 
-The second value, 'p.cycle.dep', tells us about higher-order multi-species patterns. These can be abstract and challenging to conceptualize. A good example is the saying, "the enemy of my enemy is my friend". Our 'p.cycle.dep' looks fine. It's telling us that when we simulate data from our model, around two thirds of the simulated data sets have less high-order non-independence than the real data. We wouldn't usually worry about a 'p.cycle.dep' value like this, but for the sake of illustration, let's try increasing 'rank', which can be helpful when 'p.cycle.dep' is problematically high. (Sometimes it can also be helpful to switch from a distance interaction term to a multiplicative interaction term, as discussed above.)
+The second value, 'p.cycle.dep', tells us about higher-order multi-species patterns. These can be abstract and challenging to conceptualize. A good example is the saying, "the enemy of my enemy is my friend". Our 'p.cycle.dep' looks fine. It's telling us that when we simulate data from our model, around two thirds of the simulated data sets have less high-order non-independence than the real data.
 
-Also, notice I had to adjust 'adapt_delta' to make sampling to run smoothly for this model. Adjusting 'adapt_delta' can help when Stan gives warnings about "divergent transitions". To see the warnings, you could try running this model with 'adapt_delta' at an inadvisably low level like 0.7.
+We wouldn't usually worry about a 'p.cycle.dep' value like this, but for the sake of illustration, let's try increasing 'rank', which can be helpful when 'p.cycle.dep' is problematically high. (Sometimes it can also be helpful to switch from a distance interaction term to a multiplicative interaction term or vice versa, as discussed above.)
 
 ```{r}
 nd_1_mod <- buildcompnet(presabs=ex_presabs,
         spvars_dist_int=ex_traits[c("ndtrait")],
         rank=1,
         warmup=300,
-        iter=1000,
-        adapt_delta=0.95)
+        iter=1000)
 nd_1_mod_gofstats <- gofstats(nd_1_mod)
 nd_1_mod_gofstats
 
@@ -186,14 +185,15 @@ testZeroInflation(nd_dom_0_mod_dharma, plot=FALSE)
 
 ```
 
-We've got some issues with high-order non-independence, overdispersion, and quantile deviations. Let's try again with 'rank' = 1.
+We've got a borderline issue with high-order non-independence and a clear issue with overdispersion. Let's try 'rank'=1 next. You'll notice I increased 'adapt_delta' closer to 1 to avoid divergent transitions, which is one kind of problem the HMC sampler can run into.
 
 ```{r}
 nd_dom_1_mod <- buildcompnet(presabs=ex_presabs,
                         spvars_dist_int=ex_traits[c("ndtrait", "domtrait")],
                         rank = 1,
-                        warmup=500,
-                        iter=1500)
+                        warmup=1000,
+                        iter=2000,
+                        adapt_delta=0.95)
 
 nd_dom_1_mod_gofstats <- gofstats(nd_dom_1_mod)
 nd_dom_1_mod_gofstats
@@ -211,35 +211,37 @@ testZeroInflation(nd_dom_1_mod_dharma, plot=FALSE)
 
 ```
 
-Much better. Let's have a quick look at our results and compare to the model with no covariate adjustment:
+We've solved the overdispersion problem. The residuals still show a borderline case of higher-order non-independence. For now we'll leave it here, but if you want, you can try increasing 'rank' to 2 or above as an exercise.
+
+Let's have a quick look at our latest results and compare to the model with no covariate adjustment:
 
 ```{r}
 summarize_compnet(nd_1_mod)
 summarize_compnet(nd_dom_1_mod)
 ```
 
-The coefficient of the "ndtrait" distance term is greater in the new model. This suggests our covariate adjustment strategy helped to "unmask" the true effect of "ndtrait" on co-occurrence probability. Let's see if the scatterplots look much different:
+The coefficient of the "ndtrait" distance term is greater in the new model. This suggests our covariate adjustment strategy helped to "unmask" the true effect of "ndtrait" on co-occurrence probability. Let's see if the scatterplots look noticeably different:
 
 ```{r fig.height=6, fig.width=6}
 scatter_interaction(nd_1_mod, xvar="ndtrait", xlabel="ND Trait")
 scatter_interaction(nd_dom_1_mod, xvar="ndtrait", xlabel="ND Trait")
 ```
 
-The effect is noticeably, if modestly, stronger in the new model that incorporated covariate adjustment.
+The effect of species' pairwise distances in "ndtrait" is noticeably stronger in the new model, which adjusted for the potential confounder, "domtrait".
 
 # Categorical trait model
 
-Now let's try a model with a categorical predictor, "ctrait". We'll use rank 1, and we'll skip the gofstats and DHARMa checks (which should turn out fine) to keep things brief.
+Now let's try a model with a categorical predictor, "ctrait". We'll use rank 0, and we'll skip the gofstats and DHARMa checks to keep things brief.
 
 ```{r}
-c_1_mod <- buildcompnet(presabs=ex_presabs,
+c_0_mod <- buildcompnet(presabs=ex_presabs,
                         spvars_cat_int=ex_traits[c("ctrait")],
-                        rank=1)
+                        rank=0)
 ```
 
  Now let's break down the output summary:
 ```{r}
-summarize_compnet(c_1_mod)
+summarize_compnet(c_0_mod)
 ```
  After the intercept, we see the results for the interaction term. This is a binary indicator that equals 1 when a species pair has the same value of the categorical trait and equals 0 when they have different values. We have strong evidence that the coefficient is negative, which suggests having the same value of "ctrait" makes co-occurrence less likely. This is the pattern we expect from competitive niche differentiation.
  
@@ -262,9 +264,7 @@ Let's build the model now. Phylogenetic distance is a species-pair-level variabl
 
 ```{r}
 phylo_0_mod <- buildcompnet(presabs=ex_presabs,
-                            pairvars=ex_phylo,
-                            warmup=1000,
-                            iter=2000)
+                            pairvars=ex_phylo)
 ```
 
 Run our model checks:
@@ -290,8 +290,6 @@ We've got problems with overdispersion and quantile deviations. Let's try again 
 phylo_1_mod <- buildcompnet(presabs=ex_presabs,
                             pairvars=ex_phylo,
                             rank=1,
-                            warmup=500,
-                            iter=1500,
                             adapt_delta=0.9)
 ```
 

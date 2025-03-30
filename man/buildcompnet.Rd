@@ -19,7 +19,7 @@ buildcompnet(
   prior_lambda_scale = 5,
   warmup = 1000,
   iter = 2000,
-  adapt_delta = 0.99
+  adapt_delta = 0.8
 )
 }
 \arguments{
