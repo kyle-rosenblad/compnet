@@ -188,8 +188,8 @@ look like:</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; SAMPLING FOR MODEL 'srm_binomial' NOW (CHAIN 1).</span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
-<span><span class="co">#&gt; Chain 1: Gradient evaluation took 0.00014 seconds</span></span>
-<span><span class="co">#&gt; Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 1.4 seconds.</span></span>
+<span><span class="co">#&gt; Chain 1: Gradient evaluation took 0.000127 seconds</span></span>
+<span><span class="co">#&gt; Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 1.27 seconds.</span></span>
 <span><span class="co">#&gt; Chain 1: Adjust your expectations accordingly!</span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
@@ -214,9 +214,9 @@ look like:</p>
 <span><span class="co">#&gt; Chain 1: Iteration: 180 / 200 [ 90%]  (Sampling)</span></span>
 <span><span class="co">#&gt; Chain 1: Iteration: 200 / 200 [100%]  (Sampling)</span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
-<span><span class="co">#&gt; Chain 1:  Elapsed Time: 1.277 seconds (Warm-up)</span></span>
-<span><span class="co">#&gt; Chain 1:                0.85 seconds (Sampling)</span></span>
-<span><span class="co">#&gt; Chain 1:                2.127 seconds (Total)</span></span>
+<span><span class="co">#&gt; Chain 1:  Elapsed Time: 1.357 seconds (Warm-up)</span></span>
+<span><span class="co">#&gt; Chain 1:                0.907 seconds (Sampling)</span></span>
+<span><span class="co">#&gt; Chain 1:                2.264 seconds (Total)</span></span>
 <span><span class="co">#&gt; Chain 1:</span></span>
 <span><span class="co">#&gt; Warning: The largest R-hat is 1.11, indicating chains have not mixed.</span></span>
 <span><span class="co">#&gt; Running the chains for more iterations may help. See</span></span>
@@ -226,7 +226,8 @@ look like:</p>
 <span><span class="co">#&gt; https://mc-stan.org/misc/warnings.html#bulk-ess</span></span>
 <span><span class="co">#&gt; Warning: Tail Effective Samples Size (ESS) is too low, indicating posterior variances and tail quantiles may be unreliable.</span></span>
 <span><span class="co">#&gt; Running the chains for more iterations may help. See</span></span>
-<span><span class="co">#&gt; https://mc-stan.org/misc/warnings.html#tail-ess</span></span></code></pre></div>
+<span><span class="co">#&gt; https://mc-stan.org/misc/warnings.html#tail-ess</span></span>
+<span><span class="co">#&gt; [1] "compnet uses Stan under the hood. When Stan finishes fitting your model, it may issue warnings. To deal with any warnings Stan might issue, Please see the links provided in Stan's output, as well as the compnet website:https://kyle-rosenblad.github.io/compnet/"</span></span></code></pre></div>
 <p>Now let’s build our first distance interaction model. We’ll call it
 ‘nd_0_mod’ because we’re using “ndtrait” as a predictor, and we’re using
 the default ‘rank’ value of 0. (We’ll discuss the importance of this
@@ -262,10 +263,11 @@ here.)</p>
 <span><span class="co">#&gt; Chain 1: Iteration: 1120 / 1200 [ 93%]  (Sampling)</span></span>
 <span><span class="co">#&gt; Chain 1: Iteration: 1200 / 1200 [100%]  (Sampling)</span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
-<span><span class="co">#&gt; Chain 1:  Elapsed Time: 3.08 seconds (Warm-up)</span></span>
-<span><span class="co">#&gt; Chain 1:                4.27 seconds (Sampling)</span></span>
-<span><span class="co">#&gt; Chain 1:                7.35 seconds (Total)</span></span>
-<span><span class="co">#&gt; Chain 1:</span></span></code></pre></div>
+<span><span class="co">#&gt; Chain 1:  Elapsed Time: 3.205 seconds (Warm-up)</span></span>
+<span><span class="co">#&gt; Chain 1:                4.459 seconds (Sampling)</span></span>
+<span><span class="co">#&gt; Chain 1:                7.664 seconds (Total)</span></span>
+<span><span class="co">#&gt; Chain 1: </span></span>
+<span><span class="co">#&gt; [1] "compnet uses Stan under the hood. When Stan finishes fitting your model, it may issue warnings. To deal with any warnings Stan might issue, Please see the links provided in Stan's output, as well as the compnet website:https://kyle-rosenblad.github.io/compnet/"</span></span></code></pre></div>
 <p>Before we try to interpret any results, let’s see if this model
 provides a reasonable fit to the data. One of our main concerns with
 network data is the multiple forms of non-independence that can arise
@@ -317,8 +319,8 @@ level like 0.7.</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; SAMPLING FOR MODEL 'ame_binomial' NOW (CHAIN 1).</span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
-<span><span class="co">#&gt; Chain 1: Gradient evaluation took 0.000173 seconds</span></span>
-<span><span class="co">#&gt; Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 1.73 seconds.</span></span>
+<span><span class="co">#&gt; Chain 1: Gradient evaluation took 0.000188 seconds</span></span>
+<span><span class="co">#&gt; Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 1.88 seconds.</span></span>
 <span><span class="co">#&gt; Chain 1: Adjust your expectations accordingly!</span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
@@ -335,10 +337,11 @@ level like 0.7.</p>
 <span><span class="co">#&gt; Chain 1: Iteration: 900 / 1000 [ 90%]  (Sampling)</span></span>
 <span><span class="co">#&gt; Chain 1: Iteration: 1000 / 1000 [100%]  (Sampling)</span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
-<span><span class="co">#&gt; Chain 1:  Elapsed Time: 6.358 seconds (Warm-up)</span></span>
-<span><span class="co">#&gt; Chain 1:                5.883 seconds (Sampling)</span></span>
-<span><span class="co">#&gt; Chain 1:                12.241 seconds (Total)</span></span>
-<span><span class="co">#&gt; Chain 1:</span></span>
+<span><span class="co">#&gt; Chain 1:  Elapsed Time: 6.874 seconds (Warm-up)</span></span>
+<span><span class="co">#&gt; Chain 1:                6.432 seconds (Sampling)</span></span>
+<span><span class="co">#&gt; Chain 1:                13.306 seconds (Total)</span></span>
+<span><span class="co">#&gt; Chain 1: </span></span>
+<span><span class="co">#&gt; [1] "compnet uses Stan under the hood. When Stan finishes fitting your model, it may issue warnings. To deal with any warnings Stan might issue, Please see the links provided in Stan's output, as well as the compnet website:https://kyle-rosenblad.github.io/compnet/"</span></span>
 <span><span class="va">nd_1_mod_gofstats</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/gofstats.html">gofstats</a></span><span class="op">(</span><span class="va">nd_1_mod</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Approx. completion</span></span>
 <span><span class="co">#&gt; 25%</span></span>
@@ -487,8 +490,8 @@ we’ll run gofstats() and ‘DHARMa’ checks.</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; SAMPLING FOR MODEL 'srm_binomial' NOW (CHAIN 1).</span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
-<span><span class="co">#&gt; Chain 1: Gradient evaluation took 8.2e-05 seconds</span></span>
-<span><span class="co">#&gt; Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.82 seconds.</span></span>
+<span><span class="co">#&gt; Chain 1: Gradient evaluation took 8.5e-05 seconds</span></span>
+<span><span class="co">#&gt; Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.85 seconds.</span></span>
 <span><span class="co">#&gt; Chain 1: Adjust your expectations accordingly!</span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
@@ -505,10 +508,11 @@ we’ll run gofstats() and ‘DHARMa’ checks.</p>
 <span><span class="co">#&gt; Chain 1: Iteration: 1120 / 1200 [ 93%]  (Sampling)</span></span>
 <span><span class="co">#&gt; Chain 1: Iteration: 1200 / 1200 [100%]  (Sampling)</span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
-<span><span class="co">#&gt; Chain 1:  Elapsed Time: 3.096 seconds (Warm-up)</span></span>
-<span><span class="co">#&gt; Chain 1:                5.906 seconds (Sampling)</span></span>
-<span><span class="co">#&gt; Chain 1:                9.002 seconds (Total)</span></span>
-<span><span class="co">#&gt; Chain 1:</span></span>
+<span><span class="co">#&gt; Chain 1:  Elapsed Time: 3.225 seconds (Warm-up)</span></span>
+<span><span class="co">#&gt; Chain 1:                6.191 seconds (Sampling)</span></span>
+<span><span class="co">#&gt; Chain 1:                9.416 seconds (Total)</span></span>
+<span><span class="co">#&gt; Chain 1: </span></span>
+<span><span class="co">#&gt; [1] "compnet uses Stan under the hood. When Stan finishes fitting your model, it may issue warnings. To deal with any warnings Stan might issue, Please see the links provided in Stan's output, as well as the compnet website:https://kyle-rosenblad.github.io/compnet/"</span></span>
 <span></span>
 <span><span class="va">nd_dom_0_mod_gofstats</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/gofstats.html">gofstats</a></span><span class="op">(</span><span class="va">nd_dom_0_mod</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Approx. completion</span></span>
@@ -568,8 +572,8 @@ overdispersion, and quantile deviations. Let’s try again with ‘rank’ =
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; SAMPLING FOR MODEL 'ame_binomial' NOW (CHAIN 1).</span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
-<span><span class="co">#&gt; Chain 1: Gradient evaluation took 0.00015 seconds</span></span>
-<span><span class="co">#&gt; Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 1.5 seconds.</span></span>
+<span><span class="co">#&gt; Chain 1: Gradient evaluation took 0.000164 seconds</span></span>
+<span><span class="co">#&gt; Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 1.64 seconds.</span></span>
 <span><span class="co">#&gt; Chain 1: Adjust your expectations accordingly!</span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
@@ -586,10 +590,11 @@ overdispersion, and quantile deviations. Let’s try again with ‘rank’ =
 <span><span class="co">#&gt; Chain 1: Iteration: 1400 / 1500 [ 93%]  (Sampling)</span></span>
 <span><span class="co">#&gt; Chain 1: Iteration: 1500 / 1500 [100%]  (Sampling)</span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
-<span><span class="co">#&gt; Chain 1:  Elapsed Time: 10.243 seconds (Warm-up)</span></span>
-<span><span class="co">#&gt; Chain 1:                10.02 seconds (Sampling)</span></span>
-<span><span class="co">#&gt; Chain 1:                20.263 seconds (Total)</span></span>
-<span><span class="co">#&gt; Chain 1:</span></span>
+<span><span class="co">#&gt; Chain 1:  Elapsed Time: 11.003 seconds (Warm-up)</span></span>
+<span><span class="co">#&gt; Chain 1:                10.822 seconds (Sampling)</span></span>
+<span><span class="co">#&gt; Chain 1:                21.825 seconds (Total)</span></span>
+<span><span class="co">#&gt; Chain 1: </span></span>
+<span><span class="co">#&gt; [1] "compnet uses Stan under the hood. When Stan finishes fitting your model, it may issue warnings. To deal with any warnings Stan might issue, Please see the links provided in Stan's output, as well as the compnet website:https://kyle-rosenblad.github.io/compnet/"</span></span>
 <span></span>
 <span><span class="va">nd_dom_1_mod_gofstats</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/gofstats.html">gofstats</a></span><span class="op">(</span><span class="va">nd_dom_1_mod</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Approx. completion</span></span>
@@ -678,8 +683,8 @@ turn out fine) to keep things brief.</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; SAMPLING FOR MODEL 'ame_binomial' NOW (CHAIN 1).</span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
-<span><span class="co">#&gt; Chain 1: Gradient evaluation took 0.000151 seconds</span></span>
-<span><span class="co">#&gt; Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 1.51 seconds.</span></span>
+<span><span class="co">#&gt; Chain 1: Gradient evaluation took 0.000155 seconds</span></span>
+<span><span class="co">#&gt; Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 1.55 seconds.</span></span>
 <span><span class="co">#&gt; Chain 1: Adjust your expectations accordingly!</span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
@@ -696,10 +701,11 @@ turn out fine) to keep things brief.</p>
 <span><span class="co">#&gt; Chain 1: Iteration: 1800 / 2000 [ 90%]  (Sampling)</span></span>
 <span><span class="co">#&gt; Chain 1: Iteration: 2000 / 2000 [100%]  (Sampling)</span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
-<span><span class="co">#&gt; Chain 1:  Elapsed Time: 20.795 seconds (Warm-up)</span></span>
-<span><span class="co">#&gt; Chain 1:                16.98 seconds (Sampling)</span></span>
-<span><span class="co">#&gt; Chain 1:                37.775 seconds (Total)</span></span>
-<span><span class="co">#&gt; Chain 1:</span></span></code></pre></div>
+<span><span class="co">#&gt; Chain 1:  Elapsed Time: 22.34 seconds (Warm-up)</span></span>
+<span><span class="co">#&gt; Chain 1:                18.209 seconds (Sampling)</span></span>
+<span><span class="co">#&gt; Chain 1:                40.549 seconds (Total)</span></span>
+<span><span class="co">#&gt; Chain 1: </span></span>
+<span><span class="co">#&gt; [1] "compnet uses Stan under the hood. When Stan finishes fitting your model, it may issue warnings. To deal with any warnings Stan might issue, Please see the links provided in Stan's output, as well as the compnet website:https://kyle-rosenblad.github.io/compnet/"</span></span></code></pre></div>
 <p>Now let’s break down the output summary:</p>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/summarize_compnet.html">summarize_compnet</a></span><span class="op">(</span><span class="va">c_1_mod</span><span class="op">)</span></span>
@@ -773,10 +779,11 @@ argument. We’ll start with rank 0.</p>
 <span><span class="co">#&gt; Chain 1: Iteration: 1800 / 2000 [ 90%]  (Sampling)</span></span>
 <span><span class="co">#&gt; Chain 1: Iteration: 2000 / 2000 [100%]  (Sampling)</span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
-<span><span class="co">#&gt; Chain 1:  Elapsed Time: 5.505 seconds (Warm-up)</span></span>
-<span><span class="co">#&gt; Chain 1:                4.322 seconds (Sampling)</span></span>
-<span><span class="co">#&gt; Chain 1:                9.827 seconds (Total)</span></span>
-<span><span class="co">#&gt; Chain 1:</span></span></code></pre></div>
+<span><span class="co">#&gt; Chain 1:  Elapsed Time: 5.835 seconds (Warm-up)</span></span>
+<span><span class="co">#&gt; Chain 1:                4.656 seconds (Sampling)</span></span>
+<span><span class="co">#&gt; Chain 1:                10.491 seconds (Total)</span></span>
+<span><span class="co">#&gt; Chain 1: </span></span>
+<span><span class="co">#&gt; [1] "compnet uses Stan under the hood. When Stan finishes fitting your model, it may issue warnings. To deal with any warnings Stan might issue, Please see the links provided in Stan's output, as well as the compnet website:https://kyle-rosenblad.github.io/compnet/"</span></span></code></pre></div>
 <p>Run our model checks:</p>
 <div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/gofstats.html">gofstats</a></span><span class="op">(</span><span class="va">phylo_0_mod</span><span class="op">)</span></span>
@@ -837,8 +844,8 @@ try again with ‘rank’ = 1.</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; SAMPLING FOR MODEL 'ame_binomial' NOW (CHAIN 1).</span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
-<span><span class="co">#&gt; Chain 1: Gradient evaluation took 0.000149 seconds</span></span>
-<span><span class="co">#&gt; Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 1.49 seconds.</span></span>
+<span><span class="co">#&gt; Chain 1: Gradient evaluation took 0.000152 seconds</span></span>
+<span><span class="co">#&gt; Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 1.52 seconds.</span></span>
 <span><span class="co">#&gt; Chain 1: Adjust your expectations accordingly!</span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
@@ -855,14 +862,15 @@ try again with ‘rank’ = 1.</p>
 <span><span class="co">#&gt; Chain 1: Iteration: 1400 / 1500 [ 93%]  (Sampling)</span></span>
 <span><span class="co">#&gt; Chain 1: Iteration: 1500 / 1500 [100%]  (Sampling)</span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
-<span><span class="co">#&gt; Chain 1:  Elapsed Time: 4.977 seconds (Warm-up)</span></span>
-<span><span class="co">#&gt; Chain 1:                8.418 seconds (Sampling)</span></span>
-<span><span class="co">#&gt; Chain 1:                13.395 seconds (Total)</span></span>
+<span><span class="co">#&gt; Chain 1:  Elapsed Time: 5.413 seconds (Warm-up)</span></span>
+<span><span class="co">#&gt; Chain 1:                9.235 seconds (Sampling)</span></span>
+<span><span class="co">#&gt; Chain 1:                14.648 seconds (Total)</span></span>
 <span><span class="co">#&gt; Chain 1:</span></span>
 <span><span class="co">#&gt; Warning: There were 1 divergent transitions after warmup. See</span></span>
 <span><span class="co">#&gt; https://mc-stan.org/misc/warnings.html#divergent-transitions-after-warmup</span></span>
 <span><span class="co">#&gt; to find out why this is a problem and how to eliminate them.</span></span>
-<span><span class="co">#&gt; Warning: Examine the pairs() plot to diagnose sampling problems</span></span></code></pre></div>
+<span><span class="co">#&gt; Warning: Examine the pairs() plot to diagnose sampling problems</span></span>
+<span><span class="co">#&gt; [1] "compnet uses Stan under the hood. When Stan finishes fitting your model, it may issue warnings. To deal with any warnings Stan might issue, Please see the links provided in Stan's output, as well as the compnet website:https://kyle-rosenblad.github.io/compnet/"</span></span></code></pre></div>
 <p>Run our model checks:</p>
 <div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/gofstats.html">gofstats</a></span><span class="op">(</span><span class="va">phylo_1_mod</span><span class="op">)</span></span>
