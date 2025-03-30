@@ -7,7 +7,7 @@ data{
   int Xsp_cols;  // number of columns in the matrix of species-level predictor variables
   matrix[N,Xdy_cols] Xdy; // matrix of dyad-level predictor variables
   matrix[N,Xsp_cols] XA;  // matrix of species-level predictor variables with values for species A
-  matrix[N,Xsp_cols] XB;  // matrix of species-level predictor variables with values for species A  
+  matrix[N,Xsp_cols] XB;  // matrix of species-level predictor variables with values for species A
   int K; // number of dimensions for the latent factor model
   array[N] int both; // for each dyad, the number of sites occupied by both species in each dyad
   array[N] int either; // for each dyad, the number of sites occupied by at least one of the two species
@@ -18,15 +18,15 @@ data{
 }
 parameters{
   real intercept; // intercept for linear predictor
-  
+
   vector[Xdy_cols] beta_dy; // coefficients for dyad-level terms in linear predictor
   vector[Xsp_cols] beta_sp; // coefficients for species-level terms in linear predictor
-  
+
   real<lower=0> sigma_species_randint; // sd of species-level random effects (i.e., "additive" effects)
   vector[n_nodes] species_randint; // species-level random effects (i.e., "additive" effects)
-  
+
   matrix[n_nodes, K] U_raw; // multiplicative effect values for each species across each latent dimension in latent factor model
-  
+
   ordered[K] lambda_diag; // diagnoal values of the lambda matrix, which controls the strength and direction of multiplicative effects
 }
 transformed parameters{
@@ -42,29 +42,23 @@ transformed parameters{
       U[i, k] = U_raw[i, k];      // leave other nodes alone
     }
   }
-  
+
   // bundle all fixed effects in "xb" for convenience
   vector[N] xb;
   xb = intercept + Xdy*beta_dy + XA*beta_sp + XB*beta_sp;
-  
-  // Create the diagonal matrix, lambda, that determines the strength
-  // and direction of the multiplicative interaction between species'
-  // U values.
-  matrix[K, K] lambda;
-  lambda = diag_matrix(lambda_diag);
 }
 model{
   // set priors
-  intercept ~ normal(0, prior_intercept_scale); 
+  intercept ~ normal(0, prior_intercept_scale);
   beta_dy ~ normal(0, prior_betas_scale);
   beta_sp ~ normal(0, prior_betas_scale);
-  sigma_species_randint ~ exponential(prior_sigma_addeff_rate); 
+  sigma_species_randint ~ exponential(prior_sigma_addeff_rate);
   // Use non-centered parameterization for species random effects.
   // This is a trick to make the sampler work better.
   // Instead of initially defining species_randint ~ normal(0, sigma_species_randint),
   // we z-score the random effects and then multiply by sigma later.
-  species_randint ~ normal(0, 1); 
-  
+  species_randint ~ normal(0, 1);
+
   // Raw latent factors are all standard normal, as shown below, and then
   // the diagonal values of lambda determine the strength and direction
   // of the multiplicative interaction between species for each latent
@@ -74,34 +68,34 @@ model{
   }
   // prior for the diagonals of lambda, as described above
   lambda_diag ~ normal(0, prior_lambda_scale);
-  
+
   // put it all together with a logit link function to the binomial likelihood:
-  vector[N] pboth; 
+  vector[N] pboth;
   for(n in 1:N){
     pboth[n] = xb[n] +
         sigma_species_randint*species_randint[spAid[n]] +
         sigma_species_randint*species_randint[spBid[n]] +
-        U[spAid[n], 1:K] * lambda *
-        (U[spBid[n], 1:K]'); 
+        U[spAid[n], 1:K] * diag_matrix(lambda_diag) *
+        (U[spBid[n], 1:K]');
     pboth[n] = inv_logit(pboth[n]);
   }
   both ~ binomial(either, pboth);
 }
 // Get some convenient quantities for model diagnostics:
 generated quantities{
-  vector[N] pboth; 
+  vector[N] pboth;
   for(n in 1:N){
     pboth[n] = xb[n] +
       sigma_species_randint*species_randint[spAid[n]] +
       sigma_species_randint*species_randint[spBid[n]] +
-      U[spAid[n], 1:K] * lambda *
+      U[spAid[n], 1:K] * diag_matrix(lambda_diag) *
       (U[spBid[n], 1:K]');
-    
+
     pboth[n] = inv_logit(pboth[n]);
   }
-  vector[N] latfacterm; 
+  vector[N] latfacterm;
   for(n in 1:N){
-    latfacterm[n] = U[spAid[n], 1:K] * lambda *
+    latfacterm[n] = U[spAid[n], 1:K] * diag_matrix(lambda_diag) *
         (U[spBid[n], 1:K]');
   }
 }
