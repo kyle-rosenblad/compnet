@@ -383,7 +383,7 @@ buildcompnet <- function(presabs,
                                       "species_randint",
                                       "xb",
                                       "pboth",
-                                      "latfacterm",
+                                      "latfacterm", # In contrast to individual species' U values, ULU values (sensu Hoff and colleagues) need to be identifiable, so we'll include them to make sure they sample well.
                                       "lp__"),
                                cores=1,
                                chains=1,
