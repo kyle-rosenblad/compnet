@@ -49,19 +49,14 @@
 <span>  spvars_cat_no_int <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  spvars_cat_int <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  pairvars <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  family <span class="op">=</span> <span class="st">"binomial"</span>,</span>
 <span>  rank <span class="op">=</span> <span class="fl">0</span>,</span>
 <span>  prior_intercept_scale <span class="op">=</span> <span class="fl">5</span>,</span>
 <span>  prior_betas_scale <span class="op">=</span> <span class="fl">5</span>,</span>
 <span>  prior_sigma_addeff_rate <span class="op">=</span> <span class="fl">1</span>,</span>
-<span>  prior_multi_cholesky_eta <span class="op">=</span> <span class="fl">5</span>,</span>
-<span>  prior_sigma_multi_shape <span class="op">=</span> <span class="fl">1</span>,</span>
-<span>  prior_sigma_multi_scale <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  prior_lambda_scale <span class="op">=</span> <span class="fl">5</span>,</span>
-<span>  prior_phi_rate <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  warmup <span class="op">=</span> <span class="fl">1000</span>,</span>
 <span>  iter <span class="op">=</span> <span class="fl">2000</span>,</span>
-<span>  adapt_delta <span class="op">=</span> <span class="fl">0.8</span></span>
+<span>  adapt_delta <span class="op">=</span> <span class="fl">0.99</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -114,11 +109,6 @@ should also be two columns named "spAid" and "spBid" containing the unique names
 species in each pair.</p></dd>
 
 
-<dt id="arg-family">family<a class="anchor" aria-label="anchor" href="#arg-family"></a></dt>
-<dd><p>Distribution family for the likelihood. Binomial (default) and beta-binomial ("beta-binomial")
-are currently supported.</p></dd>
-
-
 <dt id="arg-rank">rank<a class="anchor" aria-label="anchor" href="#arg-rank"></a></dt>
 <dd><p>Number of dimensions for the multiplicative latent factor term. Rank=0 (the default)
 yields a model with no multiplicative term.</p></dd>
@@ -139,30 +129,10 @@ fixed effect terms in the linear predictor.</p></dd>
 species-level Gaussian random effects (i.e., "row and column effects").</p></dd>
 
 
-<dt id="arg-prior-multi-cholesky-eta">prior_multi_cholesky_eta<a class="anchor" aria-label="anchor" href="#arg-prior-multi-cholesky-eta"></a></dt>
-<dd><p>Eta parameter for Cholesky LKJ prior determining correlations
-among latent factors. Larger values imply greater skepticism of strong correlations.</p></dd>
-
-
-<dt id="arg-prior-sigma-multi-shape">prior_sigma_multi_shape<a class="anchor" aria-label="anchor" href="#arg-prior-sigma-multi-shape"></a></dt>
-<dd><p>Shape parameter for gamma prior on scale of multiplicative
-latent factor effects.</p></dd>
-
-
-<dt id="arg-prior-sigma-multi-scale">prior_sigma_multi_scale<a class="anchor" aria-label="anchor" href="#arg-prior-sigma-multi-scale"></a></dt>
-<dd><p>Scale parameter for gamma prior on scale of multiplicative
-latent factor effects.</p></dd>
-
-
 <dt id="arg-prior-lambda-scale">prior_lambda_scale<a class="anchor" aria-label="anchor" href="#arg-prior-lambda-scale"></a></dt>
 <dd><p>Scale parameter for mean-zero Gaussian prior on diagonal values of
 Lambda, the matrix that determines how different species' values of the latent factors
 interact in the linear predictor.</p></dd>
-
-
-<dt id="arg-prior-phi-rate">prior_phi_rate<a class="anchor" aria-label="anchor" href="#arg-prior-phi-rate"></a></dt>
-<dd><p>Rate parameter for exponential prior on phi, the "over/under-dispersion parameter"
-in beta-binomial models.</p></dd>
 
 
 <dt id="arg-warmup">warmup<a class="anchor" aria-label="anchor" href="#arg-warmup"></a></dt>
@@ -183,7 +153,7 @@ in beta-binomial models.</p></dd>
 a named list of posterior samples for all model parameters, a data frame containing all
 input variables for the model, a matrix of dyadic X variables, a matrix of X variables
 pertaining to species A in each pair, a matrix of X variables pertaining to species B in
-each pair, a character string denoting the distribution family, and–when relevant–a matrix
+each pair, and–when relevant–a matrix
 of means and standard deviations for the input trait data before centering and scaling.</p>
     </div>
     <div class="section level2">
@@ -195,7 +165,7 @@ other species that are functionally dissimilar. Functional dissimilarity can be 
 directly by traits or by a proxy like phylogenetic distance. The core input data are a
 species-by-site presence-absence matrix and one or more species-level traits
 (e.g., plant leaf size) or pair-level traits (e.g., phylogenetic distance). Units of analysis
-are species pairs. The response variable can follow a binomial or beta-binomial
+are species pairs. The response variable follows a binomial
 distribution. The number of trials is the number of sites occupied by at least one
 species in a pair, and the number of successes is the number of sites occupied by both species.
 If species-level traits are used, each trait can be non-interacting
@@ -224,8 +194,8 @@ network models. Stat. Sci. 36, 34–50.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> SAMPLING FOR MODEL 'srm_binomial' NOW (CHAIN 1).</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: Gradient evaluation took 0.000158 seconds</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 1.58 seconds.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: Gradient evaluation took 0.00015 seconds</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 1.5 seconds.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: Adjust your expectations accordingly!</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: </span>
@@ -245,13 +215,10 @@ network models. Stat. Sci. 36, 34–50.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: Iteration: 18 / 20 [ 90%]  (Sampling)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: Iteration: 20 / 20 [100%]  (Sampling)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1:  Elapsed Time: 0.019 seconds (Warm-up)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1:                0.037 seconds (Sampling)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1:                0.056 seconds (Total)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1:  Elapsed Time: 0.028 seconds (Warm-up)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1:                0.048 seconds (Sampling)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1:                0.076 seconds (Total)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: </span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>There were 1 chains where the estimated Bayesian Fraction of Missing Information was low. See</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> https://mc-stan.org/misc/warnings.html#bfmi-low</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Examine the pairs() plot to diagnose sampling problems</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>The largest R-hat is 2.12, indicating chains have not mixed.</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> Running the chains for more iterations may help. See</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> https://mc-stan.org/misc/warnings.html#r-hat</span>
