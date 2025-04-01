@@ -423,8 +423,8 @@ buildcompnet <- function(presabs,
     names(outlist)[length(outlist)] <- "pairvars_summs"
   }
 
-  print(paste0("compnet uses Stan under the hood. When Stan finishes fitting your model, ",
-        "it may issue warnings. To deal with any warnings Stan might issue, ",
+  print(paste0("compnet uses Stan under the hood. You may see warnings from Stan alongside, ",
+        "this message. To deal with any warnings Stan might issue, ",
         "Please see the links provided in Stan's output, as well as the compnet website:",
         "https://kyle-rosenblad.github.io/compnet/"))
 
