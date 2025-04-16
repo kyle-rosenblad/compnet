@@ -225,6 +225,10 @@ buildcompnet <- function(presabs,
       XA <- as.matrix(cbind(XA, dummiesA[,-1])) # drop first category as reference
       XB <- as.matrix(cbind(XB, dummiesB[,-1])) # drop first category as reference
     }
+    if(ncol(dummiesA)==2){
+      colnames(XA)[length(colnames(XA))] <- colnames(dummiesA)[2]
+      colnames(XB)[length(colnames(XB))] <- colnames(dummiesB)[2]
+    }
   }
 
   if(!missing("spvars_cat_int")){
@@ -250,6 +254,10 @@ buildcompnet <- function(presabs,
       XB <- as.matrix(cbind(XB, dummiesB[,-1])) # drop first category as reference
       Xdy <- as.matrix(cbind(Xdy, vecdy))
       colnames(Xdy)[length(colnames(Xdy))] <- paste(names(spvars_cat_int[i]), "int", sep="_")
+    }
+    if(ncol(dummiesA)==2){
+      colnames(XA)[length(colnames(XA))] <- colnames(dummiesA)[2]
+      colnames(XB)[length(colnames(XB))] <- colnames(dummiesB)[2]
     }
   }
 
