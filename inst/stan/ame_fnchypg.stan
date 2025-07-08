@@ -11,7 +11,7 @@ functions {
 
     // compute lpm
     for (i in 1:len) {
-      log_probs[i] = lchoose(mA, x[i]) + lchoose(n - mA, mB - x[i]) + x[i] * log(alpha);
+      log_probs[i] = lchoose(mA, x[i]) + lchoose(n - mA, mB - x[i]) + x[i] * alpha;
     }
 
     return log_probs[y - L + 1] - log_sum_exp(log_probs);
@@ -91,23 +91,22 @@ model{
 
   // likelihood
   for (i in 1:N) {
-    real eta = intercept +
+    real alpha = intercept +
                dot_product(Xdy[i], beta_dy) +
                dot_product(XA[i], beta_sp) +
                dot_product(XB[i], beta_sp) +
                a[spAid[i]] + a[spBid[i]] +
                U[spAid[i], 1:K] * diag_matrix(lambda_diag) *
         (U[spBid[i], 1:K]');
-    real alpha = exp(eta); // alpha or "affinity" for Fisher's noncentral hypergeometric distribution
     int mA_i = sp_occ[spAid[i]]; // get occurrence frequency for species A in dyad i
     int mB_i = sp_occ[spBid[i]]; // get occurrence frequency for species B in dyad i
     target += fnchypg_lpmf(both[i] | mA_i, mB_i, n_sites, alpha);
   }
 }
 generated quantities{
-  vector[N] eta;
+  vector[N] alpha;
   for(i in 1:N){
-    eta[i] = intercept +
+    alpha[i] = intercept +
                dot_product(Xdy[i], beta_dy) +
                dot_product(XA[i], beta_sp) +
                dot_product(XB[i], beta_sp) +
