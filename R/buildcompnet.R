@@ -490,8 +490,8 @@ buildcompnet <- function(presabs,
 
 
   ### assemble list of outputs
-  outlist <- list(stanmod, stanmod_samp, input_df, Xdy, XA, XB, datalist, family)
-  names(outlist) <- c("stanmod", "stanmod_samp", "d", "Xdy", "XA", "XB", "datalist", "family")
+  outlist <- list(stanmod, stanmod_samp, input_df, Xdy, XA, XB, datalist, family, presabs)
+  names(outlist) <- c("stanmod", "stanmod_samp", "d", "Xdy", "XA", "XB", "datalist", "family", "presabs")
 
   if(!missing(spvars_no_int)){
     outlist[[length(outlist)+1]] <- spvars_no_int_summs
