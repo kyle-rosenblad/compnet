@@ -20,11 +20,11 @@ postpredsamp <- function(mod){
 
   if(mod$family=='fnchypgm'){
     postpredsamp <- t(mod$stanmod_samp$alpha)
-    for(i in 1:nrow(postpredsamp)){
-      postpredsamp[i,] <- BiasedUrn::rFNCHypergeo(nran=1,
-                                                  m1=mod$d$datalist$
-                                                  odds=exp(postpredsamp[i,]))
-    }
+    #for(i in 1:nrow(postpredsamp)){
+    #  postpredsamp[i,] <- BiasedUrn::rFNCHypergeo(nran=1,
+    #                                              m1=mod$d$datalist$
+    #                                              odds=exp(postpredsamp[i,]))
+    #}
 
   }
 
