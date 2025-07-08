@@ -1,5 +1,6 @@
 #' Report quantiles of gofstats values for observed data relative to posterior predictive distribution
 #'
+#' @importFrom CooccurrenceAffinity affinity
 #' @export
 #' @param mod An object of class "compnet" created by the buildcompnet() function.
 #' @param thin Logical value indicating whether to take a random subsample of posterior draws.
@@ -28,6 +29,8 @@ gofstats <- function(mod,
                      thin=T,
                      thin_to=300){
   d <- mod$d
+  N_species <- length(unique(c(d$spAid, d$spBid)))
+
   d$pboth <- d$both/d$either
   dsquare <- matrix(NA, nrow=length(unique(c(d$spAid, d$spBid))), ncol=length(unique(c(d$spAid, d$spBid))))
   for(i in 1:nrow(dsquare)){
