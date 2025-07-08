@@ -40,6 +40,10 @@ scatter_pairvar <- function(mod,
                             thin=TRUE,
                             thin_to=100){
 
+  if(mod$family=='fnchypgm'){
+    stop("This function currently only supports binomial models. Will be updated in future version.")
+  }
+
   ### error for when xvar is not a pairvar
   if(xvar%in%rownames(mod$pairvars_summs)==FALSE){
     stop("This function only supports dyad-level traits (i.e., pairvars). see ?scatter_pairvar()")

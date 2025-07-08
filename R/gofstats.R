@@ -32,7 +32,7 @@ gofstats <- function(mod,
   N_species <- length(unique(c(d$spAid, d$spBid)))
 
   if(mod$family=='fnchypg'){
-    aff <- affinity(data=mod$presabs, row.or.col="col")
+    aff <- CooccurrenceAffinity::affinity(data=mod$presabs, row.or.col="col")
     affinity_mle <- aff$all[c("entity_1", "entity_2", "alpha_mle")]
     names(affinity_mle) <- c("spAid_orig", "spBid_orig", "alpha_mle")
     d <- merge(d, affinity_mle, by=c("spAid_orig", "spBid_orig"), all.x=TRUE, all.y=FALSE, sort=FALSE)

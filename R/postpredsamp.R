@@ -1,6 +1,7 @@
 #' Simulate posterior predictive samples from a compnet model
 #'
 #' @importFrom stats rbinom
+#' @importFrom BiasedUrn rFNCHypergeo
 #' @export
 #' @param mod Object of class "compnet", which is created by the buildcompnet() function.
 #' @return A matrix of posterior predictive samples with a row for each observation and a column for each sample.
@@ -17,12 +18,25 @@
 
 postpredsamp <- function(mod){
 
+  if(mod$family=='fnchypgm'){
+    postpredsamp <- t(mod$stanmod_samp$alpha)
+    for(i in 1:nrow(postpredsamp)){
+      postpredsamp[i,] <- BiasedUrn::rFNCHypergeo(nran=1,
+                                                  m1=mod$d$datalist$
+                                                  odds=exp(postpredsamp[i,]))
+    }
 
-  postpredsamp <- t(mod$stanmod_samp$pboth)
-  for(i in 1:nrow(postpredsamp)){
-    postpredsamp[i,] <- stats::rbinom(n=ncol(postpredsamp),
-                                      size=mod$d[i, "either"],
-                                      prob=postpredsamp[i,])
+  }
+
+
+  if(mod$family=='binomial'){
+    postpredsamp <- t(mod$stanmod_samp$pboth)
+    for(i in 1:nrow(postpredsamp)){
+      postpredsamp[i,] <- stats::rbinom(n=ncol(postpredsamp),
+                                        size=mod$d[i, "either"],
+                                        prob=postpredsamp[i,])
+    }
+
   }
 
 

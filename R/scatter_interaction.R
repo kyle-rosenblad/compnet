@@ -42,6 +42,10 @@ scatter_interaction <- function(mod,
                                 thin=TRUE,
                                 thin_to=100){
 
+  if(mod$family=='fnchypgm'){
+    stop("This function currently only supports binomial models. Will be updated in future version.")
+  }
+
   ### error for categorical xvar or pairvar or non-interacting continuous trait
   if(xvar%in%rownames(mod$spvars_multi_summs)==FALSE &
      xvar%in%rownames(mod$spvars_dist_summs)==FALSE){
