@@ -393,8 +393,10 @@ buildcompnet <- function(presabs,
                                  pars=c("intercept", # Marginalize over the individual values of each latent factor ("U"), since these are known to be nonidentifiable due to reflectional and rotational invariance, as well as potential label-switching among multiple latent factor dimensions when K>1. The Stan code has tools designed to deal with this, but only for computational efficiency reasons; it's not a problem for inference.
                                         "beta_dy",
                                         "beta_sp",
-                                        "sigma",
-                                        "a",
+                                        "sigma_species_randint",
+                                        "species_randint",
+                                        "xb",
+                                        "pboth",
                                         "latfacterm", # In contrast to individual species' U values, ULU values (sensu Hoff et al.) need to be identifiable, so we'll include them to make sure they sample well.
                                         "lp__"),
                                  cores=1,
@@ -465,8 +467,8 @@ buildcompnet <- function(presabs,
                                  pars=c("intercept", # Marginalize over the individual values of each latent factor ("U"), since these are known to be nonidentifiable due to reflectional and rotational invariance, as well as potential label-switching among multiple latent factor dimensions when K>1. The Stan code has tools designed to deal with this, but only for computational efficiency reasons; it's not a problem for inference.
                                         "beta_dy",
                                         "beta_sp",
-                                        "sigma_species_randint",
-                                        "species_randint",
+                                        "sigma",
+                                        "a",
                                         "latfacterm", # In contrast to individual species' U values, ULU values (sensu Hoff et al.) need to be identifiable, so we'll include them to make sure they sample well.
                                         "lp__",
                                         "alpha"),
