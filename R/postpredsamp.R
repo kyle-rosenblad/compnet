@@ -1,7 +1,6 @@
 #' Simulate posterior predictive samples from a compnet model
 #'
 #' @importFrom stats rbinom
-#' @importFrom BiasedUrn rFNCHypergeo
 #' @export
 #' @param mod Object of class "compnet", which is created by the buildcompnet() function.
 #' @return A matrix of posterior predictive samples with a row for each observation and a column for each sample.
