@@ -51,12 +51,7 @@ gofstats <- function(mod,
     alpha_array <- rstan::extract(mod$stanmod, pars = "alpha", permuted = TRUE)$alpha
     alpha_array <- t(as.matrix(alpha_array))
 
-    if (ncol(alpha_array) < n_draws) {
-      warning("Reducing n_draws to available number of posterior samples")
-      n_draws <- ncol(alpha_array)
-    }
-
-    idx <- sample(seq_len(ncol(alpha_array)), size = n_draws, replace = FALSE)
+    idx <- sample(seq_len(ncol(alpha_array)), size = ncol(alpha_array), replace = FALSE)
     alpha_draws <- alpha_array[, idx]
 
     odens <- ncol(ppred) / 4
