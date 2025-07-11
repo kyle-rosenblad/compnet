@@ -48,7 +48,7 @@ gofstats <- function(mod,
     gofstats_sim <- data.frame(sd.rowmean = NA, cycle.dep = NA)
 
     # Get posterior predictive matrix from fnchypg model
-    alpha_array <- rstan::extract(stanfit, pars = "alpha", permuted = TRUE)$alpha
+    alpha_array <- rstan::extract(mod$stanmod, pars = "alpha", permuted = TRUE)$alpha
     alpha_array <- t(as.matrix(eta_array))
 
     if (ncol(alpha_array) < n_draws) {
