@@ -14,6 +14,8 @@ Depends:
 Imports:
     methods,
     ggplot2,
+    BiasedUrn,
+    CooccurrenceAffinity,
     Rcpp (>= 0.12.0),
     RcppParallel (>= 5.0.1),
     rstan (>= 2.18.1),
