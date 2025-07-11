@@ -49,7 +49,7 @@ gofstats <- function(mod,
 
     # Get posterior predictive matrix from fnchypg model
     alpha_array <- rstan::extract(mod$stanmod, pars = "alpha", permuted = TRUE)$alpha
-    alpha_array <- t(as.matrix(eta_array))
+    alpha_array <- t(as.matrix(alpha_array))
 
     if (ncol(alpha_array) < n_draws) {
       warning("Reducing n_draws to available number of posterior samples")
