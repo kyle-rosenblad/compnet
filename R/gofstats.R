@@ -54,10 +54,10 @@ gofstats <- function(mod,
     idx <- sample(seq_len(ncol(alpha_array)), size = ncol(alpha_array), replace = FALSE)
     alpha_draws <- alpha_array[, idx]
 
-    odens <- ncol(ppred) / 4
+    odens <- ncol(alpha_draws) / 4
     cat("Approx. completion", fill = TRUE)
 
-    for (j in 1:ncol(ppred)) {
+    for (j in 1:ncol(alpha_draws)) {
       if (j %% odens == 0) cat(25 * j / odens, "%", sep = "", fill = TRUE)
 
       dtemp <- d

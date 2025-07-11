@@ -18,7 +18,7 @@
 
 postpredsamp <- function(mod){
 
-  if(mod$family=='fnchypgm'){
+  if(mod$family=='fnchypg'){
     postpredsamp <- t(mod$stanmod_samp$alpha) # make this a draw from the distribution rather than just alpha
     #for(i in 1:nrow(postpredsamp)){
     #  postpredsamp[i,] <- BiasedUrn::rFNCHypergeo(nran=1,
