@@ -81,23 +81,14 @@ that only pertain to pairs of species (e.g., phylogenetic distance).</p>
 quantitative “estimand” (i.e., something we’re aiming to estimate with
 our model). Our estimand will be the effect of functional dissimilarity
 between two species (as quantified via one or more traits; see above) on
-the probability of co-occurrence. We will define the probability of
-co-occurrence for a species pair as the probability that both species in
-the pair co-occur at a given site, given that at least one of them is
-present.</p>
+“co-occurrence affinity” <a href="10.1126/sciadv.abj9204">Mainali et
+al. 2022</a>, a measure of species’ propensity to co-occur more or less
+than expected given their individual occurrence frequencies.</p>
 <p>To estimate the effect of functional dissimilarity on co-occurrence
-probabilities, we will use a regression model, in which the units of
-analysis are species pairs. The response variable is the ratio of sites
-containing both species to sites containing at least one of the two
-species. For example, if 3 sites have Species A only, 2 sites have
-Species B only, and 5 sites have both, the value of our response
-variable would be 5/10=0.5 for this species pair. The predictor(s) can
-encompass traits that we think might influence competitive niche
-differentiation (e.g., plant species’ rooting depth), or pair-level
-variables that could serve as a proxy for functional dissimilarity
-(e.g., phylogenetic distance). We can include as many predictors as we
-want. We’ll take advantage of this fact later, when we adjust for a
-suspected confounding variable.</p>
+affinity, we will use a regression model, in which the units of analysis
+are species pairs. The response variable is co-occurrence affinity. We
+can include as many predictors as we want. We’ll take advantage of this
+fact later, when we adjust for a suspected confounding variable.</p>
 <p>Using species pairs as units of analysis can cause problems for
 typical regression models, and ‘compnet’ has tools for dealing with
 these problems. When we build a regression model (e.g., a linear
@@ -110,8 +101,8 @@ account for this kind of pattern. Additionally, there can be
 higher-order patterns of non-independence among species pairs–e.g., “the
 enemy of my enemy is my friend”. ‘compnet’ also has optional model
 features for dealing with these higher-order patterns, which we will
-demonstrate below. Further technical details are discussed in LINK
-PREPRINT.</p>
+demonstrate below. Further technical details are discussed in [PREPRINT
+LINK COMING SOON].</p>
 <p>Let’s get started!</p>
 </div>
 <div class="section level2">
@@ -156,28 +147,28 @@ suspect of driving competitive niche differentiation. First we’ll build
 a model with just “ndtrait”, as competitive niche differentiation is the
 process we’re interested in.</p>
 <p>If “ndtrait” is driving competitive niche differentiation, then we
-expect species pairs who differ strongly in this trait to co-occur most
-often. We’ll model the effect of “ndtrait” on co-occurrence probability
-using a “distance interaction” term. In other words, for each species
-pair, our model will use species A’s value of “ndtrait”, species B’s
-value, and the absolute value of the difference between these two
-values. This last term directly captures the effect we’re interested in,
-which is called “heterophily” in the social sciences (i.e., things that
-are different being attracted to each other). Social scientists often
-model heterophily using a multiplicative interaction term instead of a
-distance term. Here we use a distance interaction term because it
-captures certain features of the competitive niche differentiation
-process that multiplicative interaction terms can’t represent. (We’ll
-see an example later.) However, multiplicative interaction terms can
-provide other advantages (which we’ll also note below). To use a
-multiplicative interaction term, just use ‘spvars_multi_int’ instead of
-‘spvars_dist_int’ in the example code.</p>
+expect species pairs who differ strongly in this trait to have greater
+co-occurrence affinity. We’ll model the effect of “ndtrait” on
+co-occurrence affinity using a “distance interaction” term. In other
+words, for each species pair, our model will use species A’s value of
+“ndtrait”, species B’s value, and the absolute value of the difference
+between these two values. This last term directly captures the effect
+we’re interested in, which is called “heterophily” in the social
+sciences (i.e., things that are different being attracted to each
+other). Social scientists often model heterophily using a multiplicative
+interaction term instead of a distance term. Here we use a distance
+interaction term because it captures certain features of the competitive
+niche differentiation process that multiplicative interaction terms
+can’t represent. (We’ll see an example later.) However, multiplicative
+interaction terms can provide other advantages (which we’ll also note
+below). To use a multiplicative interaction term, just use
+‘spvars_multi_int’ instead of ‘spvars_dist_int’ in the example code.</p>
 <p>Stan, the statistical software under the hood, uses a Hamiltonian
 Monte Carlo (HMC) algorithm to estimate our results for us. If we don’t
 let the HMC sampler run for enough iterations, we can’t trust our
 results. Stan will tell us if we didn’t let our model run long enough,
 and it will provide web links to help resources.</p>
-<p>Before we try to build a good model, let’s deliberately tell NUTS to
+<p>Before we try to build a good model, let’s deliberately tell Stan to
 do a very small number of iterations so we can see what those warnings
 look like:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
@@ -188,8 +179,8 @@ look like:</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; SAMPLING FOR MODEL 'srm_fnchypg' NOW (CHAIN 1).</span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
-<span><span class="co">#&gt; Chain 1: Gradient evaluation took 0.000481 seconds</span></span>
-<span><span class="co">#&gt; Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 4.81 seconds.</span></span>
+<span><span class="co">#&gt; Chain 1: Gradient evaluation took 0.000512 seconds</span></span>
+<span><span class="co">#&gt; Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 5.12 seconds.</span></span>
 <span><span class="co">#&gt; Chain 1: Adjust your expectations accordingly!</span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
@@ -214,9 +205,9 @@ look like:</p>
 <span><span class="co">#&gt; Chain 1: Iteration: 180 / 200 [ 90%]  (Sampling)</span></span>
 <span><span class="co">#&gt; Chain 1: Iteration: 200 / 200 [100%]  (Sampling)</span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
-<span><span class="co">#&gt; Chain 1:  Elapsed Time: 2.139 seconds (Warm-up)</span></span>
-<span><span class="co">#&gt; Chain 1:                1.868 seconds (Sampling)</span></span>
-<span><span class="co">#&gt; Chain 1:                4.007 seconds (Total)</span></span>
+<span><span class="co">#&gt; Chain 1:  Elapsed Time: 2.157 seconds (Warm-up)</span></span>
+<span><span class="co">#&gt; Chain 1:                1.883 seconds (Sampling)</span></span>
+<span><span class="co">#&gt; Chain 1:                4.04 seconds (Total)</span></span>
 <span><span class="co">#&gt; Chain 1:</span></span>
 <span><span class="co">#&gt; Warning: The largest R-hat is 1.16, indicating chains have not mixed.</span></span>
 <span><span class="co">#&gt; Running the chains for more iterations may help. See</span></span>
@@ -245,8 +236,8 @@ here.)</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; SAMPLING FOR MODEL 'srm_fnchypg' NOW (CHAIN 1).</span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
-<span><span class="co">#&gt; Chain 1: Gradient evaluation took 0.000333 seconds</span></span>
-<span><span class="co">#&gt; Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 3.33 seconds.</span></span>
+<span><span class="co">#&gt; Chain 1: Gradient evaluation took 0.000386 seconds</span></span>
+<span><span class="co">#&gt; Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 3.86 seconds.</span></span>
 <span><span class="co">#&gt; Chain 1: Adjust your expectations accordingly!</span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
@@ -263,9 +254,9 @@ here.)</p>
 <span><span class="co">#&gt; Chain 1: Iteration: 1120 / 1200 [ 93%]  (Sampling)</span></span>
 <span><span class="co">#&gt; Chain 1: Iteration: 1200 / 1200 [100%]  (Sampling)</span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
-<span><span class="co">#&gt; Chain 1:  Elapsed Time: 4.542 seconds (Warm-up)</span></span>
-<span><span class="co">#&gt; Chain 1:                7.035 seconds (Sampling)</span></span>
-<span><span class="co">#&gt; Chain 1:                11.577 seconds (Total)</span></span>
+<span><span class="co">#&gt; Chain 1:  Elapsed Time: 4.723 seconds (Warm-up)</span></span>
+<span><span class="co">#&gt; Chain 1:                7.424 seconds (Sampling)</span></span>
+<span><span class="co">#&gt; Chain 1:                12.147 seconds (Total)</span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
 <span><span class="co">#&gt; [1] "compnet uses Stan under the hood. You may see warnings from Stan alongside, this message. To deal with any warnings Stan might issue, Please see the links provided in Stan's output, as well as the compnet website:https://kyle-rosenblad.github.io/compnet/"</span></span></code></pre></div>
 <p>Before we try to interpret any results, let’s see if this model
@@ -711,51 +702,6 @@ of non-independence in the example data set:</p>
 <span><span class="co">#&gt; Warning in AlphInts(x, marg, lev = lev, scal = scal, pvalType = pvalType): MLE = -Infty is capped, along with lower confidence limits</span></span>
 <span><span class="co">#&gt; Warning in AlphInts(x, marg, lev = lev, scal = scal, pvalType = pvalType): MLE = -Infty is capped, along with lower confidence limits</span></span>
 <span><span class="co">#&gt; ~~~~~~~~~~ printing head of all elements of the output list ~~~~~~~~~~</span></span>
-<span><span class="co">#&gt; $all</span></span>
-<span><span class="co">#&gt;   entity_1 entity_2 entity_1_count_mA entity_2_count_mB obs_cooccur_X total_N</span></span>
-<span><span class="co">#&gt; 1      sp1      sp2                 1                 3             0     100</span></span>
-<span><span class="co">#&gt; 2      sp1      sp3                 1                29             0     100</span></span>
-<span><span class="co">#&gt; 3      sp1      sp4                 1                 8             0     100</span></span>
-<span><span class="co">#&gt; 4      sp1      sp5                 1                 4             0     100</span></span>
-<span><span class="co">#&gt; 5      sp1      sp6                 1                16             0     100</span></span>
-<span><span class="co">#&gt; 6      sp1      sp7                 1                 1             0     100</span></span>
-<span><span class="co">#&gt;   p_value exp_cooccur alpha_mle alpha_medianInt conf_level       ci_blaker</span></span>
-<span><span class="co">#&gt; 1       1        0.03    -9.903 [-9.903, 3.476]       0.95 [-9.903, 6.421]</span></span>
-<span><span class="co">#&gt; 2       1        0.29    -9.903 [-9.903, 0.895]       0.95  [-9.903, 3.84]</span></span>
-<span><span class="co">#&gt; 3       1        0.08    -9.903 [-9.903, 2.442]       0.95 [-9.903, 5.387]</span></span>
-<span><span class="co">#&gt; 4       1        0.04    -9.903 [-9.903, 3.178]       0.95 [-9.903, 6.122]</span></span>
-<span><span class="co">#&gt; 5       1        0.16    -9.903 [-9.903, 1.658]       0.95 [-9.903, 4.603]</span></span>
-<span><span class="co">#&gt; 6       1        0.01    -9.903 [-9.903, 4.595]       0.95  [-9.903, 7.54]</span></span>
-<span><span class="co">#&gt;             ci_cp          ci_midQ         ci_midP jaccard sorensen simpson</span></span>
-<span><span class="co">#&gt; 1  [-9.903, 7.14] [-5.045, -1.382] [-9.903, 6.421]       0        0       0</span></span>
-<span><span class="co">#&gt; 2 [-9.903, 4.559] [-6.336, -2.672]  [-9.903, 3.84]       0        0       0</span></span>
-<span><span class="co">#&gt; 3 [-9.903, 6.106] [-5.562, -1.899] [-9.903, 5.387]       0        0       0</span></span>
-<span><span class="co">#&gt; 4 [-9.903, 6.842] [-5.194, -1.531] [-9.903, 6.122]       0        0       0</span></span>
-<span><span class="co">#&gt; 5 [-9.903, 5.322] [-5.954, -2.291] [-9.903, 4.603]       0        0       0</span></span>
-<span><span class="co">#&gt; 6 [-9.903, 8.259] [-4.486, -0.822]  [-9.903, 7.54]       0        0       0</span></span>
-<span><span class="co">#&gt;   errornote</span></span>
-<span><span class="co">#&gt; 1        NA</span></span>
-<span><span class="co">#&gt; 2        NA</span></span>
-<span><span class="co">#&gt; 3        NA</span></span>
-<span><span class="co">#&gt; 4        NA</span></span>
-<span><span class="co">#&gt; 5        NA</span></span>
-<span><span class="co">#&gt; 6        NA</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; $occur_mat</span></span>
-<span><span class="co">#&gt;       sp1 sp2 sp3 sp4 sp5 sp6 sp7 sp8 sp9 sp10 sp11 sp12 sp13 sp14 sp15 sp16</span></span>
-<span><span class="co">#&gt; site1   0   0   0   0   0   0   0   1   0    0    0    0    0    0    0    0</span></span>
-<span><span class="co">#&gt; site2   0   0   0   0   0   0   0   1   0    0    0    0    0    0    0    0</span></span>
-<span><span class="co">#&gt; site3   0   0   1   0   0   0   0   0   0    1    0    0    0    0    0    0</span></span>
-<span><span class="co">#&gt; site4   0   0   1   0   0   1   0   0   0    0    0    0    0    0    0    0</span></span>
-<span><span class="co">#&gt; site5   0   0   1   0   0   0   0   0   0    0    0    0    0    0    0    0</span></span>
-<span><span class="co">#&gt; site6   0   0   0   0   0   0   0   0   0    0    0    0    0    0    0    0</span></span>
-<span><span class="co">#&gt;       sp17 sp18 sp19 sp20 sp21 sp22 sp23 sp24</span></span>
-<span><span class="co">#&gt; site1    0    0    1    0    0    0    0    1</span></span>
-<span><span class="co">#&gt; site2    0    0    0    0    0    0    0    1</span></span>
-<span><span class="co">#&gt; site3    0    0    0    0    1    0    0    0</span></span>
-<span><span class="co">#&gt; site4    0    0    1    0    0    0    0    0</span></span>
-<span><span class="co">#&gt; site5    0    0    1    0    0    0    0    1</span></span>
-<span><span class="co">#&gt; site6    0    1    0    0    0    0    0    0</span></span>
 <span><span class="co">#&gt; ~~~~~~~~~~ COMPLETED: printing head of all elements of the output list ~~~~~~~~~~</span></span>
 <span><span class="co">#&gt; Approx. completion</span></span>
 <span><span class="co">#&gt; 25%</span></span>
@@ -767,24 +713,21 @@ of non-independence in the example data set:</p>
 <span><span class="co">#&gt;        1.0000        0.9925</span></span></code></pre></div>
 <p>The first ‘p-value’, ‘p.sd.rowmeans’, tells us about patterns driven
 by the fact that all species pairs including a given species share
-features in common. Our ‘p.sd.rowmeans’ is low, which means when we
-simulate data from the model we’ve built (‘gofstats’ did this in the
-background), most of the simulated data have at least as much of this
-kind of non-independence as the real data. That’s good; it means our
-model is accounting for this form of non-independence among species
-pairs. Anything that’s not super-high (around maybe 0.9ish or more) is
-fine.</p>
+features in common. Our ‘p.sd.rowmeans’ is very high, which means when
+we simulate data from the model we’ve built (‘gofstats’ did this in the
+background), most of the simulated data have less of this kind of
+non-independence than the real data. That means our model may not be
+doing a good job accounting for this form of non-independence among
+species pairs. Anything that’s not super-high (around maybe 0.9ish or
+more) is usually considered fine, but this is too high.</p>
 <p>The second value, ‘p.cycle.dep’, tells us about higher-order
 multi-species patterns. These can be abstract and challenging to
 conceptualize. A good example is the saying, “the enemy of my enemy is
-my friend”. Our ‘p.cycle.dep’ looks fine. It’s telling us that when we
-simulate data from our model, around two thirds of the simulated data
-sets have less high-order non-independence than the real data.</p>
-<p>We wouldn’t usually worry about a ‘p.cycle.dep’ value like this, but
-for the sake of illustration, let’s try increasing ‘rank’, which can be
-helpful when ‘p.cycle.dep’ is problematically high. (Sometimes it can
-also be helpful to switch from a distance interaction term to a
-multiplicative interaction term or vice versa, as discussed above.)</p>
+my friend”. Our ‘p.cycle.dep’ looks high as well. It’s telling us that
+when we simulate data from our model, the vast majority of the simulated
+data sets have less high-order non-independence than the real data.</p>
+<p>Let’s try increasing ‘rank’, which can be helpful when our ‘gofstats’
+aren’t looking good.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">nd_1_mod</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/buildcompnet.html">buildcompnet</a></span><span class="op">(</span>presabs<span class="op">=</span><span class="va">ex_presabs</span>,</span>
 <span>        spvars_dist_int<span class="op">=</span><span class="va">ex_traits</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ndtrait"</span><span class="op">)</span><span class="op">]</span>,</span>
@@ -794,8 +737,8 @@ multiplicative interaction term or vice versa, as discussed above.)</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; SAMPLING FOR MODEL 'ame_fnchypg' NOW (CHAIN 1).</span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
-<span><span class="co">#&gt; Chain 1: Gradient evaluation took 0.000491 seconds</span></span>
-<span><span class="co">#&gt; Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 4.91 seconds.</span></span>
+<span><span class="co">#&gt; Chain 1: Gradient evaluation took 0.000495 seconds</span></span>
+<span><span class="co">#&gt; Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 4.95 seconds.</span></span>
 <span><span class="co">#&gt; Chain 1: Adjust your expectations accordingly!</span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
@@ -812,9 +755,9 @@ multiplicative interaction term or vice versa, as discussed above.)</p>
 <span><span class="co">#&gt; Chain 1: Iteration: 900 / 1000 [ 90%]  (Sampling)</span></span>
 <span><span class="co">#&gt; Chain 1: Iteration: 1000 / 1000 [100%]  (Sampling)</span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
-<span><span class="co">#&gt; Chain 1:  Elapsed Time: 7.054 seconds (Warm-up)</span></span>
-<span><span class="co">#&gt; Chain 1:                9.516 seconds (Sampling)</span></span>
-<span><span class="co">#&gt; Chain 1:                16.57 seconds (Total)</span></span>
+<span><span class="co">#&gt; Chain 1:  Elapsed Time: 7.108 seconds (Warm-up)</span></span>
+<span><span class="co">#&gt; Chain 1:                9.624 seconds (Sampling)</span></span>
+<span><span class="co">#&gt; Chain 1:                16.732 seconds (Total)</span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
 <span><span class="co">#&gt; [1] "compnet uses Stan under the hood. You may see warnings from Stan alongside, this message. To deal with any warnings Stan might issue, Please see the links provided in Stan's output, as well as the compnet website:https://kyle-rosenblad.github.io/compnet/"</span></span>
 <span><span class="va">nd_1_mod_gofstats</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/gofstats.html">gofstats</a></span><span class="op">(</span><span class="va">nd_1_mod</span><span class="op">)</span></span>
@@ -1253,51 +1196,6 @@ multiplicative interaction term or vice versa, as discussed above.)</p>
 <span><span class="co">#&gt; Warning in AlphInts(x, marg, lev = lev, scal = scal, pvalType = pvalType): MLE = -Infty is capped, along with lower confidence limits</span></span>
 <span><span class="co">#&gt; Warning in AlphInts(x, marg, lev = lev, scal = scal, pvalType = pvalType): MLE = -Infty is capped, along with lower confidence limits</span></span>
 <span><span class="co">#&gt; ~~~~~~~~~~ printing head of all elements of the output list ~~~~~~~~~~</span></span>
-<span><span class="co">#&gt; $all</span></span>
-<span><span class="co">#&gt;   entity_1 entity_2 entity_1_count_mA entity_2_count_mB obs_cooccur_X total_N</span></span>
-<span><span class="co">#&gt; 1      sp1      sp2                 1                 3             0     100</span></span>
-<span><span class="co">#&gt; 2      sp1      sp3                 1                29             0     100</span></span>
-<span><span class="co">#&gt; 3      sp1      sp4                 1                 8             0     100</span></span>
-<span><span class="co">#&gt; 4      sp1      sp5                 1                 4             0     100</span></span>
-<span><span class="co">#&gt; 5      sp1      sp6                 1                16             0     100</span></span>
-<span><span class="co">#&gt; 6      sp1      sp7                 1                 1             0     100</span></span>
-<span><span class="co">#&gt;   p_value exp_cooccur alpha_mle alpha_medianInt conf_level       ci_blaker</span></span>
-<span><span class="co">#&gt; 1       1        0.03    -9.903 [-9.903, 3.476]       0.95 [-9.903, 6.421]</span></span>
-<span><span class="co">#&gt; 2       1        0.29    -9.903 [-9.903, 0.895]       0.95  [-9.903, 3.84]</span></span>
-<span><span class="co">#&gt; 3       1        0.08    -9.903 [-9.903, 2.442]       0.95 [-9.903, 5.387]</span></span>
-<span><span class="co">#&gt; 4       1        0.04    -9.903 [-9.903, 3.178]       0.95 [-9.903, 6.122]</span></span>
-<span><span class="co">#&gt; 5       1        0.16    -9.903 [-9.903, 1.658]       0.95 [-9.903, 4.603]</span></span>
-<span><span class="co">#&gt; 6       1        0.01    -9.903 [-9.903, 4.595]       0.95  [-9.903, 7.54]</span></span>
-<span><span class="co">#&gt;             ci_cp          ci_midQ         ci_midP jaccard sorensen simpson</span></span>
-<span><span class="co">#&gt; 1  [-9.903, 7.14] [-5.045, -1.382] [-9.903, 6.421]       0        0       0</span></span>
-<span><span class="co">#&gt; 2 [-9.903, 4.559] [-6.336, -2.672]  [-9.903, 3.84]       0        0       0</span></span>
-<span><span class="co">#&gt; 3 [-9.903, 6.106] [-5.562, -1.899] [-9.903, 5.387]       0        0       0</span></span>
-<span><span class="co">#&gt; 4 [-9.903, 6.842] [-5.194, -1.531] [-9.903, 6.122]       0        0       0</span></span>
-<span><span class="co">#&gt; 5 [-9.903, 5.322] [-5.954, -2.291] [-9.903, 4.603]       0        0       0</span></span>
-<span><span class="co">#&gt; 6 [-9.903, 8.259] [-4.486, -0.822]  [-9.903, 7.54]       0        0       0</span></span>
-<span><span class="co">#&gt;   errornote</span></span>
-<span><span class="co">#&gt; 1        NA</span></span>
-<span><span class="co">#&gt; 2        NA</span></span>
-<span><span class="co">#&gt; 3        NA</span></span>
-<span><span class="co">#&gt; 4        NA</span></span>
-<span><span class="co">#&gt; 5        NA</span></span>
-<span><span class="co">#&gt; 6        NA</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; $occur_mat</span></span>
-<span><span class="co">#&gt;       sp1 sp2 sp3 sp4 sp5 sp6 sp7 sp8 sp9 sp10 sp11 sp12 sp13 sp14 sp15 sp16</span></span>
-<span><span class="co">#&gt; site1   0   0   0   0   0   0   0   1   0    0    0    0    0    0    0    0</span></span>
-<span><span class="co">#&gt; site2   0   0   0   0   0   0   0   1   0    0    0    0    0    0    0    0</span></span>
-<span><span class="co">#&gt; site3   0   0   1   0   0   0   0   0   0    1    0    0    0    0    0    0</span></span>
-<span><span class="co">#&gt; site4   0   0   1   0   0   1   0   0   0    0    0    0    0    0    0    0</span></span>
-<span><span class="co">#&gt; site5   0   0   1   0   0   0   0   0   0    0    0    0    0    0    0    0</span></span>
-<span><span class="co">#&gt; site6   0   0   0   0   0   0   0   0   0    0    0    0    0    0    0    0</span></span>
-<span><span class="co">#&gt;       sp17 sp18 sp19 sp20 sp21 sp22 sp23 sp24</span></span>
-<span><span class="co">#&gt; site1    0    0    1    0    0    0    0    1</span></span>
-<span><span class="co">#&gt; site2    0    0    0    0    0    0    0    1</span></span>
-<span><span class="co">#&gt; site3    0    0    0    0    1    0    0    0</span></span>
-<span><span class="co">#&gt; site4    0    0    1    0    0    0    0    0</span></span>
-<span><span class="co">#&gt; site5    0    0    1    0    0    0    0    1</span></span>
-<span><span class="co">#&gt; site6    0    1    0    0    0    0    0    0</span></span>
 <span><span class="co">#&gt; ~~~~~~~~~~ COMPLETED: printing head of all elements of the output list ~~~~~~~~~~</span></span>
 <span><span class="co">#&gt; Approx. completion</span></span>
 <span><span class="co">#&gt; 25%</span></span>
@@ -1446,8 +1344,8 @@ we’ll run gofstats() and ‘DHARMa’ checks.</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; SAMPLING FOR MODEL 'srm_fnchypg' NOW (CHAIN 1).</span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
-<span><span class="co">#&gt; Chain 1: Gradient evaluation took 0.000331 seconds</span></span>
-<span><span class="co">#&gt; Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 3.31 seconds.</span></span>
+<span><span class="co">#&gt; Chain 1: Gradient evaluation took 0.000345 seconds</span></span>
+<span><span class="co">#&gt; Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 3.45 seconds.</span></span>
 <span><span class="co">#&gt; Chain 1: Adjust your expectations accordingly!</span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
@@ -1464,9 +1362,9 @@ we’ll run gofstats() and ‘DHARMa’ checks.</p>
 <span><span class="co">#&gt; Chain 1: Iteration: 1120 / 1200 [ 93%]  (Sampling)</span></span>
 <span><span class="co">#&gt; Chain 1: Iteration: 1200 / 1200 [100%]  (Sampling)</span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
-<span><span class="co">#&gt; Chain 1:  Elapsed Time: 5.878 seconds (Warm-up)</span></span>
-<span><span class="co">#&gt; Chain 1:                5.504 seconds (Sampling)</span></span>
-<span><span class="co">#&gt; Chain 1:                11.382 seconds (Total)</span></span>
+<span><span class="co">#&gt; Chain 1:  Elapsed Time: 6.093 seconds (Warm-up)</span></span>
+<span><span class="co">#&gt; Chain 1:                5.705 seconds (Sampling)</span></span>
+<span><span class="co">#&gt; Chain 1:                11.798 seconds (Total)</span></span>
 <span><span class="co">#&gt; Chain 1:</span></span>
 <span><span class="co">#&gt; Warning: There were 1 divergent transitions after warmup. See</span></span>
 <span><span class="co">#&gt; https://mc-stan.org/misc/warnings.html#divergent-transitions-after-warmup</span></span>
@@ -1910,51 +1808,6 @@ we’ll run gofstats() and ‘DHARMa’ checks.</p>
 <span><span class="co">#&gt; Warning in AlphInts(x, marg, lev = lev, scal = scal, pvalType = pvalType): MLE = -Infty is capped, along with lower confidence limits</span></span>
 <span><span class="co">#&gt; Warning in AlphInts(x, marg, lev = lev, scal = scal, pvalType = pvalType): MLE = -Infty is capped, along with lower confidence limits</span></span>
 <span><span class="co">#&gt; ~~~~~~~~~~ printing head of all elements of the output list ~~~~~~~~~~</span></span>
-<span><span class="co">#&gt; $all</span></span>
-<span><span class="co">#&gt;   entity_1 entity_2 entity_1_count_mA entity_2_count_mB obs_cooccur_X total_N</span></span>
-<span><span class="co">#&gt; 1      sp1      sp2                 1                 3             0     100</span></span>
-<span><span class="co">#&gt; 2      sp1      sp3                 1                29             0     100</span></span>
-<span><span class="co">#&gt; 3      sp1      sp4                 1                 8             0     100</span></span>
-<span><span class="co">#&gt; 4      sp1      sp5                 1                 4             0     100</span></span>
-<span><span class="co">#&gt; 5      sp1      sp6                 1                16             0     100</span></span>
-<span><span class="co">#&gt; 6      sp1      sp7                 1                 1             0     100</span></span>
-<span><span class="co">#&gt;   p_value exp_cooccur alpha_mle alpha_medianInt conf_level       ci_blaker</span></span>
-<span><span class="co">#&gt; 1       1        0.03    -9.903 [-9.903, 3.476]       0.95 [-9.903, 6.421]</span></span>
-<span><span class="co">#&gt; 2       1        0.29    -9.903 [-9.903, 0.895]       0.95  [-9.903, 3.84]</span></span>
-<span><span class="co">#&gt; 3       1        0.08    -9.903 [-9.903, 2.442]       0.95 [-9.903, 5.387]</span></span>
-<span><span class="co">#&gt; 4       1        0.04    -9.903 [-9.903, 3.178]       0.95 [-9.903, 6.122]</span></span>
-<span><span class="co">#&gt; 5       1        0.16    -9.903 [-9.903, 1.658]       0.95 [-9.903, 4.603]</span></span>
-<span><span class="co">#&gt; 6       1        0.01    -9.903 [-9.903, 4.595]       0.95  [-9.903, 7.54]</span></span>
-<span><span class="co">#&gt;             ci_cp          ci_midQ         ci_midP jaccard sorensen simpson</span></span>
-<span><span class="co">#&gt; 1  [-9.903, 7.14] [-5.045, -1.382] [-9.903, 6.421]       0        0       0</span></span>
-<span><span class="co">#&gt; 2 [-9.903, 4.559] [-6.336, -2.672]  [-9.903, 3.84]       0        0       0</span></span>
-<span><span class="co">#&gt; 3 [-9.903, 6.106] [-5.562, -1.899] [-9.903, 5.387]       0        0       0</span></span>
-<span><span class="co">#&gt; 4 [-9.903, 6.842] [-5.194, -1.531] [-9.903, 6.122]       0        0       0</span></span>
-<span><span class="co">#&gt; 5 [-9.903, 5.322] [-5.954, -2.291] [-9.903, 4.603]       0        0       0</span></span>
-<span><span class="co">#&gt; 6 [-9.903, 8.259] [-4.486, -0.822]  [-9.903, 7.54]       0        0       0</span></span>
-<span><span class="co">#&gt;   errornote</span></span>
-<span><span class="co">#&gt; 1        NA</span></span>
-<span><span class="co">#&gt; 2        NA</span></span>
-<span><span class="co">#&gt; 3        NA</span></span>
-<span><span class="co">#&gt; 4        NA</span></span>
-<span><span class="co">#&gt; 5        NA</span></span>
-<span><span class="co">#&gt; 6        NA</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; $occur_mat</span></span>
-<span><span class="co">#&gt;       sp1 sp2 sp3 sp4 sp5 sp6 sp7 sp8 sp9 sp10 sp11 sp12 sp13 sp14 sp15 sp16</span></span>
-<span><span class="co">#&gt; site1   0   0   0   0   0   0   0   1   0    0    0    0    0    0    0    0</span></span>
-<span><span class="co">#&gt; site2   0   0   0   0   0   0   0   1   0    0    0    0    0    0    0    0</span></span>
-<span><span class="co">#&gt; site3   0   0   1   0   0   0   0   0   0    1    0    0    0    0    0    0</span></span>
-<span><span class="co">#&gt; site4   0   0   1   0   0   1   0   0   0    0    0    0    0    0    0    0</span></span>
-<span><span class="co">#&gt; site5   0   0   1   0   0   0   0   0   0    0    0    0    0    0    0    0</span></span>
-<span><span class="co">#&gt; site6   0   0   0   0   0   0   0   0   0    0    0    0    0    0    0    0</span></span>
-<span><span class="co">#&gt;       sp17 sp18 sp19 sp20 sp21 sp22 sp23 sp24</span></span>
-<span><span class="co">#&gt; site1    0    0    1    0    0    0    0    1</span></span>
-<span><span class="co">#&gt; site2    0    0    0    0    0    0    0    1</span></span>
-<span><span class="co">#&gt; site3    0    0    0    0    1    0    0    0</span></span>
-<span><span class="co">#&gt; site4    0    0    1    0    0    0    0    0</span></span>
-<span><span class="co">#&gt; site5    0    0    1    0    0    0    0    1</span></span>
-<span><span class="co">#&gt; site6    0    1    0    0    0    0    0    0</span></span>
 <span><span class="co">#&gt; ~~~~~~~~~~ COMPLETED: printing head of all elements of the output list ~~~~~~~~~~</span></span>
 <span><span class="co">#&gt; Approx. completion</span></span>
 <span><span class="co">#&gt; 25%</span></span>
@@ -2015,8 +1868,8 @@ which is one kind of problem the HMC sampler can run into.</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; SAMPLING FOR MODEL 'ame_fnchypg' NOW (CHAIN 1).</span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
-<span><span class="co">#&gt; Chain 1: Gradient evaluation took 0.000433 seconds</span></span>
-<span><span class="co">#&gt; Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 4.33 seconds.</span></span>
+<span><span class="co">#&gt; Chain 1: Gradient evaluation took 0.000441 seconds</span></span>
+<span><span class="co">#&gt; Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 4.41 seconds.</span></span>
 <span><span class="co">#&gt; Chain 1: Adjust your expectations accordingly!</span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
@@ -2033,9 +1886,9 @@ which is one kind of problem the HMC sampler can run into.</p>
 <span><span class="co">#&gt; Chain 1: Iteration: 1800 / 2000 [ 90%]  (Sampling)</span></span>
 <span><span class="co">#&gt; Chain 1: Iteration: 2000 / 2000 [100%]  (Sampling)</span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
-<span><span class="co">#&gt; Chain 1:  Elapsed Time: 19.455 seconds (Warm-up)</span></span>
-<span><span class="co">#&gt; Chain 1:                13.18 seconds (Sampling)</span></span>
-<span><span class="co">#&gt; Chain 1:                32.635 seconds (Total)</span></span>
+<span><span class="co">#&gt; Chain 1:  Elapsed Time: 19.519 seconds (Warm-up)</span></span>
+<span><span class="co">#&gt; Chain 1:                13.289 seconds (Sampling)</span></span>
+<span><span class="co">#&gt; Chain 1:                32.808 seconds (Total)</span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
 <span><span class="co">#&gt; [1] "compnet uses Stan under the hood. You may see warnings from Stan alongside, this message. To deal with any warnings Stan might issue, Please see the links provided in Stan's output, as well as the compnet website:https://kyle-rosenblad.github.io/compnet/"</span></span>
 <span></span>
@@ -2475,51 +2328,6 @@ which is one kind of problem the HMC sampler can run into.</p>
 <span><span class="co">#&gt; Warning in AlphInts(x, marg, lev = lev, scal = scal, pvalType = pvalType): MLE = -Infty is capped, along with lower confidence limits</span></span>
 <span><span class="co">#&gt; Warning in AlphInts(x, marg, lev = lev, scal = scal, pvalType = pvalType): MLE = -Infty is capped, along with lower confidence limits</span></span>
 <span><span class="co">#&gt; ~~~~~~~~~~ printing head of all elements of the output list ~~~~~~~~~~</span></span>
-<span><span class="co">#&gt; $all</span></span>
-<span><span class="co">#&gt;   entity_1 entity_2 entity_1_count_mA entity_2_count_mB obs_cooccur_X total_N</span></span>
-<span><span class="co">#&gt; 1      sp1      sp2                 1                 3             0     100</span></span>
-<span><span class="co">#&gt; 2      sp1      sp3                 1                29             0     100</span></span>
-<span><span class="co">#&gt; 3      sp1      sp4                 1                 8             0     100</span></span>
-<span><span class="co">#&gt; 4      sp1      sp5                 1                 4             0     100</span></span>
-<span><span class="co">#&gt; 5      sp1      sp6                 1                16             0     100</span></span>
-<span><span class="co">#&gt; 6      sp1      sp7                 1                 1             0     100</span></span>
-<span><span class="co">#&gt;   p_value exp_cooccur alpha_mle alpha_medianInt conf_level       ci_blaker</span></span>
-<span><span class="co">#&gt; 1       1        0.03    -9.903 [-9.903, 3.476]       0.95 [-9.903, 6.421]</span></span>
-<span><span class="co">#&gt; 2       1        0.29    -9.903 [-9.903, 0.895]       0.95  [-9.903, 3.84]</span></span>
-<span><span class="co">#&gt; 3       1        0.08    -9.903 [-9.903, 2.442]       0.95 [-9.903, 5.387]</span></span>
-<span><span class="co">#&gt; 4       1        0.04    -9.903 [-9.903, 3.178]       0.95 [-9.903, 6.122]</span></span>
-<span><span class="co">#&gt; 5       1        0.16    -9.903 [-9.903, 1.658]       0.95 [-9.903, 4.603]</span></span>
-<span><span class="co">#&gt; 6       1        0.01    -9.903 [-9.903, 4.595]       0.95  [-9.903, 7.54]</span></span>
-<span><span class="co">#&gt;             ci_cp          ci_midQ         ci_midP jaccard sorensen simpson</span></span>
-<span><span class="co">#&gt; 1  [-9.903, 7.14] [-5.045, -1.382] [-9.903, 6.421]       0        0       0</span></span>
-<span><span class="co">#&gt; 2 [-9.903, 4.559] [-6.336, -2.672]  [-9.903, 3.84]       0        0       0</span></span>
-<span><span class="co">#&gt; 3 [-9.903, 6.106] [-5.562, -1.899] [-9.903, 5.387]       0        0       0</span></span>
-<span><span class="co">#&gt; 4 [-9.903, 6.842] [-5.194, -1.531] [-9.903, 6.122]       0        0       0</span></span>
-<span><span class="co">#&gt; 5 [-9.903, 5.322] [-5.954, -2.291] [-9.903, 4.603]       0        0       0</span></span>
-<span><span class="co">#&gt; 6 [-9.903, 8.259] [-4.486, -0.822]  [-9.903, 7.54]       0        0       0</span></span>
-<span><span class="co">#&gt;   errornote</span></span>
-<span><span class="co">#&gt; 1        NA</span></span>
-<span><span class="co">#&gt; 2        NA</span></span>
-<span><span class="co">#&gt; 3        NA</span></span>
-<span><span class="co">#&gt; 4        NA</span></span>
-<span><span class="co">#&gt; 5        NA</span></span>
-<span><span class="co">#&gt; 6        NA</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; $occur_mat</span></span>
-<span><span class="co">#&gt;       sp1 sp2 sp3 sp4 sp5 sp6 sp7 sp8 sp9 sp10 sp11 sp12 sp13 sp14 sp15 sp16</span></span>
-<span><span class="co">#&gt; site1   0   0   0   0   0   0   0   1   0    0    0    0    0    0    0    0</span></span>
-<span><span class="co">#&gt; site2   0   0   0   0   0   0   0   1   0    0    0    0    0    0    0    0</span></span>
-<span><span class="co">#&gt; site3   0   0   1   0   0   0   0   0   0    1    0    0    0    0    0    0</span></span>
-<span><span class="co">#&gt; site4   0   0   1   0   0   1   0   0   0    0    0    0    0    0    0    0</span></span>
-<span><span class="co">#&gt; site5   0   0   1   0   0   0   0   0   0    0    0    0    0    0    0    0</span></span>
-<span><span class="co">#&gt; site6   0   0   0   0   0   0   0   0   0    0    0    0    0    0    0    0</span></span>
-<span><span class="co">#&gt;       sp17 sp18 sp19 sp20 sp21 sp22 sp23 sp24</span></span>
-<span><span class="co">#&gt; site1    0    0    1    0    0    0    0    1</span></span>
-<span><span class="co">#&gt; site2    0    0    0    0    0    0    0    1</span></span>
-<span><span class="co">#&gt; site3    0    0    0    0    1    0    0    0</span></span>
-<span><span class="co">#&gt; site4    0    0    1    0    0    0    0    0</span></span>
-<span><span class="co">#&gt; site5    0    0    1    0    0    0    0    1</span></span>
-<span><span class="co">#&gt; site6    0    1    0    0    0    0    0    0</span></span>
 <span><span class="co">#&gt; ~~~~~~~~~~ COMPLETED: printing head of all elements of the output list ~~~~~~~~~~</span></span>
 <span><span class="co">#&gt; Approx. completion</span></span>
 <span><span class="co">#&gt; 25%</span></span>
@@ -2612,8 +2420,8 @@ brief.</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; SAMPLING FOR MODEL 'srm_fnchypg' NOW (CHAIN 1).</span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
-<span><span class="co">#&gt; Chain 1: Gradient evaluation took 0.000331 seconds</span></span>
-<span><span class="co">#&gt; Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 3.31 seconds.</span></span>
+<span><span class="co">#&gt; Chain 1: Gradient evaluation took 0.000344 seconds</span></span>
+<span><span class="co">#&gt; Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 3.44 seconds.</span></span>
 <span><span class="co">#&gt; Chain 1: Adjust your expectations accordingly!</span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
@@ -2630,9 +2438,9 @@ brief.</p>
 <span><span class="co">#&gt; Chain 1: Iteration: 1800 / 2000 [ 90%]  (Sampling)</span></span>
 <span><span class="co">#&gt; Chain 1: Iteration: 2000 / 2000 [100%]  (Sampling)</span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
-<span><span class="co">#&gt; Chain 1:  Elapsed Time: 9.974 seconds (Warm-up)</span></span>
-<span><span class="co">#&gt; Chain 1:                9.942 seconds (Sampling)</span></span>
-<span><span class="co">#&gt; Chain 1:                19.916 seconds (Total)</span></span>
+<span><span class="co">#&gt; Chain 1:  Elapsed Time: 10.374 seconds (Warm-up)</span></span>
+<span><span class="co">#&gt; Chain 1:                10.274 seconds (Sampling)</span></span>
+<span><span class="co">#&gt; Chain 1:                20.648 seconds (Total)</span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
 <span><span class="co">#&gt; [1] "compnet uses Stan under the hood. You may see warnings from Stan alongside, this message. To deal with any warnings Stan might issue, Please see the links provided in Stan's output, as well as the compnet website:https://kyle-rosenblad.github.io/compnet/"</span></span></code></pre></div>
 <p>Now let’s break down the output summary:</p>
@@ -2688,8 +2496,8 @@ argument. We’ll start with rank 0.</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; SAMPLING FOR MODEL 'srm_fnchypg' NOW (CHAIN 1).</span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
-<span><span class="co">#&gt; Chain 1: Gradient evaluation took 0.000318 seconds</span></span>
-<span><span class="co">#&gt; Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 3.18 seconds.</span></span>
+<span><span class="co">#&gt; Chain 1: Gradient evaluation took 0.00032 seconds</span></span>
+<span><span class="co">#&gt; Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 3.2 seconds.</span></span>
 <span><span class="co">#&gt; Chain 1: Adjust your expectations accordingly!</span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
@@ -2706,9 +2514,9 @@ argument. We’ll start with rank 0.</p>
 <span><span class="co">#&gt; Chain 1: Iteration: 1800 / 2000 [ 90%]  (Sampling)</span></span>
 <span><span class="co">#&gt; Chain 1: Iteration: 2000 / 2000 [100%]  (Sampling)</span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
-<span><span class="co">#&gt; Chain 1:  Elapsed Time: 6.343 seconds (Warm-up)</span></span>
-<span><span class="co">#&gt; Chain 1:                4.705 seconds (Sampling)</span></span>
-<span><span class="co">#&gt; Chain 1:                11.048 seconds (Total)</span></span>
+<span><span class="co">#&gt; Chain 1:  Elapsed Time: 6.643 seconds (Warm-up)</span></span>
+<span><span class="co">#&gt; Chain 1:                4.952 seconds (Sampling)</span></span>
+<span><span class="co">#&gt; Chain 1:                11.595 seconds (Total)</span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
 <span><span class="co">#&gt; [1] "compnet uses Stan under the hood. You may see warnings from Stan alongside, this message. To deal with any warnings Stan might issue, Please see the links provided in Stan's output, as well as the compnet website:https://kyle-rosenblad.github.io/compnet/"</span></span></code></pre></div>
 <p>Run our model checks:</p>
@@ -3149,51 +2957,6 @@ argument. We’ll start with rank 0.</p>
 <span><span class="co">#&gt; Warning in AlphInts(x, marg, lev = lev, scal = scal, pvalType = pvalType): MLE = -Infty is capped, along with lower confidence limits</span></span>
 <span><span class="co">#&gt; Warning in AlphInts(x, marg, lev = lev, scal = scal, pvalType = pvalType): MLE = -Infty is capped, along with lower confidence limits</span></span>
 <span><span class="co">#&gt; ~~~~~~~~~~ printing head of all elements of the output list ~~~~~~~~~~</span></span>
-<span><span class="co">#&gt; $all</span></span>
-<span><span class="co">#&gt;   entity_1 entity_2 entity_1_count_mA entity_2_count_mB obs_cooccur_X total_N</span></span>
-<span><span class="co">#&gt; 1      sp1      sp2                 1                 3             0     100</span></span>
-<span><span class="co">#&gt; 2      sp1      sp3                 1                29             0     100</span></span>
-<span><span class="co">#&gt; 3      sp1      sp4                 1                 8             0     100</span></span>
-<span><span class="co">#&gt; 4      sp1      sp5                 1                 4             0     100</span></span>
-<span><span class="co">#&gt; 5      sp1      sp6                 1                16             0     100</span></span>
-<span><span class="co">#&gt; 6      sp1      sp7                 1                 1             0     100</span></span>
-<span><span class="co">#&gt;   p_value exp_cooccur alpha_mle alpha_medianInt conf_level       ci_blaker</span></span>
-<span><span class="co">#&gt; 1       1        0.03    -9.903 [-9.903, 3.476]       0.95 [-9.903, 6.421]</span></span>
-<span><span class="co">#&gt; 2       1        0.29    -9.903 [-9.903, 0.895]       0.95  [-9.903, 3.84]</span></span>
-<span><span class="co">#&gt; 3       1        0.08    -9.903 [-9.903, 2.442]       0.95 [-9.903, 5.387]</span></span>
-<span><span class="co">#&gt; 4       1        0.04    -9.903 [-9.903, 3.178]       0.95 [-9.903, 6.122]</span></span>
-<span><span class="co">#&gt; 5       1        0.16    -9.903 [-9.903, 1.658]       0.95 [-9.903, 4.603]</span></span>
-<span><span class="co">#&gt; 6       1        0.01    -9.903 [-9.903, 4.595]       0.95  [-9.903, 7.54]</span></span>
-<span><span class="co">#&gt;             ci_cp          ci_midQ         ci_midP jaccard sorensen simpson</span></span>
-<span><span class="co">#&gt; 1  [-9.903, 7.14] [-5.045, -1.382] [-9.903, 6.421]       0        0       0</span></span>
-<span><span class="co">#&gt; 2 [-9.903, 4.559] [-6.336, -2.672]  [-9.903, 3.84]       0        0       0</span></span>
-<span><span class="co">#&gt; 3 [-9.903, 6.106] [-5.562, -1.899] [-9.903, 5.387]       0        0       0</span></span>
-<span><span class="co">#&gt; 4 [-9.903, 6.842] [-5.194, -1.531] [-9.903, 6.122]       0        0       0</span></span>
-<span><span class="co">#&gt; 5 [-9.903, 5.322] [-5.954, -2.291] [-9.903, 4.603]       0        0       0</span></span>
-<span><span class="co">#&gt; 6 [-9.903, 8.259] [-4.486, -0.822]  [-9.903, 7.54]       0        0       0</span></span>
-<span><span class="co">#&gt;   errornote</span></span>
-<span><span class="co">#&gt; 1        NA</span></span>
-<span><span class="co">#&gt; 2        NA</span></span>
-<span><span class="co">#&gt; 3        NA</span></span>
-<span><span class="co">#&gt; 4        NA</span></span>
-<span><span class="co">#&gt; 5        NA</span></span>
-<span><span class="co">#&gt; 6        NA</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; $occur_mat</span></span>
-<span><span class="co">#&gt;       sp1 sp2 sp3 sp4 sp5 sp6 sp7 sp8 sp9 sp10 sp11 sp12 sp13 sp14 sp15 sp16</span></span>
-<span><span class="co">#&gt; site1   0   0   0   0   0   0   0   1   0    0    0    0    0    0    0    0</span></span>
-<span><span class="co">#&gt; site2   0   0   0   0   0   0   0   1   0    0    0    0    0    0    0    0</span></span>
-<span><span class="co">#&gt; site3   0   0   1   0   0   0   0   0   0    1    0    0    0    0    0    0</span></span>
-<span><span class="co">#&gt; site4   0   0   1   0   0   1   0   0   0    0    0    0    0    0    0    0</span></span>
-<span><span class="co">#&gt; site5   0   0   1   0   0   0   0   0   0    0    0    0    0    0    0    0</span></span>
-<span><span class="co">#&gt; site6   0   0   0   0   0   0   0   0   0    0    0    0    0    0    0    0</span></span>
-<span><span class="co">#&gt;       sp17 sp18 sp19 sp20 sp21 sp22 sp23 sp24</span></span>
-<span><span class="co">#&gt; site1    0    0    1    0    0    0    0    1</span></span>
-<span><span class="co">#&gt; site2    0    0    0    0    0    0    0    1</span></span>
-<span><span class="co">#&gt; site3    0    0    0    0    1    0    0    0</span></span>
-<span><span class="co">#&gt; site4    0    0    1    0    0    0    0    0</span></span>
-<span><span class="co">#&gt; site5    0    0    1    0    0    0    0    1</span></span>
-<span><span class="co">#&gt; site6    0    1    0    0    0    0    0    0</span></span>
 <span><span class="co">#&gt; ~~~~~~~~~~ COMPLETED: printing head of all elements of the output list ~~~~~~~~~~</span></span>
 <span><span class="co">#&gt; Approx. completion</span></span>
 <span><span class="co">#&gt; 25%</span></span>
@@ -3249,8 +3012,8 @@ try again with ‘rank’ = 1.</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; SAMPLING FOR MODEL 'ame_fnchypg' NOW (CHAIN 1).</span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
-<span><span class="co">#&gt; Chain 1: Gradient evaluation took 0.000404 seconds</span></span>
-<span><span class="co">#&gt; Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 4.04 seconds.</span></span>
+<span><span class="co">#&gt; Chain 1: Gradient evaluation took 0.000406 seconds</span></span>
+<span><span class="co">#&gt; Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 4.06 seconds.</span></span>
 <span><span class="co">#&gt; Chain 1: Adjust your expectations accordingly!</span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
@@ -3267,9 +3030,9 @@ try again with ‘rank’ = 1.</p>
 <span><span class="co">#&gt; Chain 1: Iteration: 1800 / 2000 [ 90%]  (Sampling)</span></span>
 <span><span class="co">#&gt; Chain 1: Iteration: 2000 / 2000 [100%]  (Sampling)</span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
-<span><span class="co">#&gt; Chain 1:  Elapsed Time: 13.61 seconds (Warm-up)</span></span>
-<span><span class="co">#&gt; Chain 1:                12.097 seconds (Sampling)</span></span>
-<span><span class="co">#&gt; Chain 1:                25.707 seconds (Total)</span></span>
+<span><span class="co">#&gt; Chain 1:  Elapsed Time: 13.698 seconds (Warm-up)</span></span>
+<span><span class="co">#&gt; Chain 1:                12.208 seconds (Sampling)</span></span>
+<span><span class="co">#&gt; Chain 1:                25.906 seconds (Total)</span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
 <span><span class="co">#&gt; [1] "compnet uses Stan under the hood. You may see warnings from Stan alongside, this message. To deal with any warnings Stan might issue, Please see the links provided in Stan's output, as well as the compnet website:https://kyle-rosenblad.github.io/compnet/"</span></span></code></pre></div>
 <p>Run our model checks:</p>
@@ -3710,51 +3473,6 @@ try again with ‘rank’ = 1.</p>
 <span><span class="co">#&gt; Warning in AlphInts(x, marg, lev = lev, scal = scal, pvalType = pvalType): MLE = -Infty is capped, along with lower confidence limits</span></span>
 <span><span class="co">#&gt; Warning in AlphInts(x, marg, lev = lev, scal = scal, pvalType = pvalType): MLE = -Infty is capped, along with lower confidence limits</span></span>
 <span><span class="co">#&gt; ~~~~~~~~~~ printing head of all elements of the output list ~~~~~~~~~~</span></span>
-<span><span class="co">#&gt; $all</span></span>
-<span><span class="co">#&gt;   entity_1 entity_2 entity_1_count_mA entity_2_count_mB obs_cooccur_X total_N</span></span>
-<span><span class="co">#&gt; 1      sp1      sp2                 1                 3             0     100</span></span>
-<span><span class="co">#&gt; 2      sp1      sp3                 1                29             0     100</span></span>
-<span><span class="co">#&gt; 3      sp1      sp4                 1                 8             0     100</span></span>
-<span><span class="co">#&gt; 4      sp1      sp5                 1                 4             0     100</span></span>
-<span><span class="co">#&gt; 5      sp1      sp6                 1                16             0     100</span></span>
-<span><span class="co">#&gt; 6      sp1      sp7                 1                 1             0     100</span></span>
-<span><span class="co">#&gt;   p_value exp_cooccur alpha_mle alpha_medianInt conf_level       ci_blaker</span></span>
-<span><span class="co">#&gt; 1       1        0.03    -9.903 [-9.903, 3.476]       0.95 [-9.903, 6.421]</span></span>
-<span><span class="co">#&gt; 2       1        0.29    -9.903 [-9.903, 0.895]       0.95  [-9.903, 3.84]</span></span>
-<span><span class="co">#&gt; 3       1        0.08    -9.903 [-9.903, 2.442]       0.95 [-9.903, 5.387]</span></span>
-<span><span class="co">#&gt; 4       1        0.04    -9.903 [-9.903, 3.178]       0.95 [-9.903, 6.122]</span></span>
-<span><span class="co">#&gt; 5       1        0.16    -9.903 [-9.903, 1.658]       0.95 [-9.903, 4.603]</span></span>
-<span><span class="co">#&gt; 6       1        0.01    -9.903 [-9.903, 4.595]       0.95  [-9.903, 7.54]</span></span>
-<span><span class="co">#&gt;             ci_cp          ci_midQ         ci_midP jaccard sorensen simpson</span></span>
-<span><span class="co">#&gt; 1  [-9.903, 7.14] [-5.045, -1.382] [-9.903, 6.421]       0        0       0</span></span>
-<span><span class="co">#&gt; 2 [-9.903, 4.559] [-6.336, -2.672]  [-9.903, 3.84]       0        0       0</span></span>
-<span><span class="co">#&gt; 3 [-9.903, 6.106] [-5.562, -1.899] [-9.903, 5.387]       0        0       0</span></span>
-<span><span class="co">#&gt; 4 [-9.903, 6.842] [-5.194, -1.531] [-9.903, 6.122]       0        0       0</span></span>
-<span><span class="co">#&gt; 5 [-9.903, 5.322] [-5.954, -2.291] [-9.903, 4.603]       0        0       0</span></span>
-<span><span class="co">#&gt; 6 [-9.903, 8.259] [-4.486, -0.822]  [-9.903, 7.54]       0        0       0</span></span>
-<span><span class="co">#&gt;   errornote</span></span>
-<span><span class="co">#&gt; 1        NA</span></span>
-<span><span class="co">#&gt; 2        NA</span></span>
-<span><span class="co">#&gt; 3        NA</span></span>
-<span><span class="co">#&gt; 4        NA</span></span>
-<span><span class="co">#&gt; 5        NA</span></span>
-<span><span class="co">#&gt; 6        NA</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; $occur_mat</span></span>
-<span><span class="co">#&gt;       sp1 sp2 sp3 sp4 sp5 sp6 sp7 sp8 sp9 sp10 sp11 sp12 sp13 sp14 sp15 sp16</span></span>
-<span><span class="co">#&gt; site1   0   0   0   0   0   0   0   1   0    0    0    0    0    0    0    0</span></span>
-<span><span class="co">#&gt; site2   0   0   0   0   0   0   0   1   0    0    0    0    0    0    0    0</span></span>
-<span><span class="co">#&gt; site3   0   0   1   0   0   0   0   0   0    1    0    0    0    0    0    0</span></span>
-<span><span class="co">#&gt; site4   0   0   1   0   0   1   0   0   0    0    0    0    0    0    0    0</span></span>
-<span><span class="co">#&gt; site5   0   0   1   0   0   0   0   0   0    0    0    0    0    0    0    0</span></span>
-<span><span class="co">#&gt; site6   0   0   0   0   0   0   0   0   0    0    0    0    0    0    0    0</span></span>
-<span><span class="co">#&gt;       sp17 sp18 sp19 sp20 sp21 sp22 sp23 sp24</span></span>
-<span><span class="co">#&gt; site1    0    0    1    0    0    0    0    1</span></span>
-<span><span class="co">#&gt; site2    0    0    0    0    0    0    0    1</span></span>
-<span><span class="co">#&gt; site3    0    0    0    0    1    0    0    0</span></span>
-<span><span class="co">#&gt; site4    0    0    1    0    0    0    0    0</span></span>
-<span><span class="co">#&gt; site5    0    0    1    0    0    0    0    1</span></span>
-<span><span class="co">#&gt; site6    0    1    0    0    0    0    0    0</span></span>
 <span><span class="co">#&gt; ~~~~~~~~~~ COMPLETED: printing head of all elements of the output list ~~~~~~~~~~</span></span>
 <span><span class="co">#&gt; Approx. completion</span></span>
 <span><span class="co">#&gt; 25%</span></span>
