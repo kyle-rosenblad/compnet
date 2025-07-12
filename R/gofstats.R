@@ -32,14 +32,10 @@ gofstats <- function(mod,
   N_species <- length(unique(c(d$spAid, d$spBid)))
 
   if(mod$family=='fnchypg'){
-    invisible(capture.output(aff <- CooccurrenceAffinity::affinity(data=mod$presabs, row.or.col="col")))
-    affinity_mle <- aff$all[c("entity_1", "entity_2", "alpha_mle")]
-    names(affinity_mle) <- c("spAid_orig", "spBid_orig", "alpha_mle")
-    d <- merge(d, affinity_mle, by=c("spAid_orig", "spBid_orig"), all.x=TRUE, all.y=FALSE, sort=FALSE)
 
     dsquare <- matrix(NA, nrow = N_species, ncol = N_species)
-    for (i in 1:N_species) {
-      tempvec <- subset(d, d$spAid == i | d$spBid == i)$alpha_mle
+    for(i in 1:nrow(dsquare)){
+      tempvec <- subset(d, d$spAid==i | d$spBid==i)$both
       tempvec <- append(tempvec, NA, after = i - 1)
       dsquare[i, ] <- tempvec
     }
@@ -48,29 +44,26 @@ gofstats <- function(mod,
     gofstats_sim <- data.frame(sd.rowmean = NA, cycle.dep = NA)
 
     # Get posterior predictive matrix from fnchypg model
-    alpha_array <- rstan::extract(mod$stanmod, pars = "alpha", permuted = TRUE)$alpha
-    alpha_array <- t(as.matrix(alpha_array))
-
-    idx <- sample(seq_len(ncol(alpha_array)), size = ncol(alpha_array), replace = FALSE)
-    alpha_draws <- alpha_array[, idx]
-
-    odens <- ncol(alpha_draws) / 4
-    cat("Approx. completion", fill = TRUE)
-
-    for (j in 1:ncol(alpha_draws)) {
-      if (j %% odens == 0) cat(25 * j / odens, "%", sep = "", fill = TRUE)
-
-      dtemp <- d
-      dtemp$alpha_draws <- alpha_draws[, j]
-
-      dsquaretemp <- matrix(NA, nrow = N_species, ncol = N_species)
-      for (i in 1:N_species) {
-        tempvec <- subset(dtemp, dtemp$spAid == i | dtemp$spBid == i)$alpha_draws
-        tempvec <- append(tempvec, NA, after = i - 1)
-        dsquaretemp[i, ] <- tempvec
+    ppred <- postpredsamp(mod)
+    if(thin==T){
+      ppred <- ppred[, sample(1:ncol(ppred), size=min(thin_to, ncol(ppred)), replace=FALSE)]
+    }
+    odens <- ncol(ppred)/4
+    cat("Approx. completion", fill=T)
+    for(j in 1:ncol(ppred)){
+      if(j%%odens==0){
+        cat(25*j/odens, "%", sep="", fill=T)
       }
+      dtemp <- d
+      dtemp$ppred <- ppred[,j]
+      dsquaretemp <- matrix(NA, nrow=N_species, ncol=N_species)
 
-      gofstats_sim[j, ] <- compute_gofstats(dsquaretemp)
+      for(i in 1:nrow(dsquaretemp)){
+        tempvec <- subset(dtemp, dtemp$spAid==i | dtemp$spBid==i)$ppred
+        tempvec <- append(tempvec, NA, after = i - 1)
+        dsquaretemp[i,] <- tempvec
+      }
+      gofstats_sim[j,] <- compute_gofstats(dsquaretemp)
     }
 
   }
@@ -78,10 +71,9 @@ gofstats <- function(mod,
 
 
   if(mod$family=='binomial'){
-    d$pboth <- d$both/d$either
     dsquare <- matrix(NA, nrow = N_species, ncol = N_species)
     for(i in 1:nrow(dsquare)){
-      tempvec <- subset(d, d$spAid==i | d$spBid==i)$pboth
+      tempvec <- subset(d, d$spAid==i | d$spBid==i)$both
       tempvec <- append(tempvec, NA, after = i - 1)
       dsquare[i, ] <- tempvec
     }
@@ -101,11 +93,10 @@ gofstats <- function(mod,
       }
       dtemp <- d
       dtemp$ppred <- ppred[,j]
-      dtemp$pboth2 <- dtemp$ppred/dtemp$either
       dsquaretemp <- matrix(NA, nrow=N_species, ncol=N_species)
 
       for(i in 1:nrow(dsquaretemp)){
-        tempvec <- subset(dtemp, dtemp$spAid==i | dtemp$spBid==i)$pboth2
+        tempvec <- subset(dtemp, dtemp$spAid==i | dtemp$spBid==i)$ppred
         tempvec <- append(tempvec, NA, after = i - 1)
         dsquaretemp[i,] <- tempvec
       }
