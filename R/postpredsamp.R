@@ -19,12 +19,22 @@
 postpredsamp <- function(mod){
 
   if(mod$family=='fnchypg'){
+    d <- mod$d
+    sp_occ <- mod$datalist$sp_occ
+    spAocc <- data.frame(spAid_orig=names(sp_occ),
+                         freqA=sp_occ)
+    spBocc <- data.frame(spBid_orig=names(sp_occ),
+                         freqB=sp_occ)
+    d <- merge(d, spAocc, by="spAid_orig", all.x=TRUE, all.y=FALSE, sort=FALSE)
+    d <- merge(d, spBocc, by="spBid_orig", all.x=TRUE, all.y=FALSE, sort=FALSE)
+
     postpredsamp <- t(mod$stanmod_samp$alpha) # make this a draw from the distribution rather than just alpha
-    #for(i in 1:nrow(postpredsamp)){
-    #  postpredsamp[i,] <- BiasedUrn::rFNCHypergeo(nran=1,
-    #                                              m1=mod$d$datalist$
-    #                                              odds=exp(postpredsamp[i,]))
-    #}
+
+    for(i in 1:nrow(postpredsamp)){
+      postpredsamp[i,] <- sapply(exp(postpredsamp[i,]), BiasedUrn::rFNCHypergeo, nran=1,
+                                 m1=d$freqA[i], m2=mod$datalist$n_sites-d$freqA[i], n=d$freqB[i])
+
+    }
 
   }
 
