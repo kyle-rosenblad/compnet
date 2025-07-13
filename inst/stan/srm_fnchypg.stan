@@ -46,7 +46,7 @@ data{
   real<lower=0> prior_intercept_scale; // SD for normal prior on the intercept
   real<lower=0> prior_betas_scale; // SD for normal prior on the coefficients of predictor variables
   real<lower=0> prior_sigma_addeff_rate; // rate for exponential prior on the sd of the species-level random effects (i.e., "additive" effects)
-  real<lower=0> prior_sigma_olre_rate; // rate for exponential prior on the sd of the species-level random effects (i.e., "additive" effects)
+  real<lower=0> prior_sigma_olre_rate; // rate for exponential prior on the sd of the dyad-level random effects
 }
 
 parameters{
@@ -55,14 +55,15 @@ parameters{
   vector[Xsp_cols] beta_sp; // coefficients for species-level terms in linear predictor
   real<lower=0> sigma; // sd of species-level random effects (i.e., "additive" effects)
   real<lower=0> sigma_olre; // sd of dyad-level t-distributed random effects
-  real<lower=0> nu_olre; // degrees of freedom for dyad-level t-distributed random effects
-  vector[n_nodes] a_raw; // species-level random effects (i.e., "additive" effects)
-  vector[N] olre; // species-level random effects (i.e., "additive" effects)
+  vector[n_nodes] a_raw; // species-level random effects (i.e., "additive" effects) for non-centered parameterization
+  vector[N] olre_raw; // dyad-level random effects for non-centered parameterization
 }
 
 transformed parameters{
     // scale species-level random intercepts from non-centered parameterization
     vector[n_nodes] a = sigma * a_raw;
+    // scale dyad-level random intercepts from non-centered parameterization
+    vector[n_nodes] olre = sigma_olre * olre_raw;
 }
 
 model{
@@ -78,9 +79,8 @@ model{
   a_raw ~ normal(0, 1);
   sigma ~ exponential(prior_sigma_addeff_rate);
 
-  olre ~ student_t(nu_olre, 0, sigma_olre);
+  olre_raw ~ normal(0, 1);
   sigma_olre ~ exponential(prior_sigma_olre_rate);
-  nu_olre ~ gamma(2, 0.1);
 
   // likelihood
   for (i in 1:N) {

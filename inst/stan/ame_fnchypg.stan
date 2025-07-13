@@ -47,6 +47,7 @@ data{
   real<lower=0> prior_intercept_scale; // SD for normal prior on the intercept
   real<lower=0> prior_betas_scale; // SD for normal prior on the coefficients of predictor variables
   real<lower=0> prior_sigma_addeff_rate; // rate for exponential prior on the sd of the species-level random effects (i.e., "additive" effects)
+  real<lower=0> prior_sigma_olre_rate; // rate for exponential prior on the sd of the dyad-level random effects
   real<lower=0> prior_lambda_scale; // SD for normal prior on diagonal values of the lambda matrix, which scales the strength of the effect of each latent dimension on cooccurrence probabilities
 }
 
@@ -56,6 +57,8 @@ parameters{
   vector[Xsp_cols] beta_sp; // coefficients for species-level terms in linear predictor
   real<lower=0> sigma; // sd of species-level random effects (i.e., "additive" effects)
   vector[n_nodes] a_raw; // species-level random effects (i.e., "additive" effects)
+  real<lower=0> sigma_olre; // sd of dyad-level random effects
+  vector[n_nodes] olre_raw; // dyad-level random effects
   matrix[n_nodes, K] U_raw; // multiplicative effect values for each species across each latent dimension in latent factor model
   ordered[K] lambda_diag; // diagnoal values of the lambda matrix, which controls the strength and direction of multiplicative effects
 }
@@ -63,6 +66,8 @@ parameters{
 transformed parameters{
     // scale species-level random intercepts from non-centered parameterization
     vector[n_nodes] a = sigma * a_raw;
+    // scale dyad-level random intercepts from non-centered parameterization
+    vector[n_nodes] olre = sigma_olre * olre_raw;
 
   // Set the first element in each latent factor as positive to avoid sampling
   // issues with reflectional invariance, which we can think of pragmatically
@@ -91,6 +96,9 @@ model{
   a_raw ~ normal(0, 1);
   sigma ~ exponential(prior_sigma_addeff_rate);
 
+  olre_raw ~ normal(0, 1);
+  sigma_olre ~ exponential(prior_sigma_olre_rate);
+
   // Raw latent factors are all standard normal, as shown below, and then
   // the diagonal values of lambda determine the strength and direction
   // of the multiplicative interaction between species for each latent
@@ -108,6 +116,7 @@ model{
                dot_product(XA[i], beta_sp) +
                dot_product(XB[i], beta_sp) +
                a[spAid[i]] + a[spBid[i]] +
+               olre[i] +
                U[spAid[i], 1:K] * diag_matrix(lambda_diag) *
         (U[spBid[i], 1:K]');
     int spApres_i = sp_occ[spAid[i]]; // number of sites occupied by species A in dyad i
@@ -124,6 +133,7 @@ generated quantities{
                dot_product(XA[i], beta_sp) +
                dot_product(XB[i], beta_sp) +
                a[spAid[i]] + a[spBid[i]] +
+               olre[i] +
                U[spAid[i], 1:K] * diag_matrix(lambda_diag) *
         (U[spBid[i], 1:K]');
   }
