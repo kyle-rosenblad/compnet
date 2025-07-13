@@ -17,7 +17,12 @@ gofstats(mod, thin = T, thin_to = 300)
 A named vector containing quantiles on the interval \eqn{[0,1]} for: 1- the standard deviation
 of row means, and 2- The triadic dependency metric used by Hoff, Fosdick, & Volfovsky's "amen"
 package. These values represent the proportion of the posterior predictive simulation that were
-less than the value for the observed data.
+less than the value for the reference comparison. For models fit with Fisher's noncentral hypergeometric.
+distribution, this reference comparison is the distribution of alpha from a model fit with vague priors
+and no random effects, fixed effects, etc., to represent the degree of dyadic and triadic nonindependence
+in alpha in the original data as faithfully as possible. (Using posterior predictive draws of "both" does
+not work well for technical reasons having to do with the complex nature of the FNCHYPG likelihood). For
+models fit with the binomial distribution, the reference comparison is the ratio of "both" to "either" in the original data.
 }
 \description{
 Report quantiles of gofstats values for observed data relative to posterior predictive distribution

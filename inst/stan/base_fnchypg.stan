@@ -50,10 +50,10 @@ transformed parameters {
   vector[N] alpha = mu + sigma * alpha_raw; // non-centered parameterization
 }
 model {
-  // Priors
+  // vague priors
   mu ~ normal(0, 5);
   sigma ~ exponential(1);
-  alpha_raw ~ normal(0,1); // implies alpha ~ normal(mu, sigma)
+  alpha_raw ~ normal(0,1);
 
   // Likelihood
   for (i in 1:N) {
