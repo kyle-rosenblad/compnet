@@ -1,6 +1,5 @@
 #' Report quantiles of gofstats values for observed data relative to posterior predictive distribution
 #'
-#' @importFrom CooccurrenceAffinity affinity
 #' @export
 #' @param mod An object of class "compnet" created by the buildcompnet() function.
 #' @param thin Logical value indicating whether to take a random subsample of posterior draws.
