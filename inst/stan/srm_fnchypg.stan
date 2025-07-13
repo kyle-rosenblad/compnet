@@ -63,7 +63,7 @@ transformed parameters{
     // scale species-level random intercepts from non-centered parameterization
     vector[n_nodes] a = sigma * a_raw;
     // scale dyad-level random intercepts from non-centered parameterization
-    vector[n_nodes] olre = sigma_olre * olre_raw;
+    vector[N] olre = sigma_olre * olre_raw;
 }
 
 model{

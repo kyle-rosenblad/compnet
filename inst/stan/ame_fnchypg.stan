@@ -58,7 +58,7 @@ parameters{
   real<lower=0> sigma; // sd of species-level random effects (i.e., "additive" effects)
   vector[n_nodes] a_raw; // species-level random effects (i.e., "additive" effects)
   real<lower=0> sigma_olre; // sd of dyad-level random effects
-  vector[n_nodes] olre_raw; // dyad-level random effects
+  vector[N] olre_raw; // dyad-level random effects
   matrix[n_nodes, K] U_raw; // multiplicative effect values for each species across each latent dimension in latent factor model
   ordered[K] lambda_diag; // diagnoal values of the lambda matrix, which controls the strength and direction of multiplicative effects
 }
@@ -67,7 +67,7 @@ transformed parameters{
     // scale species-level random intercepts from non-centered parameterization
     vector[n_nodes] a = sigma * a_raw;
     // scale dyad-level random intercepts from non-centered parameterization
-    vector[n_nodes] olre = sigma_olre * olre_raw;
+    vector[N] olre = sigma_olre * olre_raw;
 
   // Set the first element in each latent factor as positive to avoid sampling
   // issues with reflectional invariance, which we can think of pragmatically
