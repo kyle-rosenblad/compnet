@@ -54,16 +54,15 @@ parameters{
   vector[Xdy_cols] beta_dy; // coefficients for dyad-level terms in linear predictor
   vector[Xsp_cols] beta_sp; // coefficients for species-level terms in linear predictor
   real<lower=0> sigma; // sd of species-level random effects (i.e., "additive" effects)
-  real<lower=0> sigma_olre; // sd of species-level random effects (i.e., "additive" effects)
+  real<lower=0> sigma_olre; // sd of dyad-level t-distributed random effects
+  real<lower=0> nu_olre; // degrees of freedom for dyad-level t-distributed random effects
   vector[n_nodes] a_raw; // species-level random effects (i.e., "additive" effects)
-  vector[N] olre_raw; // species-level random effects (i.e., "additive" effects)
+  vector[N] olre; // species-level random effects (i.e., "additive" effects)
 }
 
 transformed parameters{
     // scale species-level random intercepts from non-centered parameterization
     vector[n_nodes] a = sigma * a_raw;
-    // scale observation-level random intercepts from non-centered parameterization
-    vector[N] olre = sigma_olre * olre_raw;
 }
 
 model{
@@ -79,8 +78,9 @@ model{
   a_raw ~ normal(0, 1);
   sigma ~ exponential(prior_sigma_addeff_rate);
 
-  olre_raw ~ normal(0, 1);
+  olre ~ student_t(nu_olre, 0, sigma_olre);
   sigma_olre ~ exponential(prior_sigma_olre_rate);
+  nu_olre ~ gamma(2, 0.1);
 
   // likelihood
   for (i in 1:N) {
