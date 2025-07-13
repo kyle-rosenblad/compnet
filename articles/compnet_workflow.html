@@ -179,8 +179,8 @@ look like:</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; SAMPLING FOR MODEL 'srm_fnchypg' NOW (CHAIN 1).</span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
-<span><span class="co">#&gt; Chain 1: Gradient evaluation took 0.00059 seconds</span></span>
-<span><span class="co">#&gt; Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 5.9 seconds.</span></span>
+<span><span class="co">#&gt; Chain 1: Gradient evaluation took 0.000608 seconds</span></span>
+<span><span class="co">#&gt; Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 6.08 seconds.</span></span>
 <span><span class="co">#&gt; Chain 1: Adjust your expectations accordingly!</span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
@@ -205,9 +205,9 @@ look like:</p>
 <span><span class="co">#&gt; Chain 1: Iteration: 180 / 200 [ 90%]  (Sampling)</span></span>
 <span><span class="co">#&gt; Chain 1: Iteration: 200 / 200 [100%]  (Sampling)</span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
-<span><span class="co">#&gt; Chain 1:  Elapsed Time: 2.016 seconds (Warm-up)</span></span>
-<span><span class="co">#&gt; Chain 1:                1.905 seconds (Sampling)</span></span>
-<span><span class="co">#&gt; Chain 1:                3.921 seconds (Total)</span></span>
+<span><span class="co">#&gt; Chain 1:  Elapsed Time: 2.027 seconds (Warm-up)</span></span>
+<span><span class="co">#&gt; Chain 1:                1.936 seconds (Sampling)</span></span>
+<span><span class="co">#&gt; Chain 1:                3.963 seconds (Total)</span></span>
 <span><span class="co">#&gt; Chain 1:</span></span>
 <span><span class="co">#&gt; Warning: The largest R-hat is 1.14, indicating chains have not mixed.</span></span>
 <span><span class="co">#&gt; Running the chains for more iterations may help. See</span></span>
@@ -236,8 +236,8 @@ here.)</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; SAMPLING FOR MODEL 'srm_fnchypg' NOW (CHAIN 1).</span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
-<span><span class="co">#&gt; Chain 1: Gradient evaluation took 0.000347 seconds</span></span>
-<span><span class="co">#&gt; Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 3.47 seconds.</span></span>
+<span><span class="co">#&gt; Chain 1: Gradient evaluation took 0.00035 seconds</span></span>
+<span><span class="co">#&gt; Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 3.5 seconds.</span></span>
 <span><span class="co">#&gt; Chain 1: Adjust your expectations accordingly!</span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
@@ -254,9 +254,9 @@ here.)</p>
 <span><span class="co">#&gt; Chain 1: Iteration: 1120 / 1200 [ 93%]  (Sampling)</span></span>
 <span><span class="co">#&gt; Chain 1: Iteration: 1200 / 1200 [100%]  (Sampling)</span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
-<span><span class="co">#&gt; Chain 1:  Elapsed Time: 5.486 seconds (Warm-up)</span></span>
-<span><span class="co">#&gt; Chain 1:                6.438 seconds (Sampling)</span></span>
-<span><span class="co">#&gt; Chain 1:                11.924 seconds (Total)</span></span>
+<span><span class="co">#&gt; Chain 1:  Elapsed Time: 5.457 seconds (Warm-up)</span></span>
+<span><span class="co">#&gt; Chain 1:                6.36 seconds (Sampling)</span></span>
+<span><span class="co">#&gt; Chain 1:                11.817 seconds (Total)</span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
 <span><span class="co">#&gt; [1] "compnet uses Stan under the hood. You may see warnings from Stan alongside, this message. To deal with any warnings Stan might issue, Please see the links provided in Stan's output, as well as the compnet website:https://kyle-rosenblad.github.io/compnet/"</span></span></code></pre></div>
 <p>Before we try to interpret any results, let’s see if this model
@@ -267,14 +267,59 @@ among observations, as discussed in the Introduction. Let’s use the
 of non-independence in the example data set:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">nd_0_mod_gofstats</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/gofstats.html">gofstats</a></span><span class="op">(</span><span class="va">nd_0_mod</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Approx. completion</span></span>
-<span><span class="co">#&gt; 25%</span></span>
-<span><span class="co">#&gt; 50%</span></span>
-<span><span class="co">#&gt; 75%</span></span>
-<span><span class="co">#&gt; 100%</span></span>
+<span><span class="co">#&gt; Fitting base model for comparison with full model</span></span>
+<span><span class="co">#&gt; SAMPLING FOR MODEL 'base_fnchypg' NOW (CHAIN 1).</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; SAMPLING FOR MODEL 'base_fnchypg' NOW (CHAIN 2).</span></span>
+<span><span class="co">#&gt; Chain 1: </span></span>
+<span><span class="co">#&gt; Chain 1: Gradient evaluation took 0.000543 seconds</span></span>
+<span><span class="co">#&gt; Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 5.43 seconds.</span></span>
+<span><span class="co">#&gt; Chain 1: Adjust your expectations accordingly!</span></span>
+<span><span class="co">#&gt; Chain 1: </span></span>
+<span><span class="co">#&gt; Chain 1: </span></span>
+<span><span class="co">#&gt; Chain 2: </span></span>
+<span><span class="co">#&gt; Chain 2: Gradient evaluation took 0.000547 seconds</span></span>
+<span><span class="co">#&gt; Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 5.47 seconds.</span></span>
+<span><span class="co">#&gt; Chain 2: Adjust your expectations accordingly!</span></span>
+<span><span class="co">#&gt; Chain 2: </span></span>
+<span><span class="co">#&gt; Chain 2: </span></span>
+<span><span class="co">#&gt; Chain 1: Iteration:    1 / 2000 [  0%]  (Warmup)</span></span>
+<span><span class="co">#&gt; Chain 2: Iteration:    1 / 2000 [  0%]  (Warmup)</span></span>
+<span><span class="co">#&gt; Chain 1: Iteration:  200 / 2000 [ 10%]  (Warmup)</span></span>
+<span><span class="co">#&gt; Chain 2: Iteration:  200 / 2000 [ 10%]  (Warmup)</span></span>
+<span><span class="co">#&gt; Chain 1: Iteration:  400 / 2000 [ 20%]  (Warmup)</span></span>
+<span><span class="co">#&gt; Chain 2: Iteration:  400 / 2000 [ 20%]  (Warmup)</span></span>
+<span><span class="co">#&gt; Chain 1: Iteration:  600 / 2000 [ 30%]  (Warmup)</span></span>
+<span><span class="co">#&gt; Chain 2: Iteration:  600 / 2000 [ 30%]  (Warmup)</span></span>
+<span><span class="co">#&gt; Chain 1: Iteration:  800 / 2000 [ 40%]  (Warmup)</span></span>
+<span><span class="co">#&gt; Chain 2: Iteration:  800 / 2000 [ 40%]  (Warmup)</span></span>
+<span><span class="co">#&gt; Chain 1: Iteration: 1000 / 2000 [ 50%]  (Warmup)</span></span>
+<span><span class="co">#&gt; Chain 1: Iteration: 1001 / 2000 [ 50%]  (Sampling)</span></span>
+<span><span class="co">#&gt; Chain 2: Iteration: 1000 / 2000 [ 50%]  (Warmup)</span></span>
+<span><span class="co">#&gt; Chain 2: Iteration: 1001 / 2000 [ 50%]  (Sampling)</span></span>
+<span><span class="co">#&gt; Chain 1: Iteration: 1200 / 2000 [ 60%]  (Sampling)</span></span>
+<span><span class="co">#&gt; Chain 2: Iteration: 1200 / 2000 [ 60%]  (Sampling)</span></span>
+<span><span class="co">#&gt; Chain 1: Iteration: 1400 / 2000 [ 70%]  (Sampling)</span></span>
+<span><span class="co">#&gt; Chain 2: Iteration: 1400 / 2000 [ 70%]  (Sampling)</span></span>
+<span><span class="co">#&gt; Chain 1: Iteration: 1600 / 2000 [ 80%]  (Sampling)</span></span>
+<span><span class="co">#&gt; Chain 2: Iteration: 1600 / 2000 [ 80%]  (Sampling)</span></span>
+<span><span class="co">#&gt; Chain 1: Iteration: 1800 / 2000 [ 90%]  (Sampling)</span></span>
+<span><span class="co">#&gt; Chain 2: Iteration: 1800 / 2000 [ 90%]  (Sampling)</span></span>
+<span><span class="co">#&gt; Chain 1: Iteration: 2000 / 2000 [100%]  (Sampling)</span></span>
+<span><span class="co">#&gt; Chain 1: </span></span>
+<span><span class="co">#&gt; Chain 1:  Elapsed Time: 6.744 seconds (Warm-up)</span></span>
+<span><span class="co">#&gt; Chain 1:                4.495 seconds (Sampling)</span></span>
+<span><span class="co">#&gt; Chain 1:                11.239 seconds (Total)</span></span>
+<span><span class="co">#&gt; Chain 1: </span></span>
+<span><span class="co">#&gt; Chain 2: Iteration: 2000 / 2000 [100%]  (Sampling)</span></span>
+<span><span class="co">#&gt; Chain 2: </span></span>
+<span><span class="co">#&gt; Chain 2:  Elapsed Time: 7.061 seconds (Warm-up)</span></span>
+<span><span class="co">#&gt; Chain 2:                4.534 seconds (Sampling)</span></span>
+<span><span class="co">#&gt; Chain 2:                11.595 seconds (Total)</span></span>
+<span><span class="co">#&gt; Chain 2:</span></span>
 <span><span class="va">nd_0_mod_gofstats</span></span>
 <span><span class="co">#&gt; p.sd.rowmeans   p.cycle.dep </span></span>
-<span><span class="co">#&gt;     0.9966667     1.0000000</span></span></code></pre></div>
+<span><span class="co">#&gt;    0.02172222    0.60285556</span></span></code></pre></div>
 <p>The first ‘p-value’, ‘p.sd.rowmeans’, tells us about patterns driven
 by the fact that all species pairs including a given species share
 features in common. Our ‘p.sd.rowmeans’ is very high, which means when
@@ -301,8 +346,8 @@ aren’t looking good.</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; SAMPLING FOR MODEL 'ame_fnchypg' NOW (CHAIN 1).</span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
-<span><span class="co">#&gt; Chain 1: Gradient evaluation took 0.000514 seconds</span></span>
-<span><span class="co">#&gt; Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 5.14 seconds.</span></span>
+<span><span class="co">#&gt; Chain 1: Gradient evaluation took 0.000664 seconds</span></span>
+<span><span class="co">#&gt; Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 6.64 seconds.</span></span>
 <span><span class="co">#&gt; Chain 1: Adjust your expectations accordingly!</span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
@@ -319,20 +364,65 @@ aren’t looking good.</p>
 <span><span class="co">#&gt; Chain 1: Iteration: 900 / 1000 [ 90%]  (Sampling)</span></span>
 <span><span class="co">#&gt; Chain 1: Iteration: 1000 / 1000 [100%]  (Sampling)</span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
-<span><span class="co">#&gt; Chain 1:  Elapsed Time: 7.071 seconds (Warm-up)</span></span>
-<span><span class="co">#&gt; Chain 1:                10.129 seconds (Sampling)</span></span>
-<span><span class="co">#&gt; Chain 1:                17.2 seconds (Total)</span></span>
+<span><span class="co">#&gt; Chain 1:  Elapsed Time: 7.017 seconds (Warm-up)</span></span>
+<span><span class="co">#&gt; Chain 1:                11.396 seconds (Sampling)</span></span>
+<span><span class="co">#&gt; Chain 1:                18.413 seconds (Total)</span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
 <span><span class="co">#&gt; [1] "compnet uses Stan under the hood. You may see warnings from Stan alongside, this message. To deal with any warnings Stan might issue, Please see the links provided in Stan's output, as well as the compnet website:https://kyle-rosenblad.github.io/compnet/"</span></span>
 <span><span class="va">nd_1_mod_gofstats</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/gofstats.html">gofstats</a></span><span class="op">(</span><span class="va">nd_1_mod</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Approx. completion</span></span>
-<span><span class="co">#&gt; 25%</span></span>
-<span><span class="co">#&gt; 50%</span></span>
-<span><span class="co">#&gt; 75%</span></span>
-<span><span class="co">#&gt; 100%</span></span>
+<span><span class="co">#&gt; Fitting base model for comparison with full model</span></span>
+<span><span class="co">#&gt; SAMPLING FOR MODEL 'base_fnchypg' NOW (CHAIN 1).</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; SAMPLING FOR MODEL 'base_fnchypg' NOW (CHAIN 2).</span></span>
+<span><span class="co">#&gt; Chain 1: </span></span>
+<span><span class="co">#&gt; Chain 1: Gradient evaluation took 0.000549 seconds</span></span>
+<span><span class="co">#&gt; Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 5.49 seconds.</span></span>
+<span><span class="co">#&gt; Chain 1: Adjust your expectations accordingly!</span></span>
+<span><span class="co">#&gt; Chain 1: </span></span>
+<span><span class="co">#&gt; Chain 1: </span></span>
+<span><span class="co">#&gt; Chain 1: Iteration:    1 / 2000 [  0%]  (Warmup)</span></span>
+<span><span class="co">#&gt; Chain 2: </span></span>
+<span><span class="co">#&gt; Chain 2: Gradient evaluation took 0.000534 seconds</span></span>
+<span><span class="co">#&gt; Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 5.34 seconds.</span></span>
+<span><span class="co">#&gt; Chain 2: Adjust your expectations accordingly!</span></span>
+<span><span class="co">#&gt; Chain 2: </span></span>
+<span><span class="co">#&gt; Chain 2: </span></span>
+<span><span class="co">#&gt; Chain 2: Iteration:    1 / 2000 [  0%]  (Warmup)</span></span>
+<span><span class="co">#&gt; Chain 1: Iteration:  200 / 2000 [ 10%]  (Warmup)</span></span>
+<span><span class="co">#&gt; Chain 2: Iteration:  200 / 2000 [ 10%]  (Warmup)</span></span>
+<span><span class="co">#&gt; Chain 1: Iteration:  400 / 2000 [ 20%]  (Warmup)</span></span>
+<span><span class="co">#&gt; Chain 2: Iteration:  400 / 2000 [ 20%]  (Warmup)</span></span>
+<span><span class="co">#&gt; Chain 1: Iteration:  600 / 2000 [ 30%]  (Warmup)</span></span>
+<span><span class="co">#&gt; Chain 2: Iteration:  600 / 2000 [ 30%]  (Warmup)</span></span>
+<span><span class="co">#&gt; Chain 1: Iteration:  800 / 2000 [ 40%]  (Warmup)</span></span>
+<span><span class="co">#&gt; Chain 2: Iteration:  800 / 2000 [ 40%]  (Warmup)</span></span>
+<span><span class="co">#&gt; Chain 1: Iteration: 1000 / 2000 [ 50%]  (Warmup)</span></span>
+<span><span class="co">#&gt; Chain 1: Iteration: 1001 / 2000 [ 50%]  (Sampling)</span></span>
+<span><span class="co">#&gt; Chain 2: Iteration: 1000 / 2000 [ 50%]  (Warmup)</span></span>
+<span><span class="co">#&gt; Chain 2: Iteration: 1001 / 2000 [ 50%]  (Sampling)</span></span>
+<span><span class="co">#&gt; Chain 1: Iteration: 1200 / 2000 [ 60%]  (Sampling)</span></span>
+<span><span class="co">#&gt; Chain 2: Iteration: 1200 / 2000 [ 60%]  (Sampling)</span></span>
+<span><span class="co">#&gt; Chain 1: Iteration: 1400 / 2000 [ 70%]  (Sampling)</span></span>
+<span><span class="co">#&gt; Chain 2: Iteration: 1400 / 2000 [ 70%]  (Sampling)</span></span>
+<span><span class="co">#&gt; Chain 1: Iteration: 1600 / 2000 [ 80%]  (Sampling)</span></span>
+<span><span class="co">#&gt; Chain 2: Iteration: 1600 / 2000 [ 80%]  (Sampling)</span></span>
+<span><span class="co">#&gt; Chain 1: Iteration: 1800 / 2000 [ 90%]  (Sampling)</span></span>
+<span><span class="co">#&gt; Chain 2: Iteration: 1800 / 2000 [ 90%]  (Sampling)</span></span>
+<span><span class="co">#&gt; Chain 1: Iteration: 2000 / 2000 [100%]  (Sampling)</span></span>
+<span><span class="co">#&gt; Chain 1: </span></span>
+<span><span class="co">#&gt; Chain 1:  Elapsed Time: 6.95 seconds (Warm-up)</span></span>
+<span><span class="co">#&gt; Chain 1:                4.57 seconds (Sampling)</span></span>
+<span><span class="co">#&gt; Chain 1:                11.52 seconds (Total)</span></span>
+<span><span class="co">#&gt; Chain 1: </span></span>
+<span><span class="co">#&gt; Chain 2: Iteration: 2000 / 2000 [100%]  (Sampling)</span></span>
+<span><span class="co">#&gt; Chain 2: </span></span>
+<span><span class="co">#&gt; Chain 2:  Elapsed Time: 7.139 seconds (Warm-up)</span></span>
+<span><span class="co">#&gt; Chain 2:                4.535 seconds (Sampling)</span></span>
+<span><span class="co">#&gt; Chain 2:                11.674 seconds (Total)</span></span>
+<span><span class="co">#&gt; Chain 2:</span></span>
 <span><span class="va">nd_1_mod_gofstats</span></span>
 <span><span class="co">#&gt; p.sd.rowmeans   p.cycle.dep </span></span>
-<span><span class="co">#&gt;             1             1</span></span></code></pre></div>
+<span><span class="co">#&gt;    0.02307778    0.00000000</span></span></code></pre></div>
 <p>Unsurprisingly, our gofstats look fine.</p>
 <p>Before we move forward with this model, I recommend using the
 ‘DHARMa’ package to run some additional checks for model fit problems.
@@ -362,9 +452,11 @@ patterns are trivial. The diagnostic plots are key in these cases.</p>
 <span><span class="co">#&gt;  simulated</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; data:  simulationOutput</span></span>
-<span><span class="co">#&gt; dispersion = 4.8351, p-value &lt; 2.2e-16</span></span>
+<span><span class="co">#&gt; dispersion = 4.6322, p-value &lt; 2.2e-16</span></span>
 <span><span class="co">#&gt; alternative hypothesis: two.sided</span></span>
-<span><span class="fu"><a href="https://rdrr.io/pkg/DHARMa/man/testQuantiles.html" class="external-link">testQuantiles</a></span><span class="op">(</span><span class="va">nd_1_mod_dharma</span><span class="op">)</span></span></code></pre>
+<span><span class="fu"><a href="https://rdrr.io/pkg/DHARMa/man/testQuantiles.html" class="external-link">testQuantiles</a></span><span class="op">(</span><span class="va">nd_1_mod_dharma</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning in newton(lsp = lsp, X = G$X, y = G$y, Eb = G$Eb, UrS = G$UrS, L = G$L,</span></span>
+<span><span class="co">#&gt; : Fitting terminated with step failure - check results carefully</span></span></code></pre>
 <p><img src="compnet_workflow_files/figure-html/unnamed-chunk-8-2.png" width="700"></p>
 <pre><code><span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;  Test for location of quantiles via qgam</span></span>
@@ -378,7 +470,7 @@ patterns are trivial. The diagnostic plots are key in these cases.</p>
 <span><span class="co">#&gt;  Asymptotic one-sample Kolmogorov-Smirnov test</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; data:  simulationOutput$scaledResiduals</span></span>
-<span><span class="co">#&gt; D = 0.089323, p-value = 0.02445</span></span>
+<span><span class="co">#&gt; D = 0.089271, p-value = 0.02458</span></span>
 <span><span class="co">#&gt; alternative hypothesis: two-sided</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/DHARMa/man/testZeroInflation.html" class="external-link">testZeroInflation</a></span><span class="op">(</span><span class="va">nd_1_mod_dharma</span><span class="op">)</span></span></code></pre>
 <p><img src="compnet_workflow_files/figure-html/unnamed-chunk-8-4.png" width="700"></p>
@@ -387,7 +479,7 @@ patterns are trivial. The diagnostic plots are key in these cases.</p>
 <span><span class="co">#&gt;  simulation under H0 = fitted model</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; data:  simulationOutput</span></span>
-<span><span class="co">#&gt; ratioObsSim = 1.0109, p-value = 0.82</span></span>
+<span><span class="co">#&gt; ratioObsSim = 1.0188, p-value = 0.6743</span></span>
 <span><span class="co">#&gt; alternative hypothesis: two.sided</span></span></code></pre>
 <p>This all looks fine. Going forward, to keep this vignette brief,
 we’ll suppress the plots that accompany DHARMa tests, but I always
@@ -397,9 +489,9 @@ for our predictors of interest:</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/summarize_compnet.html">summarize_compnet</a></span><span class="op">(</span><span class="va">nd_1_mod</span><span class="op">)</span></span>
 <span><span class="co">#&gt;                    Mean       2.5%      97.5%</span></span>
-<span><span class="co">#&gt; intercept    -1.9546964 -2.9371982 -1.0903607</span></span>
-<span><span class="co">#&gt; ndtrait_dist  0.9360862  0.6100503  1.3066245</span></span>
-<span><span class="co">#&gt; ndtrait_sp    0.2583239 -0.1417232  0.6660443</span></span></code></pre></div>
+<span><span class="co">#&gt; intercept    -1.9425141 -2.7833558 -1.1316428</span></span>
+<span><span class="co">#&gt; ndtrait_dist  0.9483048  0.6087682  1.2914672</span></span>
+<span><span class="co">#&gt; ndtrait_sp    0.2384290 -0.1207275  0.6129366</span></span></code></pre></div>
 <p>Let’s see those as violin plots:</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/fixedeff_violins.html">fixedeff_violins</a></span><span class="op">(</span><span class="va">nd_1_mod</span><span class="op">)</span></span></code></pre></div>
@@ -472,8 +564,8 @@ we’ll run gofstats() and ‘DHARMa’ checks.</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; SAMPLING FOR MODEL 'srm_fnchypg' NOW (CHAIN 1).</span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
-<span><span class="co">#&gt; Chain 1: Gradient evaluation took 0.000356 seconds</span></span>
-<span><span class="co">#&gt; Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 3.56 seconds.</span></span>
+<span><span class="co">#&gt; Chain 1: Gradient evaluation took 0.000492 seconds</span></span>
+<span><span class="co">#&gt; Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 4.92 seconds.</span></span>
 <span><span class="co">#&gt; Chain 1: Adjust your expectations accordingly!</span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
@@ -490,25 +582,66 @@ we’ll run gofstats() and ‘DHARMa’ checks.</p>
 <span><span class="co">#&gt; Chain 1: Iteration: 1120 / 1200 [ 93%]  (Sampling)</span></span>
 <span><span class="co">#&gt; Chain 1: Iteration: 1200 / 1200 [100%]  (Sampling)</span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
-<span><span class="co">#&gt; Chain 1:  Elapsed Time: 5.904 seconds (Warm-up)</span></span>
-<span><span class="co">#&gt; Chain 1:                6.892 seconds (Sampling)</span></span>
-<span><span class="co">#&gt; Chain 1:                12.796 seconds (Total)</span></span>
-<span><span class="co">#&gt; Chain 1:</span></span>
-<span><span class="co">#&gt; Warning: There were 1 divergent transitions after warmup. See</span></span>
-<span><span class="co">#&gt; https://mc-stan.org/misc/warnings.html#divergent-transitions-after-warmup</span></span>
-<span><span class="co">#&gt; to find out why this is a problem and how to eliminate them.</span></span>
-<span><span class="co">#&gt; Warning: Examine the pairs() plot to diagnose sampling problems</span></span>
+<span><span class="co">#&gt; Chain 1:  Elapsed Time: 6.013 seconds (Warm-up)</span></span>
+<span><span class="co">#&gt; Chain 1:                5.131 seconds (Sampling)</span></span>
+<span><span class="co">#&gt; Chain 1:                11.144 seconds (Total)</span></span>
+<span><span class="co">#&gt; Chain 1: </span></span>
 <span><span class="co">#&gt; [1] "compnet uses Stan under the hood. You may see warnings from Stan alongside, this message. To deal with any warnings Stan might issue, Please see the links provided in Stan's output, as well as the compnet website:https://kyle-rosenblad.github.io/compnet/"</span></span>
 <span></span>
 <span><span class="va">nd_dom_0_mod_gofstats</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/gofstats.html">gofstats</a></span><span class="op">(</span><span class="va">nd_dom_0_mod</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Approx. completion</span></span>
-<span><span class="co">#&gt; 25%</span></span>
-<span><span class="co">#&gt; 50%</span></span>
-<span><span class="co">#&gt; 75%</span></span>
-<span><span class="co">#&gt; 100%</span></span>
+<span><span class="co">#&gt; Fitting base model for comparison with full model</span></span>
+<span><span class="co">#&gt; SAMPLING FOR MODEL 'base_fnchypg' NOW (CHAIN 1).</span></span>
+<span><span class="co">#&gt; Chain 1: </span></span>
+<span><span class="co">#&gt; Chain 1: Gradient evaluation took 0.00057 seconds</span></span>
+<span><span class="co">#&gt; Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 5.7 seconds.</span></span>
+<span><span class="co">#&gt; Chain 1: Adjust your expectations accordingly!</span></span>
+<span><span class="co">#&gt; Chain 1: </span></span>
+<span><span class="co">#&gt; Chain 1: </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; SAMPLING FOR MODEL 'base_fnchypg' NOW (CHAIN 2).</span></span>
+<span><span class="co">#&gt; Chain 1: Iteration:    1 / 2000 [  0%]  (Warmup)</span></span>
+<span><span class="co">#&gt; Chain 2: </span></span>
+<span><span class="co">#&gt; Chain 2: Gradient evaluation took 0.000567 seconds</span></span>
+<span><span class="co">#&gt; Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 5.67 seconds.</span></span>
+<span><span class="co">#&gt; Chain 2: Adjust your expectations accordingly!</span></span>
+<span><span class="co">#&gt; Chain 2: </span></span>
+<span><span class="co">#&gt; Chain 2: </span></span>
+<span><span class="co">#&gt; Chain 2: Iteration:    1 / 2000 [  0%]  (Warmup)</span></span>
+<span><span class="co">#&gt; Chain 2: Iteration:  200 / 2000 [ 10%]  (Warmup)</span></span>
+<span><span class="co">#&gt; Chain 1: Iteration:  200 / 2000 [ 10%]  (Warmup)</span></span>
+<span><span class="co">#&gt; Chain 2: Iteration:  400 / 2000 [ 20%]  (Warmup)</span></span>
+<span><span class="co">#&gt; Chain 1: Iteration:  400 / 2000 [ 20%]  (Warmup)</span></span>
+<span><span class="co">#&gt; Chain 2: Iteration:  600 / 2000 [ 30%]  (Warmup)</span></span>
+<span><span class="co">#&gt; Chain 1: Iteration:  600 / 2000 [ 30%]  (Warmup)</span></span>
+<span><span class="co">#&gt; Chain 2: Iteration:  800 / 2000 [ 40%]  (Warmup)</span></span>
+<span><span class="co">#&gt; Chain 1: Iteration:  800 / 2000 [ 40%]  (Warmup)</span></span>
+<span><span class="co">#&gt; Chain 2: Iteration: 1000 / 2000 [ 50%]  (Warmup)</span></span>
+<span><span class="co">#&gt; Chain 2: Iteration: 1001 / 2000 [ 50%]  (Sampling)</span></span>
+<span><span class="co">#&gt; Chain 1: Iteration: 1000 / 2000 [ 50%]  (Warmup)</span></span>
+<span><span class="co">#&gt; Chain 1: Iteration: 1001 / 2000 [ 50%]  (Sampling)</span></span>
+<span><span class="co">#&gt; Chain 2: Iteration: 1200 / 2000 [ 60%]  (Sampling)</span></span>
+<span><span class="co">#&gt; Chain 1: Iteration: 1200 / 2000 [ 60%]  (Sampling)</span></span>
+<span><span class="co">#&gt; Chain 2: Iteration: 1400 / 2000 [ 70%]  (Sampling)</span></span>
+<span><span class="co">#&gt; Chain 1: Iteration: 1400 / 2000 [ 70%]  (Sampling)</span></span>
+<span><span class="co">#&gt; Chain 2: Iteration: 1600 / 2000 [ 80%]  (Sampling)</span></span>
+<span><span class="co">#&gt; Chain 1: Iteration: 1600 / 2000 [ 80%]  (Sampling)</span></span>
+<span><span class="co">#&gt; Chain 2: Iteration: 1800 / 2000 [ 90%]  (Sampling)</span></span>
+<span><span class="co">#&gt; Chain 1: Iteration: 1800 / 2000 [ 90%]  (Sampling)</span></span>
+<span><span class="co">#&gt; Chain 2: Iteration: 2000 / 2000 [100%]  (Sampling)</span></span>
+<span><span class="co">#&gt; Chain 2: </span></span>
+<span><span class="co">#&gt; Chain 2:  Elapsed Time: 6.998 seconds (Warm-up)</span></span>
+<span><span class="co">#&gt; Chain 2:                4.512 seconds (Sampling)</span></span>
+<span><span class="co">#&gt; Chain 2:                11.51 seconds (Total)</span></span>
+<span><span class="co">#&gt; Chain 2: </span></span>
+<span><span class="co">#&gt; Chain 1: Iteration: 2000 / 2000 [100%]  (Sampling)</span></span>
+<span><span class="co">#&gt; Chain 1: </span></span>
+<span><span class="co">#&gt; Chain 1:  Elapsed Time: 7.188 seconds (Warm-up)</span></span>
+<span><span class="co">#&gt; Chain 1:                4.552 seconds (Sampling)</span></span>
+<span><span class="co">#&gt; Chain 1:                11.74 seconds (Total)</span></span>
+<span><span class="co">#&gt; Chain 1:</span></span>
 <span><span class="va">nd_dom_0_mod_gofstats</span></span>
 <span><span class="co">#&gt; p.sd.rowmeans   p.cycle.dep </span></span>
-<span><span class="co">#&gt;             1             1</span></span>
+<span><span class="co">#&gt;  0.0001333333  0.0000000000</span></span>
 <span></span>
 <span><span class="va">nd_dom_0_mod_ppred</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/postpredsamp.html">postpredsamp</a></span><span class="op">(</span><span class="va">nd_dom_0_mod</span><span class="op">)</span></span>
 <span><span class="va">fpr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">nd_dom_0_mod_ppred</span>, <span class="fl">1</span>, <span class="va">mean</span><span class="op">)</span></span>
@@ -522,13 +655,9 @@ we’ll run gofstats() and ‘DHARMa’ checks.</p>
 <span><span class="co">#&gt;  simulated</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; data:  simulationOutput</span></span>
-<span><span class="co">#&gt; dispersion = 9.2487, p-value &lt; 2.2e-16</span></span>
+<span><span class="co">#&gt; dispersion = 9.1789, p-value &lt; 2.2e-16</span></span>
 <span><span class="co">#&gt; alternative hypothesis: two.sided</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/DHARMa/man/testQuantiles.html" class="external-link">testQuantiles</a></span><span class="op">(</span><span class="va">nd_dom_0_mod_dharma</span>, plot<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning in newton(lsp = lsp, X = G$X, y = G$y, Eb = G$Eb, UrS = G$UrS, L = G$L,</span></span>
-<span><span class="co">#&gt; : Fitting terminated with step failure - check results carefully</span></span>
-<span><span class="co">#&gt; Warning in newton(lsp = lsp, X = G$X, y = G$y, Eb = G$Eb, UrS = G$UrS, L = G$L,</span></span>
-<span><span class="co">#&gt; : Fitting terminated with step failure - check results carefully</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;  Test for location of quantiles via qgam</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -540,7 +669,7 @@ we’ll run gofstats() and ‘DHARMa’ checks.</p>
 <span><span class="co">#&gt;  Asymptotic one-sample Kolmogorov-Smirnov test</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; data:  simulationOutput$scaledResiduals</span></span>
-<span><span class="co">#&gt; D = 0.1044, p-value = 0.004876</span></span>
+<span><span class="co">#&gt; D = 0.10324, p-value = 0.005567</span></span>
 <span><span class="co">#&gt; alternative hypothesis: two-sided</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/DHARMa/man/testZeroInflation.html" class="external-link">testZeroInflation</a></span><span class="op">(</span><span class="va">nd_dom_0_mod_dharma</span>, plot<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -548,7 +677,7 @@ we’ll run gofstats() and ‘DHARMa’ checks.</p>
 <span><span class="co">#&gt;  simulation under H0 = fitted model</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; data:  simulationOutput</span></span>
-<span><span class="co">#&gt; ratioObsSim = 1.0728, p-value = 0.0575</span></span>
+<span><span class="co">#&gt; ratioObsSim = 1.0743, p-value = 0.07</span></span>
 <span><span class="co">#&gt; alternative hypothesis: two.sided</span></span></code></pre></div>
 <p>We’ve got a borderline issue with high-order non-independence and a
 clear issue with overdispersion. Let’s try ‘rank’=1 next. You’ll notice
@@ -564,8 +693,8 @@ which is one kind of problem the HMC sampler can run into.</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; SAMPLING FOR MODEL 'ame_fnchypg' NOW (CHAIN 1).</span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
-<span><span class="co">#&gt; Chain 1: Gradient evaluation took 0.000451 seconds</span></span>
-<span><span class="co">#&gt; Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 4.51 seconds.</span></span>
+<span><span class="co">#&gt; Chain 1: Gradient evaluation took 0.000618 seconds</span></span>
+<span><span class="co">#&gt; Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 6.18 seconds.</span></span>
 <span><span class="co">#&gt; Chain 1: Adjust your expectations accordingly!</span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
@@ -582,21 +711,66 @@ which is one kind of problem the HMC sampler can run into.</p>
 <span><span class="co">#&gt; Chain 1: Iteration: 1800 / 2000 [ 90%]  (Sampling)</span></span>
 <span><span class="co">#&gt; Chain 1: Iteration: 2000 / 2000 [100%]  (Sampling)</span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
-<span><span class="co">#&gt; Chain 1:  Elapsed Time: 20.782 seconds (Warm-up)</span></span>
-<span><span class="co">#&gt; Chain 1:                21.481 seconds (Sampling)</span></span>
-<span><span class="co">#&gt; Chain 1:                42.263 seconds (Total)</span></span>
+<span><span class="co">#&gt; Chain 1:  Elapsed Time: 20.869 seconds (Warm-up)</span></span>
+<span><span class="co">#&gt; Chain 1:                13.793 seconds (Sampling)</span></span>
+<span><span class="co">#&gt; Chain 1:                34.662 seconds (Total)</span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
 <span><span class="co">#&gt; [1] "compnet uses Stan under the hood. You may see warnings from Stan alongside, this message. To deal with any warnings Stan might issue, Please see the links provided in Stan's output, as well as the compnet website:https://kyle-rosenblad.github.io/compnet/"</span></span>
 <span></span>
 <span><span class="va">nd_dom_1_mod_gofstats</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/gofstats.html">gofstats</a></span><span class="op">(</span><span class="va">nd_dom_1_mod</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Approx. completion</span></span>
-<span><span class="co">#&gt; 25%</span></span>
-<span><span class="co">#&gt; 50%</span></span>
-<span><span class="co">#&gt; 75%</span></span>
-<span><span class="co">#&gt; 100%</span></span>
+<span><span class="co">#&gt; Fitting base model for comparison with full model</span></span>
+<span><span class="co">#&gt; SAMPLING FOR MODEL 'base_fnchypg' NOW (CHAIN 1).</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; SAMPLING FOR MODEL 'base_fnchypg' NOW (CHAIN 2).</span></span>
+<span><span class="co">#&gt; Chain 1: </span></span>
+<span><span class="co">#&gt; Chain 1: Gradient evaluation took 0.000565 seconds</span></span>
+<span><span class="co">#&gt; Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 5.65 seconds.</span></span>
+<span><span class="co">#&gt; Chain 1: Adjust your expectations accordingly!</span></span>
+<span><span class="co">#&gt; Chain 1: </span></span>
+<span><span class="co">#&gt; Chain 1: </span></span>
+<span><span class="co">#&gt; Chain 1: Iteration:    1 / 2000 [  0%]  (Warmup)</span></span>
+<span><span class="co">#&gt; Chain 2: </span></span>
+<span><span class="co">#&gt; Chain 2: Gradient evaluation took 0.000563 seconds</span></span>
+<span><span class="co">#&gt; Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 5.63 seconds.</span></span>
+<span><span class="co">#&gt; Chain 2: Adjust your expectations accordingly!</span></span>
+<span><span class="co">#&gt; Chain 2: </span></span>
+<span><span class="co">#&gt; Chain 2: </span></span>
+<span><span class="co">#&gt; Chain 2: Iteration:    1 / 2000 [  0%]  (Warmup)</span></span>
+<span><span class="co">#&gt; Chain 2: Iteration:  200 / 2000 [ 10%]  (Warmup)</span></span>
+<span><span class="co">#&gt; Chain 1: Iteration:  200 / 2000 [ 10%]  (Warmup)</span></span>
+<span><span class="co">#&gt; Chain 2: Iteration:  400 / 2000 [ 20%]  (Warmup)</span></span>
+<span><span class="co">#&gt; Chain 1: Iteration:  400 / 2000 [ 20%]  (Warmup)</span></span>
+<span><span class="co">#&gt; Chain 2: Iteration:  600 / 2000 [ 30%]  (Warmup)</span></span>
+<span><span class="co">#&gt; Chain 1: Iteration:  600 / 2000 [ 30%]  (Warmup)</span></span>
+<span><span class="co">#&gt; Chain 2: Iteration:  800 / 2000 [ 40%]  (Warmup)</span></span>
+<span><span class="co">#&gt; Chain 1: Iteration:  800 / 2000 [ 40%]  (Warmup)</span></span>
+<span><span class="co">#&gt; Chain 2: Iteration: 1000 / 2000 [ 50%]  (Warmup)</span></span>
+<span><span class="co">#&gt; Chain 2: Iteration: 1001 / 2000 [ 50%]  (Sampling)</span></span>
+<span><span class="co">#&gt; Chain 1: Iteration: 1000 / 2000 [ 50%]  (Warmup)</span></span>
+<span><span class="co">#&gt; Chain 1: Iteration: 1001 / 2000 [ 50%]  (Sampling)</span></span>
+<span><span class="co">#&gt; Chain 2: Iteration: 1200 / 2000 [ 60%]  (Sampling)</span></span>
+<span><span class="co">#&gt; Chain 1: Iteration: 1200 / 2000 [ 60%]  (Sampling)</span></span>
+<span><span class="co">#&gt; Chain 2: Iteration: 1400 / 2000 [ 70%]  (Sampling)</span></span>
+<span><span class="co">#&gt; Chain 1: Iteration: 1400 / 2000 [ 70%]  (Sampling)</span></span>
+<span><span class="co">#&gt; Chain 2: Iteration: 1600 / 2000 [ 80%]  (Sampling)</span></span>
+<span><span class="co">#&gt; Chain 1: Iteration: 1600 / 2000 [ 80%]  (Sampling)</span></span>
+<span><span class="co">#&gt; Chain 2: Iteration: 1800 / 2000 [ 90%]  (Sampling)</span></span>
+<span><span class="co">#&gt; Chain 1: Iteration: 1800 / 2000 [ 90%]  (Sampling)</span></span>
+<span><span class="co">#&gt; Chain 2: Iteration: 2000 / 2000 [100%]  (Sampling)</span></span>
+<span><span class="co">#&gt; Chain 2: </span></span>
+<span><span class="co">#&gt; Chain 2:  Elapsed Time: 6.721 seconds (Warm-up)</span></span>
+<span><span class="co">#&gt; Chain 2:                4.495 seconds (Sampling)</span></span>
+<span><span class="co">#&gt; Chain 2:                11.216 seconds (Total)</span></span>
+<span><span class="co">#&gt; Chain 2: </span></span>
+<span><span class="co">#&gt; Chain 1: Iteration: 2000 / 2000 [100%]  (Sampling)</span></span>
+<span><span class="co">#&gt; Chain 1: </span></span>
+<span><span class="co">#&gt; Chain 1:  Elapsed Time: 7.13 seconds (Warm-up)</span></span>
+<span><span class="co">#&gt; Chain 1:                4.539 seconds (Sampling)</span></span>
+<span><span class="co">#&gt; Chain 1:                11.669 seconds (Total)</span></span>
+<span><span class="co">#&gt; Chain 1:</span></span>
 <span><span class="va">nd_dom_1_mod_gofstats</span></span>
 <span><span class="co">#&gt; p.sd.rowmeans   p.cycle.dep </span></span>
-<span><span class="co">#&gt;             1             1</span></span>
+<span><span class="co">#&gt;  0.0007555556  0.0000000000</span></span>
 <span></span>
 <span><span class="va">nd_dom_1_mod_ppred</span> <span class="op">&lt;-</span> <span class="fu">compnet</span><span class="fu">::</span><span class="fu"><a href="../reference/postpredsamp.html">postpredsamp</a></span><span class="op">(</span><span class="va">nd_dom_1_mod</span><span class="op">)</span></span>
 <span><span class="va">fpr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">nd_dom_1_mod_ppred</span>, <span class="fl">1</span>, <span class="va">mean</span><span class="op">)</span></span>
@@ -610,7 +784,7 @@ which is one kind of problem the HMC sampler can run into.</p>
 <span><span class="co">#&gt;  simulated</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; data:  simulationOutput</span></span>
-<span><span class="co">#&gt; dispersion = 7.1528, p-value &lt; 2.2e-16</span></span>
+<span><span class="co">#&gt; dispersion = 5.8103, p-value &lt; 2.2e-16</span></span>
 <span><span class="co">#&gt; alternative hypothesis: two.sided</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/DHARMa/man/testQuantiles.html" class="external-link">testQuantiles</a></span><span class="op">(</span><span class="va">nd_dom_1_mod_dharma</span>, plot<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Warning in newton(lsp = lsp, X = G$X, y = G$y, Eb = G$Eb, UrS = G$UrS, L = G$L,</span></span>
@@ -626,7 +800,7 @@ which is one kind of problem the HMC sampler can run into.</p>
 <span><span class="co">#&gt;  Asymptotic one-sample Kolmogorov-Smirnov test</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; data:  simulationOutput$scaledResiduals</span></span>
-<span><span class="co">#&gt; D = 0.10463, p-value = 0.004751</span></span>
+<span><span class="co">#&gt; D = 0.10247, p-value = 0.006081</span></span>
 <span><span class="co">#&gt; alternative hypothesis: two-sided</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/DHARMa/man/testZeroInflation.html" class="external-link">testZeroInflation</a></span><span class="op">(</span><span class="va">nd_dom_1_mod_dharma</span>, plot<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -634,7 +808,7 @@ which is one kind of problem the HMC sampler can run into.</p>
 <span><span class="co">#&gt;  simulation under H0 = fitted model</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; data:  simulationOutput</span></span>
-<span><span class="co">#&gt; ratioObsSim = 1.0567, p-value = 0.152</span></span>
+<span><span class="co">#&gt; ratioObsSim = 1.0419, p-value = 0.312</span></span>
 <span><span class="co">#&gt; alternative hypothesis: two.sided</span></span></code></pre></div>
 <p>We’ve solved the overdispersion problem. The residuals still show a
 borderline case of higher-order non-independence. For now we’ll leave it
@@ -645,16 +819,16 @@ model with no covariate adjustment:</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/summarize_compnet.html">summarize_compnet</a></span><span class="op">(</span><span class="va">nd_1_mod</span><span class="op">)</span></span>
 <span><span class="co">#&gt;                    Mean       2.5%      97.5%</span></span>
-<span><span class="co">#&gt; intercept    -1.9546964 -2.9371982 -1.0903607</span></span>
-<span><span class="co">#&gt; ndtrait_dist  0.9360862  0.6100503  1.3066245</span></span>
-<span><span class="co">#&gt; ndtrait_sp    0.2583239 -0.1417232  0.6660443</span></span>
+<span><span class="co">#&gt; intercept    -1.9425141 -2.7833558 -1.1316428</span></span>
+<span><span class="co">#&gt; ndtrait_dist  0.9483048  0.6087682  1.2914672</span></span>
+<span><span class="co">#&gt; ndtrait_sp    0.2384290 -0.1207275  0.6129366</span></span>
 <span><span class="fu"><a href="../reference/summarize_compnet.html">summarize_compnet</a></span><span class="op">(</span><span class="va">nd_dom_1_mod</span><span class="op">)</span></span>
-<span><span class="co">#&gt;                      Mean        2.5%      97.5%</span></span>
-<span><span class="co">#&gt; intercept     -0.03333866 -0.74857726  0.6859474</span></span>
-<span><span class="co">#&gt; ndtrait_dist   1.08899245  0.77991500  1.4676183</span></span>
-<span><span class="co">#&gt; domtrait_dist -1.60070853 -2.12578571 -1.1359716</span></span>
-<span><span class="co">#&gt; ndtrait_sp     0.26702880  0.04439026  0.4917073</span></span>
-<span><span class="co">#&gt; domtrait_sp   -0.61957918 -0.90949488 -0.3393360</span></span></code></pre></div>
+<span><span class="co">#&gt;                     Mean       2.5%      97.5%</span></span>
+<span><span class="co">#&gt; intercept     -0.4962183 -1.1562270  0.1029845</span></span>
+<span><span class="co">#&gt; ndtrait_dist   1.0207088  0.7413887  1.3476895</span></span>
+<span><span class="co">#&gt; domtrait_dist -1.1873224 -1.5693120 -0.8107357</span></span>
+<span><span class="co">#&gt; ndtrait_sp     0.1572217 -0.1072786  0.4160446</span></span>
+<span><span class="co">#&gt; domtrait_sp   -0.3733856 -0.6449985 -0.1052259</span></span></code></pre></div>
 <p>The coefficient of the “ndtrait” distance term is greater in the new
 model. This suggests our covariate adjustment strategy helped to
 “unmask” the true effect of “ndtrait” on co-occurrence probability.
@@ -682,8 +856,8 @@ brief.</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; SAMPLING FOR MODEL 'srm_fnchypg' NOW (CHAIN 1).</span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
-<span><span class="co">#&gt; Chain 1: Gradient evaluation took 0.000362 seconds</span></span>
-<span><span class="co">#&gt; Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 3.62 seconds.</span></span>
+<span><span class="co">#&gt; Chain 1: Gradient evaluation took 0.000496 seconds</span></span>
+<span><span class="co">#&gt; Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 4.96 seconds.</span></span>
 <span><span class="co">#&gt; Chain 1: Adjust your expectations accordingly!</span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
@@ -700,19 +874,19 @@ brief.</p>
 <span><span class="co">#&gt; Chain 1: Iteration: 1800 / 2000 [ 90%]  (Sampling)</span></span>
 <span><span class="co">#&gt; Chain 1: Iteration: 2000 / 2000 [100%]  (Sampling)</span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
-<span><span class="co">#&gt; Chain 1:  Elapsed Time: 11.193 seconds (Warm-up)</span></span>
-<span><span class="co">#&gt; Chain 1:                11.153 seconds (Sampling)</span></span>
-<span><span class="co">#&gt; Chain 1:                22.346 seconds (Total)</span></span>
+<span><span class="co">#&gt; Chain 1:  Elapsed Time: 10.948 seconds (Warm-up)</span></span>
+<span><span class="co">#&gt; Chain 1:                10.693 seconds (Sampling)</span></span>
+<span><span class="co">#&gt; Chain 1:                21.641 seconds (Total)</span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
 <span><span class="co">#&gt; [1] "compnet uses Stan under the hood. You may see warnings from Stan alongside, this message. To deal with any warnings Stan might issue, Please see the links provided in Stan's output, as well as the compnet website:https://kyle-rosenblad.github.io/compnet/"</span></span></code></pre></div>
 <p>Now let’s break down the output summary:</p>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/summarize_compnet.html">summarize_compnet</a></span><span class="op">(</span><span class="va">c_0_mod</span><span class="op">)</span></span>
-<span><span class="co">#&gt;                          Mean       2.5%      97.5%</span></span>
-<span><span class="co">#&gt; intercept          0.15339912 -0.9303945  1.1667788</span></span>
-<span><span class="co">#&gt; ctrait_int        -0.70347710 -1.1308107 -0.2747517</span></span>
-<span><span class="co">#&gt; ctrait_b_dummy_sp -0.53824497 -1.3581690  0.2802837</span></span>
-<span><span class="co">#&gt; ctrait_c_dummy_sp  0.02277839 -0.7691064  0.8525884</span></span></code></pre></div>
+<span><span class="co">#&gt;                           Mean       2.5%      97.5%</span></span>
+<span><span class="co">#&gt; intercept          0.177732552 -0.9962133  1.2001350</span></span>
+<span><span class="co">#&gt; ctrait_int        -0.703671557 -1.1268597 -0.2675699</span></span>
+<span><span class="co">#&gt; ctrait_b_dummy_sp -0.592578549 -1.4457697  0.2933328</span></span>
+<span><span class="co">#&gt; ctrait_c_dummy_sp  0.006331756 -0.8545346  0.9114512</span></span></code></pre></div>
 <p>After the intercept, we see the results for the interaction term.
 This is a binary indicator that equals 1 when a species pair has the
 same value of the categorical trait and equals 0 when they have
@@ -758,8 +932,8 @@ argument. We’ll start with rank 0.</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; SAMPLING FOR MODEL 'srm_fnchypg' NOW (CHAIN 1).</span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
-<span><span class="co">#&gt; Chain 1: Gradient evaluation took 0.000331 seconds</span></span>
-<span><span class="co">#&gt; Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 3.31 seconds.</span></span>
+<span><span class="co">#&gt; Chain 1: Gradient evaluation took 0.00035 seconds</span></span>
+<span><span class="co">#&gt; Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 3.5 seconds.</span></span>
 <span><span class="co">#&gt; Chain 1: Adjust your expectations accordingly!</span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
@@ -776,21 +950,66 @@ argument. We’ll start with rank 0.</p>
 <span><span class="co">#&gt; Chain 1: Iteration: 1800 / 2000 [ 90%]  (Sampling)</span></span>
 <span><span class="co">#&gt; Chain 1: Iteration: 2000 / 2000 [100%]  (Sampling)</span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
-<span><span class="co">#&gt; Chain 1:  Elapsed Time: 6.074 seconds (Warm-up)</span></span>
-<span><span class="co">#&gt; Chain 1:                5.673 seconds (Sampling)</span></span>
-<span><span class="co">#&gt; Chain 1:                11.747 seconds (Total)</span></span>
+<span><span class="co">#&gt; Chain 1:  Elapsed Time: 6.401 seconds (Warm-up)</span></span>
+<span><span class="co">#&gt; Chain 1:                5.324 seconds (Sampling)</span></span>
+<span><span class="co">#&gt; Chain 1:                11.725 seconds (Total)</span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
 <span><span class="co">#&gt; [1] "compnet uses Stan under the hood. You may see warnings from Stan alongside, this message. To deal with any warnings Stan might issue, Please see the links provided in Stan's output, as well as the compnet website:https://kyle-rosenblad.github.io/compnet/"</span></span></code></pre></div>
 <p>Run our model checks:</p>
 <div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/gofstats.html">gofstats</a></span><span class="op">(</span><span class="va">phylo_0_mod</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Approx. completion</span></span>
-<span><span class="co">#&gt; 25%</span></span>
-<span><span class="co">#&gt; 50%</span></span>
-<span><span class="co">#&gt; 75%</span></span>
-<span><span class="co">#&gt; 100%</span></span>
+<span><span class="co">#&gt; Fitting base model for comparison with full model</span></span>
+<span><span class="co">#&gt; SAMPLING FOR MODEL 'base_fnchypg' NOW (CHAIN 1).</span></span>
+<span><span class="co">#&gt; Chain 1: </span></span>
+<span><span class="co">#&gt; Chain 1: Gradient evaluation took 0.000571 seconds</span></span>
+<span><span class="co">#&gt; Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 5.71 seconds.</span></span>
+<span><span class="co">#&gt; Chain 1: Adjust your expectations accordingly!</span></span>
+<span><span class="co">#&gt; Chain 1: </span></span>
+<span><span class="co">#&gt; Chain 1: </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; SAMPLING FOR MODEL 'base_fnchypg' NOW (CHAIN 2).</span></span>
+<span><span class="co">#&gt; Chain 1: Iteration:    1 / 2000 [  0%]  (Warmup)</span></span>
+<span><span class="co">#&gt; Chain 2: </span></span>
+<span><span class="co">#&gt; Chain 2: Gradient evaluation took 0.000546 seconds</span></span>
+<span><span class="co">#&gt; Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 5.46 seconds.</span></span>
+<span><span class="co">#&gt; Chain 2: Adjust your expectations accordingly!</span></span>
+<span><span class="co">#&gt; Chain 2: </span></span>
+<span><span class="co">#&gt; Chain 2: </span></span>
+<span><span class="co">#&gt; Chain 2: Iteration:    1 / 2000 [  0%]  (Warmup)</span></span>
+<span><span class="co">#&gt; Chain 1: Iteration:  200 / 2000 [ 10%]  (Warmup)</span></span>
+<span><span class="co">#&gt; Chain 2: Iteration:  200 / 2000 [ 10%]  (Warmup)</span></span>
+<span><span class="co">#&gt; Chain 1: Iteration:  400 / 2000 [ 20%]  (Warmup)</span></span>
+<span><span class="co">#&gt; Chain 2: Iteration:  400 / 2000 [ 20%]  (Warmup)</span></span>
+<span><span class="co">#&gt; Chain 1: Iteration:  600 / 2000 [ 30%]  (Warmup)</span></span>
+<span><span class="co">#&gt; Chain 2: Iteration:  600 / 2000 [ 30%]  (Warmup)</span></span>
+<span><span class="co">#&gt; Chain 2: Iteration:  800 / 2000 [ 40%]  (Warmup)</span></span>
+<span><span class="co">#&gt; Chain 1: Iteration:  800 / 2000 [ 40%]  (Warmup)</span></span>
+<span><span class="co">#&gt; Chain 1: Iteration: 1000 / 2000 [ 50%]  (Warmup)</span></span>
+<span><span class="co">#&gt; Chain 1: Iteration: 1001 / 2000 [ 50%]  (Sampling)</span></span>
+<span><span class="co">#&gt; Chain 2: Iteration: 1000 / 2000 [ 50%]  (Warmup)</span></span>
+<span><span class="co">#&gt; Chain 2: Iteration: 1001 / 2000 [ 50%]  (Sampling)</span></span>
+<span><span class="co">#&gt; Chain 1: Iteration: 1200 / 2000 [ 60%]  (Sampling)</span></span>
+<span><span class="co">#&gt; Chain 2: Iteration: 1200 / 2000 [ 60%]  (Sampling)</span></span>
+<span><span class="co">#&gt; Chain 1: Iteration: 1400 / 2000 [ 70%]  (Sampling)</span></span>
+<span><span class="co">#&gt; Chain 2: Iteration: 1400 / 2000 [ 70%]  (Sampling)</span></span>
+<span><span class="co">#&gt; Chain 1: Iteration: 1600 / 2000 [ 80%]  (Sampling)</span></span>
+<span><span class="co">#&gt; Chain 2: Iteration: 1600 / 2000 [ 80%]  (Sampling)</span></span>
+<span><span class="co">#&gt; Chain 1: Iteration: 1800 / 2000 [ 90%]  (Sampling)</span></span>
+<span><span class="co">#&gt; Chain 2: Iteration: 1800 / 2000 [ 90%]  (Sampling)</span></span>
+<span><span class="co">#&gt; Chain 1: Iteration: 2000 / 2000 [100%]  (Sampling)</span></span>
+<span><span class="co">#&gt; Chain 1: </span></span>
+<span><span class="co">#&gt; Chain 1:  Elapsed Time: 7.161 seconds (Warm-up)</span></span>
+<span><span class="co">#&gt; Chain 1:                4.499 seconds (Sampling)</span></span>
+<span><span class="co">#&gt; Chain 1:                11.66 seconds (Total)</span></span>
+<span><span class="co">#&gt; Chain 1: </span></span>
+<span><span class="co">#&gt; Chain 2: Iteration: 2000 / 2000 [100%]  (Sampling)</span></span>
+<span><span class="co">#&gt; Chain 2: </span></span>
+<span><span class="co">#&gt; Chain 2:  Elapsed Time: 7.167 seconds (Warm-up)</span></span>
+<span><span class="co">#&gt; Chain 2:                4.54 seconds (Sampling)</span></span>
+<span><span class="co">#&gt; Chain 2:                11.707 seconds (Total)</span></span>
+<span><span class="co">#&gt; Chain 2:</span></span>
 <span><span class="co">#&gt; p.sd.rowmeans   p.cycle.dep </span></span>
-<span><span class="co">#&gt;             1             1</span></span>
+<span><span class="co">#&gt;    0.05841111    0.01173333</span></span>
 <span></span>
 <span><span class="va">phylo_0_mod_ppred</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/postpredsamp.html">postpredsamp</a></span><span class="op">(</span><span class="va">phylo_0_mod</span><span class="op">)</span></span>
 <span><span class="va">fpr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">phylo_0_mod_ppred</span>, <span class="fl">1</span>, <span class="va">mean</span><span class="op">)</span></span>
@@ -804,7 +1023,7 @@ argument. We’ll start with rank 0.</p>
 <span><span class="co">#&gt;  simulated</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; data:  simulationOutput</span></span>
-<span><span class="co">#&gt; dispersion = 6.9515, p-value &lt; 2.2e-16</span></span>
+<span><span class="co">#&gt; dispersion = 6.9116, p-value &lt; 2.2e-16</span></span>
 <span><span class="co">#&gt; alternative hypothesis: two.sided</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/DHARMa/man/testQuantiles.html" class="external-link">testQuantiles</a></span><span class="op">(</span><span class="va">phylo_0_mod_dharma</span>, plot<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Warning in newton(lsp = lsp, X = G$X, y = G$y, Eb = G$Eb, UrS = G$UrS, L = G$L,</span></span>
@@ -820,7 +1039,7 @@ argument. We’ll start with rank 0.</p>
 <span><span class="co">#&gt;  Asymptotic one-sample Kolmogorov-Smirnov test</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; data:  simulationOutput$scaledResiduals</span></span>
-<span><span class="co">#&gt; D = 0.11291, p-value = 0.001757</span></span>
+<span><span class="co">#&gt; D = 0.11101, p-value = 0.002222</span></span>
 <span><span class="co">#&gt; alternative hypothesis: two-sided</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/DHARMa/man/testZeroInflation.html" class="external-link">testZeroInflation</a></span><span class="op">(</span><span class="va">phylo_0_mod_dharma</span>, plot<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -828,7 +1047,7 @@ argument. We’ll start with rank 0.</p>
 <span><span class="co">#&gt;  simulation under H0 = fitted model</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; data:  simulationOutput</span></span>
-<span><span class="co">#&gt; ratioObsSim = 1.0634, p-value = 0.142</span></span>
+<span><span class="co">#&gt; ratioObsSim = 1.0648, p-value = 0.124</span></span>
 <span><span class="co">#&gt; alternative hypothesis: two.sided</span></span></code></pre></div>
 <p>We’ve got problems with overdispersion and quantile deviations. Let’s
 try again with ‘rank’ = 1.</p>
@@ -840,8 +1059,8 @@ try again with ‘rank’ = 1.</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; SAMPLING FOR MODEL 'ame_fnchypg' NOW (CHAIN 1).</span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
-<span><span class="co">#&gt; Chain 1: Gradient evaluation took 0.000418 seconds</span></span>
-<span><span class="co">#&gt; Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 4.18 seconds.</span></span>
+<span><span class="co">#&gt; Chain 1: Gradient evaluation took 0.000579 seconds</span></span>
+<span><span class="co">#&gt; Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 5.79 seconds.</span></span>
 <span><span class="co">#&gt; Chain 1: Adjust your expectations accordingly!</span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
@@ -858,21 +1077,75 @@ try again with ‘rank’ = 1.</p>
 <span><span class="co">#&gt; Chain 1: Iteration: 1800 / 2000 [ 90%]  (Sampling)</span></span>
 <span><span class="co">#&gt; Chain 1: Iteration: 2000 / 2000 [100%]  (Sampling)</span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
-<span><span class="co">#&gt; Chain 1:  Elapsed Time: 14.795 seconds (Warm-up)</span></span>
-<span><span class="co">#&gt; Chain 1:                13.297 seconds (Sampling)</span></span>
-<span><span class="co">#&gt; Chain 1:                28.092 seconds (Total)</span></span>
-<span><span class="co">#&gt; Chain 1: </span></span>
+<span><span class="co">#&gt; Chain 1:  Elapsed Time: 13.562 seconds (Warm-up)</span></span>
+<span><span class="co">#&gt; Chain 1:                12.839 seconds (Sampling)</span></span>
+<span><span class="co">#&gt; Chain 1:                26.401 seconds (Total)</span></span>
+<span><span class="co">#&gt; Chain 1:</span></span>
+<span><span class="co">#&gt; Warning: The largest R-hat is 1.07, indicating chains have not mixed.</span></span>
+<span><span class="co">#&gt; Running the chains for more iterations may help. See</span></span>
+<span><span class="co">#&gt; https://mc-stan.org/misc/warnings.html#r-hat</span></span>
+<span><span class="co">#&gt; Warning: Bulk Effective Samples Size (ESS) is too low, indicating posterior means and medians may be unreliable.</span></span>
+<span><span class="co">#&gt; Running the chains for more iterations may help. See</span></span>
+<span><span class="co">#&gt; https://mc-stan.org/misc/warnings.html#bulk-ess</span></span>
+<span><span class="co">#&gt; Warning: Tail Effective Samples Size (ESS) is too low, indicating posterior variances and tail quantiles may be unreliable.</span></span>
+<span><span class="co">#&gt; Running the chains for more iterations may help. See</span></span>
+<span><span class="co">#&gt; https://mc-stan.org/misc/warnings.html#tail-ess</span></span>
 <span><span class="co">#&gt; [1] "compnet uses Stan under the hood. You may see warnings from Stan alongside, this message. To deal with any warnings Stan might issue, Please see the links provided in Stan's output, as well as the compnet website:https://kyle-rosenblad.github.io/compnet/"</span></span></code></pre></div>
 <p>Run our model checks:</p>
 <div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/gofstats.html">gofstats</a></span><span class="op">(</span><span class="va">phylo_1_mod</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Approx. completion</span></span>
-<span><span class="co">#&gt; 25%</span></span>
-<span><span class="co">#&gt; 50%</span></span>
-<span><span class="co">#&gt; 75%</span></span>
-<span><span class="co">#&gt; 100%</span></span>
+<span><span class="co">#&gt; Fitting base model for comparison with full model</span></span>
+<span><span class="co">#&gt; SAMPLING FOR MODEL 'base_fnchypg' NOW (CHAIN 1).</span></span>
+<span><span class="co">#&gt; Chain 1: </span></span>
+<span><span class="co">#&gt; Chain 1: Gradient evaluation took 0.000686 seconds</span></span>
+<span><span class="co">#&gt; Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 6.86 seconds.</span></span>
+<span><span class="co">#&gt; Chain 1: Adjust your expectations accordingly!</span></span>
+<span><span class="co">#&gt; Chain 1: </span></span>
+<span><span class="co">#&gt; Chain 1: </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; SAMPLING FOR MODEL 'base_fnchypg' NOW (CHAIN 2).</span></span>
+<span><span class="co">#&gt; Chain 1: Iteration:    1 / 2000 [  0%]  (Warmup)</span></span>
+<span><span class="co">#&gt; Chain 2: </span></span>
+<span><span class="co">#&gt; Chain 2: Gradient evaluation took 0.000559 seconds</span></span>
+<span><span class="co">#&gt; Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 5.59 seconds.</span></span>
+<span><span class="co">#&gt; Chain 2: Adjust your expectations accordingly!</span></span>
+<span><span class="co">#&gt; Chain 2: </span></span>
+<span><span class="co">#&gt; Chain 2: </span></span>
+<span><span class="co">#&gt; Chain 2: Iteration:    1 / 2000 [  0%]  (Warmup)</span></span>
+<span><span class="co">#&gt; Chain 2: Iteration:  200 / 2000 [ 10%]  (Warmup)</span></span>
+<span><span class="co">#&gt; Chain 1: Iteration:  200 / 2000 [ 10%]  (Warmup)</span></span>
+<span><span class="co">#&gt; Chain 2: Iteration:  400 / 2000 [ 20%]  (Warmup)</span></span>
+<span><span class="co">#&gt; Chain 1: Iteration:  400 / 2000 [ 20%]  (Warmup)</span></span>
+<span><span class="co">#&gt; Chain 2: Iteration:  600 / 2000 [ 30%]  (Warmup)</span></span>
+<span><span class="co">#&gt; Chain 1: Iteration:  600 / 2000 [ 30%]  (Warmup)</span></span>
+<span><span class="co">#&gt; Chain 2: Iteration:  800 / 2000 [ 40%]  (Warmup)</span></span>
+<span><span class="co">#&gt; Chain 1: Iteration:  800 / 2000 [ 40%]  (Warmup)</span></span>
+<span><span class="co">#&gt; Chain 2: Iteration: 1000 / 2000 [ 50%]  (Warmup)</span></span>
+<span><span class="co">#&gt; Chain 2: Iteration: 1001 / 2000 [ 50%]  (Sampling)</span></span>
+<span><span class="co">#&gt; Chain 1: Iteration: 1000 / 2000 [ 50%]  (Warmup)</span></span>
+<span><span class="co">#&gt; Chain 1: Iteration: 1001 / 2000 [ 50%]  (Sampling)</span></span>
+<span><span class="co">#&gt; Chain 2: Iteration: 1200 / 2000 [ 60%]  (Sampling)</span></span>
+<span><span class="co">#&gt; Chain 1: Iteration: 1200 / 2000 [ 60%]  (Sampling)</span></span>
+<span><span class="co">#&gt; Chain 2: Iteration: 1400 / 2000 [ 70%]  (Sampling)</span></span>
+<span><span class="co">#&gt; Chain 1: Iteration: 1400 / 2000 [ 70%]  (Sampling)</span></span>
+<span><span class="co">#&gt; Chain 2: Iteration: 1600 / 2000 [ 80%]  (Sampling)</span></span>
+<span><span class="co">#&gt; Chain 1: Iteration: 1600 / 2000 [ 80%]  (Sampling)</span></span>
+<span><span class="co">#&gt; Chain 2: Iteration: 1800 / 2000 [ 90%]  (Sampling)</span></span>
+<span><span class="co">#&gt; Chain 1: Iteration: 1800 / 2000 [ 90%]  (Sampling)</span></span>
+<span><span class="co">#&gt; Chain 2: Iteration: 2000 / 2000 [100%]  (Sampling)</span></span>
+<span><span class="co">#&gt; Chain 2: </span></span>
+<span><span class="co">#&gt; Chain 2:  Elapsed Time: 6.796 seconds (Warm-up)</span></span>
+<span><span class="co">#&gt; Chain 2:                4.5 seconds (Sampling)</span></span>
+<span><span class="co">#&gt; Chain 2:                11.296 seconds (Total)</span></span>
+<span><span class="co">#&gt; Chain 2: </span></span>
+<span><span class="co">#&gt; Chain 1: Iteration: 2000 / 2000 [100%]  (Sampling)</span></span>
+<span><span class="co">#&gt; Chain 1: </span></span>
+<span><span class="co">#&gt; Chain 1:  Elapsed Time: 6.961 seconds (Warm-up)</span></span>
+<span><span class="co">#&gt; Chain 1:                4.536 seconds (Sampling)</span></span>
+<span><span class="co">#&gt; Chain 1:                11.497 seconds (Total)</span></span>
+<span><span class="co">#&gt; Chain 1:</span></span>
 <span><span class="co">#&gt; p.sd.rowmeans   p.cycle.dep </span></span>
-<span><span class="co">#&gt;     0.9966667     1.0000000</span></span>
+<span><span class="co">#&gt;     0.0383000     0.4962889</span></span>
 <span></span>
 <span><span class="va">phylo_1_mod_ppred</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/postpredsamp.html">postpredsamp</a></span><span class="op">(</span><span class="va">phylo_1_mod</span><span class="op">)</span></span>
 <span><span class="va">fpr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">phylo_1_mod_ppred</span>, <span class="fl">1</span>, <span class="va">mean</span><span class="op">)</span></span>
@@ -886,10 +1159,12 @@ try again with ‘rank’ = 1.</p>
 <span><span class="co">#&gt;  simulated</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; data:  simulationOutput</span></span>
-<span><span class="co">#&gt; dispersion = 4.9273, p-value &lt; 2.2e-16</span></span>
+<span><span class="co">#&gt; dispersion = 5.1221, p-value &lt; 2.2e-16</span></span>
 <span><span class="co">#&gt; alternative hypothesis: two.sided</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/DHARMa/man/testQuantiles.html" class="external-link">testQuantiles</a></span><span class="op">(</span><span class="va">phylo_1_mod_dharma</span>, plot<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span>
-<span><span class="co">#&gt; qu = 0.5, log(sigma) = -3.228908 : outer Newton did not converge fully.</span></span>
+<span><span class="co">#&gt; qu = 0.25, log(sigma) = -2.407071 : outer Newton did not converge fully.</span></span>
+<span><span class="co">#&gt; Warning in newton(lsp = lsp, X = G$X, y = G$y, Eb = G$Eb, UrS = G$UrS, L = G$L,</span></span>
+<span><span class="co">#&gt; : Fitting terminated with step failure - check results carefully</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;  Test for location of quantiles via qgam</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -901,7 +1176,7 @@ try again with ‘rank’ = 1.</p>
 <span><span class="co">#&gt;  Asymptotic one-sample Kolmogorov-Smirnov test</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; data:  simulationOutput$scaledResiduals</span></span>
-<span><span class="co">#&gt; D = 0.099681, p-value = 0.008298</span></span>
+<span><span class="co">#&gt; D = 0.097039, p-value = 0.01106</span></span>
 <span><span class="co">#&gt; alternative hypothesis: two-sided</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/DHARMa/man/testZeroInflation.html" class="external-link">testZeroInflation</a></span><span class="op">(</span><span class="va">phylo_1_mod_dharma</span>, plot<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -909,7 +1184,7 @@ try again with ‘rank’ = 1.</p>
 <span><span class="co">#&gt;  simulation under H0 = fitted model</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; data:  simulationOutput</span></span>
-<span><span class="co">#&gt; ratioObsSim = 1.036, p-value = 0.398</span></span>
+<span><span class="co">#&gt; ratioObsSim = 1.0519, p-value = 0.252</span></span>
 <span><span class="co">#&gt; alternative hypothesis: two.sided</span></span></code></pre></div>
 <p>Looks good! Let’s visualize results:</p>
 <div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
