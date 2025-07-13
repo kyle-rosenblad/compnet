@@ -23,9 +23,11 @@ library(compnet)
 
 The goal of a 'compnet' analysis is to quantify the effect of competitive niche differentiation on community assembly for a group of species. Competitive niche differentiation is a process whereby functional dissimilarity between species promotes co-occurrence through decreased overlap in resource use. Our input data will include a species-by-site presence-absence matrix, as well as one or more species-level variables (e.g., plant rooting depth) and/or variables that only pertain to pairs of species (e.g., phylogenetic distance).
 
-Before using 'compnet', we'll translate our conceptual goal into a quantitative "estimand" (i.e., something we're aiming to estimate with our model). Our estimand will be the effect of functional dissimilarity between two species (as quantified via one or more traits; see above) on "co-occurrence affinity" [Mainali et al. 2022](10.1126/sciadv.abj9204), a measure of species' propensity to co-occur more or less than expected given their individual occurrence frequencies.
+Before using 'compnet', we'll translate our conceptual goal into a quantitative "estimand" (i.e., something we're aiming to estimate with our model). When we use the default probability distribution for the response variable, Fisher's noncentral hypergeometric distribution, our estimand will be the effect of functional dissimilarity between two species (as quantified via one or more traits; see above) on "co-occurrence affinity" [Mainali et al. 2022](10.1126/sciadv.abj9204), a measure of species' propensity to co-occur more or less than expected given their individual occurrence frequencies.
 
-To estimate the effect of functional dissimilarity on co-occurrence affinity, we will use a regression model, in which the units of analysis are species pairs. The response variable is co-occurrence affinity. We can include as many predictors as we want. We'll take advantage of this fact later, when we adjust for a suspected confounding variable.
+Alternatively, we can use the binomial probability distribution for the response variable, with the "successes" representing sites where both species co-occur, and the "trials" representing sites where at least one occurs. We are modeling the effects of our predictors on the logit-transformed probability of success.
+
+To estimate the effect of functional dissimilarity on co-occurrence, we will use a regression model, in which the units of analysis are species pairs. The response variable is co-occurrence affinity (or co-occurrence probability if we switch to a binomial response variable). We can include as many predictors as we want. We'll take advantage of this fact later, when we adjust for a suspected confounding variable.
 
 Using species pairs as units of analysis can cause problems for typical regression models, and 'compnet' has tools for dealing with these problems. When we build a regression model (e.g., a linear regression, GLM, GLMM, etc.), we usually assume that the errors are independently distributed. This assumption will likely be violated if we model species pairs in a network without taking special steps. One problem is that all pairs that include a given species might share features in common. All 'compnet' models include components designed to account for this kind of pattern. Additionally, there can be higher-order patterns of non-independence among species pairs--e.g., "the enemy of my enemy is my friend". 'compnet' also has optional model features for dealing with these higher-order patterns, which we will demonstrate below. Further technical details are discussed in [PREPRINT LINK COMING SOON].
 
@@ -90,11 +92,11 @@ nd_0_mod_gofstats <- gofstats(nd_0_mod)
 nd_0_mod_gofstats
 ```
 
-The first 'p-value', 'p.sd.rowmeans', tells us about patterns driven by the fact that all species pairs including a given species share features in common. Our 'p.sd.rowmeans' is very high, which means when we simulate data from the model we've built ('gofstats' did this in the background), most of the simulated data have less of this kind of non-independence  than the real data. That means our model may not be doing a good job accounting for this form of non-independence among species pairs. Anything that's not super-high (around maybe 0.9ish or more) is usually considered fine, but this is too high.
+The first 'p-value', 'p.sd.rowmeans', tells us about patterns driven by the fact that all species pairs including a given species share features in common. Our 'p.sd.rowmeans' is low, which means when we simulate data from the model we've built ('gofstats' did this in the background), most of the simulated data have at least as much of this kind of non-independence  than the real data. That means our model looks to be doing a good job accounting for this form of non-independence among species pairs. Anything that's not super-high (around maybe 0.9ish or more) is usually considered fine.
 
-The second value, 'p.cycle.dep', tells us about higher-order multi-species patterns. These can be abstract and challenging to conceptualize. A good example is the saying, "the enemy of my enemy is my friend". Our 'p.cycle.dep' looks high as well. It's telling us that when we simulate data from our model, the vast majority of the simulated data sets have less high-order non-independence than the real data.
+The second value, 'p.cycle.dep', tells us about higher-order multi-species patterns. These can be abstract and challenging to conceptualize. A good example is the saying, "the enemy of my enemy is my friend". Our 'p.cycle.dep' looks good as well.
 
-Let's try increasing 'rank', which can be helpful when our 'gofstats' aren't looking good.
+As an exercise, let's try increasing 'rank', which can be helpful when our 'gofstats' aren't looking good (even though we don't have strong motivation to do so in this case).
 
 ```{r}
 nd_1_mod <- buildcompnet(presabs=ex_presabs,
@@ -127,7 +129,38 @@ testUniformity(nd_1_mod_dharma)
 testZeroInflation(nd_1_mod_dharma)
 ```
 
-This all looks fine. Going forward, to keep this vignette brief, we'll suppress the plots that accompany DHARMa tests, but I always recommend checking the plots when you're analyzing your own data.
+Yikes! We've got overdispersion, quantile deviations, and milder but still possibly meaningful deviations from uniformity. In simulations, this happens somewhat often with Fisher's noncentral hypergeometric distribution. It's got excellent theory behind it, but this model structure can be too rigid. Let's switch to modeling co-occurrence probabilities with the binomial distribution by changing the 'family' argument.
+
+Build the model and check gofstats:
+```{r}
+nd_1_mod <- buildcompnet(presabs=ex_presabs,
+        spvars_dist_int=ex_traits[c("ndtrait")],
+        rank=1,
+        warmup=300,
+        iter=1000,
+        family='binomial')
+nd_1_mod_gofstats <- gofstats(nd_1_mod)
+nd_1_mod_gofstats
+
+```
+
+Check DHARMa diagnostics:
+```{r}
+library(DHARMa)
+nd_1_mod_ppred <- postpredsamp(nd_1_mod)
+fpr <- apply(nd_1_mod_ppred, 1, mean)
+nd_1_mod_dharma <- createDHARMa(simulatedResponse = nd_1_mod_ppred,
+                                observedResponse = nd_1_mod$d$both,
+                                fittedPredictedResponse = fpr,
+                                integerResponse = TRUE)
+testDispersion(nd_1_mod_dharma)
+testQuantiles(nd_1_mod_dharma)
+testUniformity(nd_1_mod_dharma)
+testZeroInflation(nd_1_mod_dharma)
+```
+Looks great! For the rest of this vignette, we'll stick with the binomial distribution. 
+
+Going forward, to keep this vignette brief, we'll suppress the plots that accompany DHARMa tests, but I always recommend checking the plots when you're analyzing your own data.
 
 Now let's explore our results. First we'll peek at the coefficients for our predictors of interest:
 
@@ -167,7 +200,8 @@ Let's try a new model using both "ndtrait" and "domtrait" with distance interact
 nd_dom_0_mod <- buildcompnet(presabs=ex_presabs,
                         spvars_dist_int=ex_traits[c("ndtrait", "domtrait")],
                         warmup=400,
-                        iter=1200)
+                        iter=1200,
+                        family='binomial')
 
 nd_dom_0_mod_gofstats <- gofstats(nd_dom_0_mod)
 nd_dom_0_mod_gofstats
@@ -193,7 +227,8 @@ nd_dom_1_mod <- buildcompnet(presabs=ex_presabs,
                         rank = 1,
                         warmup=1000,
                         iter=2000,
-                        adapt_delta=0.95)
+                        adapt_delta=0.95,
+                        family='binomial')
 
 nd_dom_1_mod_gofstats <- gofstats(nd_dom_1_mod)
 nd_dom_1_mod_gofstats
@@ -211,7 +246,7 @@ testZeroInflation(nd_dom_1_mod_dharma, plot=FALSE)
 
 ```
 
-We've solved the overdispersion problem. The residuals still show a borderline case of higher-order non-independence. For now we'll leave it here, but if you want, you can try increasing 'rank' to 2 or above as an exercise.
+We've solved the overdispersion problem. The residuals still show a borderline case of higher-order non-independence. For now we'll leave it here, but if you'd like, you can try increasing 'rank' to 2 or above as an exercise.
 
 Let's have a quick look at our latest results and compare to the model with no covariate adjustment:
 
@@ -236,7 +271,8 @@ Now let's try a model with a categorical predictor, "ctrait". We'll use rank 0, 
 ```{r}
 c_0_mod <- buildcompnet(presabs=ex_presabs,
                         spvars_cat_int=ex_traits[c("ctrait")],
-                        rank=0)
+                        rank=0,
+                        family='binomial')
 ```
 
  Now let's break down the output summary:
@@ -264,7 +300,8 @@ Let's build the model now. Phylogenetic distance is a species-pair-level variabl
 
 ```{r}
 phylo_0_mod <- buildcompnet(presabs=ex_presabs,
-                            pairvars=ex_phylo)
+                            pairvars=ex_phylo,
+                            family='binomial')
 ```
 
 Run our model checks:
@@ -290,7 +327,8 @@ We've got problems with overdispersion and quantile deviations. Let's try again 
 phylo_1_mod <- buildcompnet(presabs=ex_presabs,
                             pairvars=ex_phylo,
                             rank=1,
-                            adapt_delta=0.9)
+                            adapt_delta=0.9,
+                            family='binomial')
 ```
 
 Run our model checks:
@@ -320,4 +358,4 @@ fixedeff_violins(phylo_1_mod)
 scatter_pairvar(phylo_1_mod, xvar="phylodist", xlabel="Phylogenetic Distance")
 ```
 
-Not much of an effect. We can regard this as a warning that phylogenetic distance may not always be an ideal proxy for resource use overlap.
+Not much of an effect. We can regard this as a warning that phylogenetic distance may not always be an ideal proxy for resource use overlap or habitat niche similarity.

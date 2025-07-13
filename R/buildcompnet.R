@@ -33,8 +33,8 @@
 #'    hypergeometric distribution. In this case, the quantity we are modeling, as a function of species
 #'    traits, dyadic random effects, etc. is Mainali et al.'s (2022, Science Advances) "alpha" or "cooccurrence affinity"
 #'    parameter in the fnchypg distribution. Link function is identity. 'binomial', also supported, is not as theoretically well justified--
-#'    see Mainali et al. (2022, Science Advances)--but anecdotally produces qualitatively similar results
-#'    and runs faster. In this case, we are modeling p, the probability that both species co-occur at a given
+#'    see Mainali et al. (2022, Science Advances)--but, in simulations, produces qualitatively similar results,
+#'    runs faster, and more consistently avoids problems like overdispersion. In this case, we are modeling p, the probability that both species co-occur at a given
 #'    site, given that at least one is present. Link function is logit. May be useful for pilot analyses.
 #' @param prior_intercept_scale Scale parameter for mean-zero Gaussian prior on the intercept term
 #'    for the linear predictor.
