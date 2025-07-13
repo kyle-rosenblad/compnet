@@ -42,6 +42,8 @@
 #'    fixed effect terms in the linear predictor.
 #' @param prior_sigma_addeff_rate Rate parameter for exponential prior on the scale of the
 #'    species-level Gaussian random effects (i.e., "row and column effects").
+#' @param prior_sigma_olre_rate Rate parameter for exponential prior on the scale of the
+#'    dyad-level Gaussian random effects.
 #' @param prior_lambda_scale Scale parameter for mean-zero Gaussian prior on diagonal values of
 #'    Lambda, the matrix that determines how different species' values of the latent factors
 #'    interact in the linear predictor.
@@ -98,6 +100,7 @@ buildcompnet <- function(presabs,
                     prior_intercept_scale=5,
                     prior_betas_scale=5,
                     prior_sigma_addeff_rate=1,
+                    prior_sigma_olre_rate=1,
                     prior_lambda_scale=5,
                     warmup=1000,
                     iter=2000,
@@ -428,7 +431,8 @@ buildcompnet <- function(presabs,
         either=d$either,
         prior_intercept_scale=prior_intercept_scale,
         prior_betas_scale=prior_betas_scale,
-        prior_sigma_addeff_rate=prior_sigma_addeff_rate)
+        prior_sigma_addeff_rate=prior_sigma_addeff_rate,
+        prior_sigma_olre_rate=prior_sigma_olre_rate)
 
       stanmod <- rstan::sampling(stanmodels$srm_fnchypg,
                                  data=datalist,

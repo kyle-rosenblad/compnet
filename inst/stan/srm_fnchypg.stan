@@ -46,6 +46,7 @@ data{
   real<lower=0> prior_intercept_scale; // SD for normal prior on the intercept
   real<lower=0> prior_betas_scale; // SD for normal prior on the coefficients of predictor variables
   real<lower=0> prior_sigma_addeff_rate; // rate for exponential prior on the sd of the species-level random effects (i.e., "additive" effects)
+  real<lower=0> prior_sigma_olre_rate; // rate for exponential prior on the sd of the species-level random effects (i.e., "additive" effects)
 }
 
 parameters{
@@ -53,12 +54,16 @@ parameters{
   vector[Xdy_cols] beta_dy; // coefficients for dyad-level terms in linear predictor
   vector[Xsp_cols] beta_sp; // coefficients for species-level terms in linear predictor
   real<lower=0> sigma; // sd of species-level random effects (i.e., "additive" effects)
+  real<lower=0> sigma_olre; // sd of species-level random effects (i.e., "additive" effects)
   vector[n_nodes] a_raw; // species-level random effects (i.e., "additive" effects)
+  vector[N] olre_raw; // species-level random effects (i.e., "additive" effects)
 }
 
 transformed parameters{
     // scale species-level random intercepts from non-centered parameterization
     vector[n_nodes] a = sigma * a_raw;
+    // scale observation-level random intercepts from non-centered parameterization
+    vector[N] olre = sigma_olre * olre_raw;
 }
 
 model{
@@ -74,13 +79,17 @@ model{
   a_raw ~ normal(0, 1);
   sigma ~ exponential(prior_sigma_addeff_rate);
 
+  olre_raw ~ normal(0, 1);
+  sigma_olre ~ exponential(prior_sigma_olre_rate);
+
   // likelihood
   for (i in 1:N) {
     real alpha = intercept +
                dot_product(Xdy[i], beta_dy) +
                dot_product(XA[i], beta_sp) +
                dot_product(XB[i], beta_sp) +
-               a[spAid[i]] + a[spBid[i]];
+               a[spAid[i]] + a[spBid[i]] +
+               olre[i];
     int spApres_i = sp_occ[spAid[i]]; // number of sites occupied by species A in dyad i
     int spAabs_i = n_sites-sp_occ[spAid[i]]; // number of sites NOT occupied by species A in dyad i. The As and Bs can be a bit confusing here; this notation is intended to align with Mainali et al. (2022, Science Advances)
     int spBpres_i = sp_occ[spBid[i]]; // number of sites occupied by species B in dyad i
@@ -94,6 +103,7 @@ generated quantities{
                dot_product(Xdy[i], beta_dy) +
                dot_product(XA[i], beta_sp) +
                dot_product(XB[i], beta_sp) +
-               a[spAid[i]] + a[spBid[i]];
+               a[spAid[i]] + a[spBid[i]] +
+               olre[i];
   }
 }

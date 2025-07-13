@@ -17,6 +17,7 @@ buildcompnet(
   prior_intercept_scale = 5,
   prior_betas_scale = 5,
   prior_sigma_addeff_rate = 1,
+  prior_sigma_olre_rate = 1,
   prior_lambda_scale = 5,
   warmup = 1000,
   iter = 2000,
@@ -74,6 +75,9 @@ fixed effect terms in the linear predictor.}
 
 \item{prior_sigma_addeff_rate}{Rate parameter for exponential prior on the scale of the
 species-level Gaussian random effects (i.e., "row and column effects").}
+
+\item{prior_sigma_olre_rate}{Rate parameter for exponential prior on the scale of the
+dyad-level Gaussian random effects.}
 
 \item{prior_lambda_scale}{Scale parameter for mean-zero Gaussian prior on diagonal values of
 Lambda, the matrix that determines how different species' values of the latent factors
