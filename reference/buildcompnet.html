@@ -54,6 +54,7 @@
 <span>  prior_intercept_scale <span class="op">=</span> <span class="fl">5</span>,</span>
 <span>  prior_betas_scale <span class="op">=</span> <span class="fl">5</span>,</span>
 <span>  prior_sigma_addeff_rate <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  prior_sigma_olre_rate <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  prior_lambda_scale <span class="op">=</span> <span class="fl">5</span>,</span>
 <span>  warmup <span class="op">=</span> <span class="fl">1000</span>,</span>
 <span>  iter <span class="op">=</span> <span class="fl">2000</span>,</span>
@@ -140,6 +141,11 @@ fixed effect terms in the linear predictor.</p></dd>
 species-level Gaussian random effects (i.e., "row and column effects").</p></dd>
 
 
+<dt id="arg-prior-sigma-olre-rate">prior_sigma_olre_rate<a class="anchor" aria-label="anchor" href="#arg-prior-sigma-olre-rate"></a></dt>
+<dd><p>Rate parameter for exponential prior on the scale of the
+dyad-level Gaussian random effects.</p></dd>
+
+
 <dt id="arg-prior-lambda-scale">prior_lambda_scale<a class="anchor" aria-label="anchor" href="#arg-prior-lambda-scale"></a></dt>
 <dd><p>Scale parameter for mean-zero Gaussian prior on diagonal values of
 Lambda, the matrix that determines how different species' values of the latent factors
@@ -205,8 +211,8 @@ network models. Stat. Sci. 36, 34–50.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> SAMPLING FOR MODEL 'srm_fnchypg' NOW (CHAIN 1).</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: Gradient evaluation took 0.000487 seconds</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 4.87 seconds.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: Gradient evaluation took 0.000514 seconds</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 5.14 seconds.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: Adjust your expectations accordingly!</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: </span>
@@ -226,9 +232,9 @@ network models. Stat. Sci. 36, 34–50.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: Iteration: 18 / 20 [ 90%]  (Sampling)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: Iteration: 20 / 20 [100%]  (Sampling)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1:  Elapsed Time: 0.178 seconds (Warm-up)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1:                0.213 seconds (Sampling)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1:                0.391 seconds (Total)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1:  Elapsed Time: 0.33 seconds (Warm-up)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1:                0.228 seconds (Sampling)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1:                0.558 seconds (Total)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: </span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>The largest R-hat is 2.12, indicating chains have not mixed.</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> Running the chains for more iterations may help. See</span>
