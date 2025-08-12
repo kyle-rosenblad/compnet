@@ -174,10 +174,10 @@ Let's see those as violin plots:
 fixedeff_violins(nd_1_mod)
 ```
 
-Now we'll make a scatterplot, in which each point is a species pair. The x axis will represent the trait value for "Species A" (A vs B is arbitrary), and the y axis will represent co-occurrence probability. We'll include curves for the mean expectation with 95% credible intervals. There will be multiple curves, each conditioned on a different value of the focal trait for "Species B". By default, the scatter_interaction() function will generate the plot by conditioning on the mean values of all other predictor variables pertaining to other traits. (In this example model, "ndtrait" is the only trait.)
+Now we'll make a scatterplot, in which each point is a species pair. The x axis will represent the trait value for "Species A" (A vs B is arbitrary), and the y axis will represent co-occurrence probability. We'll include curves for the mean expectation with 95% credible intervals. There will be multiple curves, each conditioned on a different value of the focal trait for "Species B". By default, the plot_interaction() function will generate the plot by conditioning on the mean values of all other predictor variables pertaining to other traits. (In this example model, "ndtrait" is the only trait.)
 
 ```{r fig.height=6, fig.width=6}
-scatter_interaction(nd_1_mod, xvar="ndtrait", xlabel="ND Trait")
+plot_interaction(nd_1_mod, xvar="ndtrait", xlabel="ND Trait")
 ```
 
 Cool! When Species B has a low value of "ndtrait", the co-occurrence probability increases with Species A's "ndtrait" value. In other words, if you have a low value of "ndtrait", you'll be more likely to co-occur with other species that have high values. This pattern is consistent with competitive niche differentiation. Similarly, when Species B's "ndtrait" value is high, co-occurrence probability decreases with Species A's value. Additionally, when Species B has an intermediate value of "ndtrait", co-occurrence probability is higher when Species A's value is at either extreme, with a dip in the middle. (This is the pattern that multiplicative interaction models--as opposed to distance interaction models--struggle to represent.) Overall, this plot exemplifies the results we expect for a metacommunity shaped by competitive niche differentiation.
@@ -258,8 +258,8 @@ summarize_compnet(nd_dom_1_mod)
 The coefficient of the "ndtrait" distance term is greater in the new model. This suggests our covariate adjustment strategy helped to "unmask" the true effect of "ndtrait" on co-occurrence probability. Let's see if the scatterplots look noticeably different:
 
 ```{r fig.height=6, fig.width=6}
-scatter_interaction(nd_1_mod, xvar="ndtrait", xlabel="ND Trait")
-scatter_interaction(nd_dom_1_mod, xvar="ndtrait", xlabel="ND Trait")
+plot_interaction(nd_1_mod, xvar="ndtrait", xlabel="ND Trait")
+plot_interaction(nd_dom_1_mod, xvar="ndtrait", xlabel="ND Trait")
 ```
 
 The effect of species' pairwise distances in "ndtrait" is noticeably stronger in the new model, which adjusted for the potential confounder, "domtrait".
