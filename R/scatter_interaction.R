@@ -25,6 +25,16 @@
 #' plotdata <- scatter_interaction(ex_compnet, xvar="ndtrait")
 
 #library(ggplot2)
-scatter_interaction <- function(){
+scatter_interaction <- function(mod,
+                                xvar,
+                                xlabel,
+                                orig.scale=TRUE,
+                                intlevels=c(0.05,0.5,0.95),
+                                ymin=0,
+                                ymax=1,
+                                ci_width=0.95,
+                                grid_size=100,
+                                thin=TRUE,
+                                thin_to=100){
   stop("Deprecated. Please use plot_interaction().")
 }

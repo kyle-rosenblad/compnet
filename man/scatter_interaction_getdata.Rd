@@ -4,7 +4,16 @@
 \alias{scatter_interaction_getdata}
 \title{Deprecated. Please use plot_interaction_getdata().}
 \usage{
-scatter_interaction_getdata()
+scatter_interaction_getdata(
+  mod,
+  xvar,
+  orig.scale = T,
+  intlevels = c(0.05, 0.5, 0.95),
+  ci_width = 0.95,
+  grid_size = 100,
+  thin = TRUE,
+  thin_to = 100
+)
 }
 \arguments{
 \item{mod}{An object of class "compnet" created by the buildcompnet() function.}

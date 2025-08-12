@@ -31,7 +31,7 @@ plot_pairvar_getdata <- function(mod,
                                     thin=TRUE,
                                     thin_to=100){
 
-  if(mod$family=='fnchypgm'){
+  if(mod$family=='fnchypg'){
     stop("This function currently only supports binomial models. Will be updated in future version.")
   }
 

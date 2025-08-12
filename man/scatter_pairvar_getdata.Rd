@@ -4,7 +4,15 @@
 \alias{scatter_pairvar_getdata}
 \title{Deprecated. Please use plot_pairvar_getdata().}
 \usage{
-scatter_pairvar_getdata()
+scatter_pairvar_getdata(
+  mod,
+  xvar,
+  orig.scale = TRUE,
+  ci_width = 0.95,
+  grid_size = 100,
+  thin = TRUE,
+  thin_to = 100
+)
 }
 \arguments{
 \item{mod}{An object of class "compnet" created by the buildcompnet() function.}

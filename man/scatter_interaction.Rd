@@ -4,7 +4,19 @@
 \alias{scatter_interaction}
 \title{Deprecated. Please use plot_interaction().}
 \usage{
-scatter_interaction()
+scatter_interaction(
+  mod,
+  xvar,
+  xlabel,
+  orig.scale = TRUE,
+  intlevels = c(0.05, 0.5, 0.95),
+  ymin = 0,
+  ymax = 1,
+  ci_width = 0.95,
+  grid_size = 100,
+  thin = TRUE,
+  thin_to = 100
+)
 }
 \arguments{
 \item{mod}{An object of class "compnet" created by the buildcompnet() function.}
@@ -20,11 +32,11 @@ scale (TRUE) or leave them with mean zero and unit variance (FALSE).}
 \item{intlevels}{Vector of real values on the interval \eqn{[0,1]} indicating what levels of the x
 variable to condition on for species B when plotting species A's mean response.}
 
-\item{ci_width}{A real number (0,1) describing the desired widths of credible bands. Defaults to 0.95.}
-
 \item{ymin}{Real number indicating the location of the bottom of the plot's y axis.}
 
 \item{ymax}{Real number indicating the location of the top of the plot's y axis.}
+
+\item{ci_width}{A real number (0,1) describing the desired widths of credible bands. Defaults to 0.95.}
 
 \item{grid_size}{A positive integer defining the number of discrete steps to use in approximating
 the shape of mean prediction curves and credible bands. Defaults to 100.}

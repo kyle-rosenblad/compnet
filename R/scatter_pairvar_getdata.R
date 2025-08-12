@@ -20,6 +20,12 @@
 #'
 #' scatter_pairvar_getdata(ex_compnet_phylo, xvar="phylodist")
 
-scatter_pairvar_getdata <- function(){
+scatter_pairvar_getdata <- function(mod,
+                                    xvar,
+                                    orig.scale=TRUE,
+                                    ci_width=0.95,
+                                    grid_size=100,
+                                    thin=TRUE,
+                                    thin_to=100){
   stop("Deprecated. Please use plot_pairvar_getdata().")
 }

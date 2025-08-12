@@ -24,6 +24,16 @@
 #'
 #' scatter_pairvar(ex_compnet_phylo, xvar="phylodist", ymax=0.25)
 
-scatter_pairvar <- function(){
+scatter_pairvar <- function(mod,
+                            xvar,
+                            xlabel,
+                            color="red",
+                            orig.scale=TRUE,
+                            ymin=0,
+                            ymax=1,
+                            ci_width=0.95,
+                            grid_size=100,
+                            thin=TRUE,
+                            thin_to=100){
   stop("Deprecated. Please use plot_pairvar().")
 }

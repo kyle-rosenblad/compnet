@@ -4,26 +4,38 @@
 \alias{scatter_pairvar}
 \title{Deprecated. Please use plot_pairvar().}
 \usage{
-scatter_pairvar()
+scatter_pairvar(
+  mod,
+  xvar,
+  xlabel,
+  color = "red",
+  orig.scale = TRUE,
+  ymin = 0,
+  ymax = 1,
+  ci_width = 0.95,
+  grid_size = 100,
+  thin = TRUE,
+  thin_to = 100
+)
 }
 \arguments{
 \item{mod}{An object of class "compnet" created by the buildcompnet() function.}
-
-\item{color}{Color to use in plotting.}
 
 \item{xvar}{Character string for the name of the trait to be used. Must match the trait name in
 the input data used to build the model.}
 
 \item{xlabel}{Optional character string to replace xvar when plotting.}
 
+\item{color}{Color to use in plotting.}
+
 \item{orig.scale}{Logical value indicating whether to back-transform trait data to the original
 scale (TRUE) or leave them with mean zero and unit variance (FALSE).}
-
-\item{ci_width}{A real number (0,1) describing the desired widths of credible band. Defaults to 0.95.}
 
 \item{ymin}{Real number indicating the location of the bottom of the plot's y axis.}
 
 \item{ymax}{Real number indicating the location of the top of the plot's y axis.}
+
+\item{ci_width}{A real number (0,1) describing the desired widths of credible band. Defaults to 0.95.}
 
 \item{grid_size}{A positive integer defining the number of discrete steps to use in approximating
 the shape of mean prediction curves and credible bands. Defaults to 100.}
