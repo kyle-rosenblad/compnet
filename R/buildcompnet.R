@@ -418,11 +418,11 @@ buildcompnet <- function(presabs,
 
   if(family=='fnchypg'){
 
-    print(paste0("You are currently running a compnet model with a Fisher's noncentral hypergeometric likelihood.",
+    print(paste("You are currently running a compnet model with a Fisher's noncentral hypergeometric likelihood.",
                  "This is the default option because there is strong theory supporting it.",
                  "However, choosing a binomial likelihood (i.e., setting family='binomial') instead may result in a substantially faster run.",
                  "This alternative option performs equally well in simulation-based testing.",
-                 "See https://kyle-rosenblad.github.io/compnet/ for more details"))
+                 "See https://kyle-rosenblad.github.io/compnet/ for more details", sep="\n"))
 
     if(olre==TRUE){
 
@@ -608,10 +608,10 @@ buildcompnet <- function(presabs,
     names(outlist)[length(outlist)] <- "pairvars_summs"
   }
 
-  print(paste0("compnet uses Stan under the hood. You may see warnings from Stan alongside, ",
+  print(paste("compnet uses Stan under the hood. You may see warnings from Stan alongside, ",
         "this message. To deal with any warnings Stan might issue, ",
         "Please see the links provided in Stan's output, as well as the compnet website:",
-        "https://kyle-rosenblad.github.io/compnet/"))
+        "https://kyle-rosenblad.github.io/compnet/", sep="\n"))
 
   class(outlist) <- "compnet"
   return(outlist)
