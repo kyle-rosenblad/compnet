@@ -2,17 +2,9 @@
 % Please edit documentation in R/scatter_pairvar_getdata.R
 \name{scatter_pairvar_getdata}
 \alias{scatter_pairvar_getdata}
-\title{Get data for a plot of the effect of a pair-level variable like phylogenetic distance}
+\title{Deprecated. Please use plot_pairvar_getdata().}
 \usage{
-scatter_pairvar_getdata(
-  mod,
-  xvar,
-  orig.scale = TRUE,
-  ci_width = 0.95,
-  grid_size = 100,
-  thin = TRUE,
-  thin_to = 100
-)
+scatter_pairvar_getdata()
 }
 \arguments{
 \item{mod}{An object of class "compnet" created by the buildcompnet() function.}
@@ -36,14 +28,12 @@ the shape of mean prediction curves and credible bands. Defaults to 100.}
 A ggplot2 graphic.
 }
 \description{
-Get data for a plot of the effect of a pair-level variable like phylogenetic distance
+Deprecated. Please use plot_pairvar_getdata().
 }
 \examples{
 data(ex_presabs)
 data(ex_phylo)
 
-# Quick demo run. Will prompt warnings.
-# Run with default warmup and iter for good posterior sampling.
 ex_compnet_phylo <- buildcompnet(presabs=ex_presabs, pairvars=ex_phylo, warmup=10, iter=20)
 
 scatter_pairvar_getdata(ex_compnet_phylo, xvar="phylodist")

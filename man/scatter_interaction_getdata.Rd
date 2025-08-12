@@ -2,18 +2,9 @@
 % Please edit documentation in R/scatter_interaction_getdata.R
 \name{scatter_interaction_getdata}
 \alias{scatter_interaction_getdata}
-\title{Get data for a plot of the interactive effect of two species' values of the same trait.}
+\title{Deprecated. Please use plot_interaction_getdata().}
 \usage{
-scatter_interaction_getdata(
-  mod,
-  xvar,
-  orig.scale = T,
-  intlevels = c(0.05, 0.5, 0.95),
-  ci_width = 0.95,
-  grid_size = 100,
-  thin = TRUE,
-  thin_to = 100
-)
+scatter_interaction_getdata()
 }
 \arguments{
 \item{mod}{An object of class "compnet" created by the buildcompnet() function.}
@@ -42,14 +33,12 @@ A data frame containing data needed to plot mean curves and credible bands as do
 the scatter_interaction function.
 }
 \description{
-Get data for a plot of the interactive effect of two species' values of the same trait.
+Deprecated. Please use plot_interaction_getdata().
 }
 \examples{
 data(ex_presabs)
 data(ex_traits)
 
-# Quick demo run. Will prompt warnings.
-# Run with default warmup and iter for good posterior sampling.
 ex_compnet <- buildcompnet(presabs=ex_presabs, spvars_dist_int=ex_traits[c("ndtrait")], warmup=10, iter=20)
 
 plotdata <- scatter_interaction_getdata(ex_compnet, xvar="ndtrait")
