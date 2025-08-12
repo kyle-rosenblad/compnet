@@ -36,6 +36,9 @@
 #'    see Mainali et al. (2022, Science Advances)--but, in simulations, produces qualitatively similar results,
 #'    runs faster, and more consistently avoids problems like overdispersion. In this case, we are modeling p, the probability that both species co-occur at a given
 #'    site, given that at least one is present. Link function is logit. May be useful for pilot analyses.
+#' @param olre Logical variable indicating whether to include observation-level random intercepts drawn from a
+#'    univariate normal distribution. Only relevant when family = 'fnchypg'. Defaults to TRUE, as these models
+#'    can often exhibit fit problems which may be mitigated by the random effects.
 #' @param prior_intercept_scale Scale parameter for mean-zero Gaussian prior on the intercept term
 #'    for the linear predictor.
 #' @param prior_betas_scale Scale parameter for mean-zero Gaussian priors on the coefficients of
@@ -97,6 +100,7 @@ buildcompnet <- function(presabs,
                     pairvars=NULL,
                     rank=0,
                     family='fnchypg',
+                    olre=TRUE,
                     prior_intercept_scale=5,
                     prior_betas_scale=5,
                     prior_sigma_addeff_rate=1,
@@ -414,77 +418,158 @@ buildcompnet <- function(presabs,
 
   if(family=='fnchypg'){
 
-    if(rank==0){
-      datalist <- list(
-        n_nodes=ncol(presabs),
-        sp_occ=c(colSums(presabs)),
-        n_sites=nrow(presabs),
-        N=nrow(d),
-        Xdy_cols=ncol(Xdy),
-        Xsp_cols=ncol(XA),
-        spAid=d$spAid,
-        spBid=d$spBid,
-        Xdy=Xdy,
-        XA=XA,
-        XB=XB,
-        both=d$both,
-        either=d$either,
-        prior_intercept_scale=prior_intercept_scale,
-        prior_betas_scale=prior_betas_scale,
-        prior_sigma_addeff_rate=prior_sigma_addeff_rate,
-        prior_sigma_olre_rate=prior_sigma_olre_rate)
+    if(olre==TRUE){
 
-      stanmod <- rstan::sampling(stanmodels$srm_fnchypg,
-                                 data=datalist,
-                                 cores=1,
-                                 chains=1,
-                                 warmup=warmup,
-                                 iter=iter,
-                                 verbose=F,
-                                 control=list(adapt_delta=adapt_delta))
+      if(rank==0){
+        datalist <- list(
+          n_nodes=ncol(presabs),
+          sp_occ=c(colSums(presabs)),
+          n_sites=nrow(presabs),
+          N=nrow(d),
+          Xdy_cols=ncol(Xdy),
+          Xsp_cols=ncol(XA),
+          spAid=d$spAid,
+          spBid=d$spBid,
+          Xdy=Xdy,
+          XA=XA,
+          XB=XB,
+          both=d$both,
+          either=d$either,
+          prior_intercept_scale=prior_intercept_scale,
+          prior_betas_scale=prior_betas_scale,
+          prior_sigma_addeff_rate=prior_sigma_addeff_rate,
+          prior_sigma_olre_rate=prior_sigma_olre_rate)
+
+        stanmod <- rstan::sampling(stanmodels$srm_fnchypg,
+                                   data=datalist,
+                                   cores=1,
+                                   chains=1,
+                                   warmup=warmup,
+                                   iter=iter,
+                                   verbose=F,
+                                   control=list(adapt_delta=adapt_delta))
+      }
+
+      if(rank>0){
+        datalist <- list(
+          n_nodes=ncol(presabs),
+          sp_occ=c(colSums(presabs)),
+          n_sites=nrow(presabs),
+          N=nrow(d),
+          Xdy_cols=ncol(Xdy),
+          Xsp_cols=ncol(XA),
+          spAid=d$spAid,
+          spBid=d$spBid,
+          Xdy=Xdy,
+          XA=XA,
+          XB=XB,
+          both=d$both,
+          either=d$either,
+          prior_intercept_scale=prior_intercept_scale,
+          prior_betas_scale=prior_betas_scale,
+          prior_sigma_addeff_rate=prior_sigma_addeff_rate,
+          prior_sigma_olre_rate=prior_sigma_olre_rate,
+          # params not present when rank==0:
+          K=rank,
+          prior_lambda_scale=prior_lambda_scale)
+
+        stanmod <- rstan::sampling(stanmodels$ame_fnchypg,
+                                   data=datalist,
+                                   pars=c("intercept", # Marginalize over the individual values of each latent factor ("U"), since these are known to be nonidentifiable due to reflectional and rotational invariance, as well as potential label-switching among multiple latent factor dimensions when K>1. The Stan code has tools designed to deal with this, but only for computational efficiency reasons; it's not a problem for inference.
+                                          "beta_dy",
+                                          "beta_sp",
+                                          "sigma",
+                                          "sigma_olre",
+                                          "a",
+                                          "olre",
+                                          "latfacterm", # In contrast to individual species' U values, ULU values (sensu Hoff et al.) need to be identifiable, so we'll include them to make sure they sample well.
+                                          "lp__",
+                                          "alpha"),
+                                   cores=1,
+                                   chains=1,
+                                   warmup=warmup,
+                                   iter=iter,
+                                   verbose=F,
+                                   control=list(adapt_delta=adapt_delta))
+      }
+
+
     }
 
-    if(rank>0){
-      datalist <- list(
-        n_nodes=ncol(presabs),
-        sp_occ=c(colSums(presabs)),
-        n_sites=nrow(presabs),
-        N=nrow(d),
-        Xdy_cols=ncol(Xdy),
-        Xsp_cols=ncol(XA),
-        spAid=d$spAid,
-        spBid=d$spBid,
-        Xdy=Xdy,
-        XA=XA,
-        XB=XB,
-        both=d$both,
-        either=d$either,
-        prior_intercept_scale=prior_intercept_scale,
-        prior_betas_scale=prior_betas_scale,
-        prior_sigma_addeff_rate=prior_sigma_addeff_rate,
-        # params not present when rank==0:
-        K=rank,
-        prior_lambda_scale=prior_lambda_scale)
+    if(olre==FALSE){
 
-      stanmod <- rstan::sampling(stanmodels$ame_fnchypg,
-                                 data=datalist,
-                                 pars=c("intercept", # Marginalize over the individual values of each latent factor ("U"), since these are known to be nonidentifiable due to reflectional and rotational invariance, as well as potential label-switching among multiple latent factor dimensions when K>1. The Stan code has tools designed to deal with this, but only for computational efficiency reasons; it's not a problem for inference.
-                                        "beta_dy",
-                                        "beta_sp",
-                                        "sigma",
-                                        "sigma_olre",
-                                        "a",
-                                        "olre",
-                                        "latfacterm", # In contrast to individual species' U values, ULU values (sensu Hoff et al.) need to be identifiable, so we'll include them to make sure they sample well.
-                                        "lp__",
-                                        "alpha"),
-                                 cores=1,
-                                 chains=1,
-                                 warmup=warmup,
-                                 iter=iter,
-                                 verbose=F,
-                                 control=list(adapt_delta=adapt_delta))
+      if(rank==0){
+        datalist <- list(
+          n_nodes=ncol(presabs),
+          sp_occ=c(colSums(presabs)),
+          n_sites=nrow(presabs),
+          N=nrow(d),
+          Xdy_cols=ncol(Xdy),
+          Xsp_cols=ncol(XA),
+          spAid=d$spAid,
+          spBid=d$spBid,
+          Xdy=Xdy,
+          XA=XA,
+          XB=XB,
+          both=d$both,
+          either=d$either,
+          prior_intercept_scale=prior_intercept_scale,
+          prior_betas_scale=prior_betas_scale,
+          prior_sigma_addeff_rate=prior_sigma_addeff_rate)
+
+        stanmod <- rstan::sampling(stanmodels$srm_fnchypg_withoutolre,
+                                   data=datalist,
+                                   cores=1,
+                                   chains=1,
+                                   warmup=warmup,
+                                   iter=iter,
+                                   verbose=F,
+                                   control=list(adapt_delta=adapt_delta))
+      }
+
+      if(rank>0){
+        datalist <- list(
+          n_nodes=ncol(presabs),
+          sp_occ=c(colSums(presabs)),
+          n_sites=nrow(presabs),
+          N=nrow(d),
+          Xdy_cols=ncol(Xdy),
+          Xsp_cols=ncol(XA),
+          spAid=d$spAid,
+          spBid=d$spBid,
+          Xdy=Xdy,
+          XA=XA,
+          XB=XB,
+          both=d$both,
+          either=d$either,
+          prior_intercept_scale=prior_intercept_scale,
+          prior_betas_scale=prior_betas_scale,
+          prior_sigma_addeff_rate=prior_sigma_addeff_rate,
+          # params not present when rank==0:
+          K=rank,
+          prior_lambda_scale=prior_lambda_scale)
+
+        stanmod <- rstan::sampling(stanmodels$ame_fnchypg_withoutolre,
+                                   data=datalist,
+                                   pars=c("intercept", # Marginalize over the individual values of each latent factor ("U"), since these are known to be nonidentifiable due to reflectional and rotational invariance, as well as potential label-switching among multiple latent factor dimensions when K>1. The Stan code has tools designed to deal with this, but only for computational efficiency reasons; it's not a problem for inference.
+                                          "beta_dy",
+                                          "beta_sp",
+                                          "sigma",
+                                          "a",
+                                          "latfacterm", # In contrast to individual species' U values, ULU values (sensu Hoff et al.) need to be identifiable, so we'll include them to make sure they sample well.
+                                          "lp__",
+                                          "alpha"),
+                                   cores=1,
+                                   chains=1,
+                                   warmup=warmup,
+                                   iter=iter,
+                                   verbose=F,
+                                   control=list(adapt_delta=adapt_delta))
+      }
+
+
     }
+
 
   }
 

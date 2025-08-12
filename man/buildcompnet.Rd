@@ -14,6 +14,7 @@ buildcompnet(
   pairvars = NULL,
   rank = 0,
   family = "fnchypg",
+  olre = TRUE,
   prior_intercept_scale = 5,
   prior_betas_scale = 5,
   prior_sigma_addeff_rate = 1,
@@ -66,6 +67,10 @@ parameter in the fnchypg distribution. Link function is identity. 'binomial', al
 see Mainali et al. (2022, Science Advances)--but, in simulations, produces qualitatively similar results,
 runs faster, and more consistently avoids problems like overdispersion. In this case, we are modeling p, the probability that both species co-occur at a given
 site, given that at least one is present. Link function is logit. May be useful for pilot analyses.}
+
+\item{olre}{Logical variable indicating whether to include observation-level random intercepts drawn from a
+univariate normal distribution. Only relevant when family = 'fnchypg'. Defaults to TRUE, as these models
+can often exhibit fit problems which may be mitigated by the random effects.}
 
 \item{prior_intercept_scale}{Scale parameter for mean-zero Gaussian prior on the intercept term
 for the linear predictor.}
