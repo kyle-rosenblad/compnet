@@ -418,6 +418,12 @@ buildcompnet <- function(presabs,
 
   if(family=='fnchypg'){
 
+    print(paste0("You are currently running a compnet model with a Fisher's noncentral hypergeometric likelihood.",
+                 "This is the default option because there is strong theory supporting it.",
+                 "However, choosing a binomial likelihood (i.e., setting family='binomial') instead may result in a substantially faster run.",
+                 "This alternative option performs equally well in simulation-based testing.",
+                 "See https://kyle-rosenblad.github.io/compnet/ for more details"))
+
     if(olre==TRUE){
 
       if(rank==0){
