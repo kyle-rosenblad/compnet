@@ -355,7 +355,7 @@ fixedeff_violins(phylo_1_mod)
 ```
 
 ```{r fig.height=6, fig.width=6}
-scatter_pairvar(phylo_1_mod, xvar="phylodist", xlabel="Phylogenetic Distance")
+plot_pairvar(phylo_1_mod, xvar="phylodist", xlabel="Phylogenetic Distance")
 ```
 
 Not much of an effect. We can regard this as a warning that phylogenetic distance may not always be an ideal proxy for resource use overlap or habitat niche similarity.
