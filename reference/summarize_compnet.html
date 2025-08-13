@@ -69,13 +69,14 @@
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Quick demo run. Will prompt warnings.</span></span></span>
 <span class="r-in"><span><span class="co"># Run with default warmup and iter for good posterior sampling.</span></span></span>
-<span class="r-in"><span><span class="va">ex_compnet</span> <span class="op">&lt;-</span> <span class="fu"><a href="buildcompnet.html">buildcompnet</a></span><span class="op">(</span>presabs<span class="op">=</span><span class="va">ex_presabs</span>, spvars_dist_int<span class="op">=</span><span class="va">ex_traits</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ndtrait"</span><span class="op">)</span><span class="op">]</span>, warmup<span class="op">=</span><span class="fl">10</span>, iter<span class="op">=</span><span class="fl">20</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "You are currently running a compnet model with a Fisher's noncentral hypergeometric likelihood.\nThis is the default option because there is strong theory supporting it.\nHowever, choosing a binomial likelihood (i.e., setting family='binomial') instead may result in a substantially faster run.\nThis alternative option performs equally well in simulation-based testing.\nSee https://kyle-rosenblad.github.io/compnet/ for more details"</span>
+<span class="r-in"><span><span class="va">ex_compnet</span> <span class="op">&lt;-</span> <span class="fu"><a href="buildcompnet.html">buildcompnet</a></span><span class="op">(</span>presabs<span class="op">=</span><span class="va">ex_presabs</span>,</span></span>
+<span class="r-in"><span>spvars_dist_int<span class="op">=</span><span class="va">ex_traits</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ndtrait"</span><span class="op">)</span><span class="op">]</span>, warmup<span class="op">=</span><span class="fl">10</span>, iter<span class="op">=</span><span class="fl">20</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "You are currently running a compnet model with a Fisher's noncentral hypergeometric likelihood. This is the default option because there is strong theory supporting it. However, choosing a binomial likelihood (i.e., setting family='binomial') instead may result in a substantially faster run. This alternative option performs equally well in simulation-based testing. See https://kyle-rosenblad.github.io/compnet/ for more details"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> SAMPLING FOR MODEL 'srm_fnchypg' NOW (CHAIN 1).</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: Gradient evaluation took 0.000429 seconds</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 4.29 seconds.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: Gradient evaluation took 0.000375 seconds</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 3.75 seconds.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: Adjust your expectations accordingly!</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: </span>
@@ -95,10 +96,13 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: Iteration: 18 / 20 [ 90%]  (Sampling)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: Iteration: 20 / 20 [100%]  (Sampling)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1:  Elapsed Time: 0.461 seconds (Warm-up)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1:                0.326 seconds (Sampling)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1:                0.787 seconds (Total)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1:  Elapsed Time: 0.338 seconds (Warm-up)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1:                0.221 seconds (Sampling)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1:                0.559 seconds (Total)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: </span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>There were 1 chains where the estimated Bayesian Fraction of Missing Information was low. See</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> https://mc-stan.org/misc/warnings.html#bfmi-low</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Examine the pairs() plot to diagnose sampling problems</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>The largest R-hat is 2.12, indicating chains have not mixed.</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> Running the chains for more iterations may help. See</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> https://mc-stan.org/misc/warnings.html#r-hat</span>
@@ -113,9 +117,9 @@
 <span class="r-in"><span><span class="va">ex_compnet_summ</span> <span class="op">&lt;-</span> <span class="fu">summarize_compnet</span><span class="op">(</span><span class="va">ex_compnet</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">ex_compnet_summ</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                    Mean        2.5%      97.5%</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> intercept    -2.0020720 -2.62728501 -1.5099300</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ndtrait_dist  0.9174514  0.49342795  1.3477187</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ndtrait_sp    0.3086149  0.09633121  0.4742011</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> intercept    -1.9456491 -2.73196654 -1.0104506</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ndtrait_dist  0.8439441  0.38373678  1.1309973</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ndtrait_sp    0.1869060  0.02050081  0.3990845</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

@@ -119,13 +119,14 @@ the shape of mean prediction curves and credible bands. Defaults to 100.</p></dd
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Quick demo run. Will prompt warnings.</span></span></span>
 <span class="r-in"><span><span class="co"># Run with default warmup and iter for good posterior sampling.</span></span></span>
-<span class="r-in"><span><span class="va">ex_compnet_phylo</span> <span class="op">&lt;-</span> <span class="fu"><a href="buildcompnet.html">buildcompnet</a></span><span class="op">(</span>presabs<span class="op">=</span><span class="va">ex_presabs</span>, pairvars<span class="op">=</span><span class="va">ex_phylo</span>, warmup<span class="op">=</span><span class="fl">10</span>, iter<span class="op">=</span><span class="fl">20</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "You are currently running a compnet model with a Fisher's noncentral hypergeometric likelihood.\nThis is the default option because there is strong theory supporting it.\nHowever, choosing a binomial likelihood (i.e., setting family='binomial') instead may result in a substantially faster run.\nThis alternative option performs equally well in simulation-based testing.\nSee https://kyle-rosenblad.github.io/compnet/ for more details"</span>
+<span class="r-in"><span><span class="va">ex_compnet_phylo</span> <span class="op">&lt;-</span> <span class="fu"><a href="buildcompnet.html">buildcompnet</a></span><span class="op">(</span>presabs<span class="op">=</span><span class="va">ex_presabs</span>,</span></span>
+<span class="r-in"><span>pairvars<span class="op">=</span><span class="va">ex_phylo</span>, warmup<span class="op">=</span><span class="fl">10</span>, iter<span class="op">=</span><span class="fl">20</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "You are currently running a compnet model with a Fisher's noncentral hypergeometric likelihood. This is the default option because there is strong theory supporting it. However, choosing a binomial likelihood (i.e., setting family='binomial') instead may result in a substantially faster run. This alternative option performs equally well in simulation-based testing. See https://kyle-rosenblad.github.io/compnet/ for more details"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> SAMPLING FOR MODEL 'srm_fnchypg' NOW (CHAIN 1).</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: Gradient evaluation took 0.000396 seconds</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 3.96 seconds.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: Gradient evaluation took 0.000369 seconds</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 3.69 seconds.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: Adjust your expectations accordingly!</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: </span>
@@ -145,9 +146,9 @@ the shape of mean prediction curves and credible bands. Defaults to 100.</p></dd
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: Iteration: 18 / 20 [ 90%]  (Sampling)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: Iteration: 20 / 20 [100%]  (Sampling)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1:  Elapsed Time: 0.281 seconds (Warm-up)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1:                0.238 seconds (Sampling)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1:                0.519 seconds (Total)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1:  Elapsed Time: 0.253 seconds (Warm-up)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1:                0.213 seconds (Sampling)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1:                0.466 seconds (Total)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: </span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>The largest R-hat is 2.12, indicating chains have not mixed.</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> Running the chains for more iterations may help. See</span>
