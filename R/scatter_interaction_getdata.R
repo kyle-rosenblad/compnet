@@ -14,15 +14,6 @@
 #' @param thin Logical value determining whether to use a random subsample of the full posterior sample.
 #' @param thin_to Integer value determining how many random samples to draw from the full posterior
 #'    sample if thin=TRUE.
-#' @return A data frame containing data needed to plot mean curves and credible bands as done in
-#'    the scatter_interaction function.
-#' @examples
-#' data(ex_presabs)
-#' data(ex_traits)
-#'
-#' ex_compnet <- buildcompnet(presabs=ex_presabs, spvars_dist_int=ex_traits[c("ndtrait")], warmup=10, iter=20)
-#'
-#' plotdata <- scatter_interaction_getdata(ex_compnet, xvar="ndtrait")
 
 scatter_interaction_getdata <- function(mod,
                                         xvar,

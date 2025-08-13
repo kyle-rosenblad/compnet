@@ -88,7 +88,8 @@
 #'
 #' # Quick demo run. Will prompt warnings.
 #' # Run with default warmup and iter for good posterior sampling.
-#' ex_compnet <- buildcompnet(presabs=ex_presabs, spvars_dist_int=ex_traits[c("ndtrait")], warmup=10, iter=20)
+#' ex_compnet <- buildcompnet(presabs=ex_presabs,
+#' spvars_dist_int=ex_traits[c("ndtrait")], warmup=10, iter=20)
 #'
 
 buildcompnet <- function(presabs,
@@ -422,7 +423,7 @@ buildcompnet <- function(presabs,
                  "This is the default option because there is strong theory supporting it.",
                  "However, choosing a binomial likelihood (i.e., setting family='binomial') instead may result in a substantially faster run.",
                  "This alternative option performs equally well in simulation-based testing.",
-                 "See https://kyle-rosenblad.github.io/compnet/ for more details", sep="\n"))
+                 "See https://kyle-rosenblad.github.io/compnet/ for more details", sep=" "))
 
     if(olre==TRUE){
 
