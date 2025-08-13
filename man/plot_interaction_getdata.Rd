@@ -51,7 +51,7 @@ data(ex_traits)
 # Quick demo run. Will prompt warnings.
 # Run with default warmup and iter for good posterior sampling.
 ex_compnet <- buildcompnet(presabs=ex_presabs,
-spvars_dist_int=ex_traits[c("ndtrait")], warmup=10, iter=20)
+spvars_dist_int=ex_traits[c("ndtrait")], warmup=10, iter=20, family='binomial')
 
 plotdata <- plot_interaction_getdata(ex_compnet, xvar="ndtrait")
 }
