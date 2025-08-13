@@ -56,7 +56,8 @@ data(ex_phylo)
 
 # Quick demo run. Will prompt warnings.
 # Run with default warmup and iter for good posterior sampling.
-ex_compnet_phylo <- buildcompnet(presabs=ex_presabs, pairvars=ex_phylo, warmup=10, iter=20)
+ex_compnet_phylo <- buildcompnet(presabs=ex_presabs,
+pairvars=ex_phylo, warmup=10, iter=20)
 
 plot_pairvar(ex_compnet_phylo, xvar="phylodist", ymax=0.25)
 }

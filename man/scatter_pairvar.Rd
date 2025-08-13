@@ -44,17 +44,6 @@ the shape of mean prediction curves and credible bands. Defaults to 100.}
 
 \item{thin_to}{Integer value determining how many random samples to draw from the full posterior sample if thin=TRUE.}
 }
-\value{
-A ggplot2 graphic.
-}
 \description{
 Deprecated. Please use plot_pairvar().
-}
-\examples{
-data(ex_presabs)
-data(ex_phylo)
-
-ex_compnet_phylo <- buildcompnet(presabs=ex_presabs, pairvars=ex_phylo, warmup=10, iter=20)
-
-scatter_pairvar(ex_compnet_phylo, xvar="phylodist", ymax=0.25)
 }
