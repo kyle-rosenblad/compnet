@@ -29,17 +29,13 @@
 #' plotdata <- plot_interaction_getdata(ex_compnet, xvar="ndtrait")
 
 plot_interaction_getdata <- function(mod,
-                                        xvar,
-                                        orig.scale=T,
-                                        intlevels=c(0.05,0.5,0.95),
-                                        ci_width=0.95,
-                                        grid_size=100,
-                                        thin=TRUE,
-                                        thin_to=100){
-  if(mod$family=='fnchypg'){
-    stop("This function currently only supports binomial models. Will be updated in future version.")
-  }
-
+                                     xvar,
+                                     orig.scale=T,
+                                     intlevels=c(0.05,0.5,0.95),
+                                     ci_width=0.95,
+                                     grid_size=100,
+                                     thin=TRUE,
+                                     thin_to=100){
   ### error for categorical xvar or pairvar or non-interacting continuous trait
   if(xvar%in%rownames(mod$spvars_multi_summs)==FALSE &
      xvar%in%rownames(mod$spvars_dist_summs)==FALSE){
@@ -106,45 +102,97 @@ plot_interaction_getdata <- function(mod,
     samp_for_plot <- samp_for_plot[sample(1:nrow(samp_for_plot), replace=FALSE, size=min(nrow(samp_for_plot),thin_to)),]
   }
 
-  for(k in 1:length(intlevels)){
-    gridtmp <- grid_for_plot
-    for(i in 1:nrow(grid_for_plot)){
-      x_tmp <- grid_for_plot[i, "x"]
-      yvec <- c()
-      for(j in 1:nrow(samp_for_plot)){
-        alpha_tmp <- samp_for_plot[j, "alpha"]
-        beta_sp_tmp <- samp_for_plot[j, "beta_sp"]
-        beta_dy_tmp <- samp_for_plot[j, "beta_dy"]
-        xbeta_other_tmp <- samp_for_plot[j, "xbeta_other"]
-        if(xvar%in%rownames(mod$spvars_dist_summs)){
-          ytmp <- expit(alpha_tmp +
-                          xbeta_other_tmp +
-                          beta_sp_tmp*intlevels[k] +
-                          beta_sp_tmp*grid_for_plot[i,"x"] +
-                          beta_dy_tmp*abs(grid_for_plot[i,"x"] - intlevels[k]))
-        }
-        if(xvar%in%rownames(mod$spvars_multi_summs)){
-          ytmp <- expit(alpha_tmp +
-                          xbeta_other_tmp +
-                          beta_sp_tmp*intlevels[k] +
-                          beta_sp_tmp*grid_for_plot[i,"x"] +
-                          beta_dy_tmp*grid_for_plot[i,"x"]*intlevels[k])
-        }
-        yvec <- c(yvec, ytmp)
-      }
-      gridtmp[i, "qlow"] <- stats::quantile(yvec, lowquant)
-      gridtmp[i, "means"] <- mean(yvec)
-      gridtmp[i, "qhigh"] <- stats::quantile(yvec, highquant)
-    }
-    gridtmp$intlevel <- intlevels[k]
 
-    if(k==1){
-      gridfinal <- gridtmp
-    }
-    if(k>1){
-      gridfinal <- rbind(gridfinal, gridtmp)
+
+  if(mod$family=='binomial'){
+    for(k in 1:length(intlevels)){
+      gridtmp <- grid_for_plot
+      for(i in 1:nrow(grid_for_plot)){
+        x_tmp <- grid_for_plot[i, "x"]
+        yvec <- c()
+        for(j in 1:nrow(samp_for_plot)){
+          intercept_tmp <- samp_for_plot[j, "intercept"]
+          beta_sp_tmp <- samp_for_plot[j, "beta_sp"]
+          beta_dy_tmp <- samp_for_plot[j, "beta_dy"]
+          xbeta_other_tmp <- samp_for_plot[j, "xbeta_other"]
+
+          if(xvar%in%rownames(mod$spvars_dist_summs)){
+            ytmp <- expit(intercept_tmp +
+                            xbeta_other_tmp +
+                            beta_sp_tmp*intlevels[k] +
+                            beta_sp_tmp*grid_for_plot[i,"x"] +
+                            beta_dy_tmp*abs(grid_for_plot[i,"x"] - intlevels[k]))
+          }
+          if(xvar%in%rownames(mod$spvars_multi_summs)){
+            ytmp <- expit(intercept_tmp +
+                            xbeta_other_tmp +
+                            beta_sp_tmp*intlevels[k] +
+                            beta_sp_tmp*grid_for_plot[i,"x"] +
+                            beta_dy_tmp*grid_for_plot[i,"x"]*intlevels[k])
+          }
+
+          yvec <- c(yvec, ytmp)
+        }
+        gridtmp[i, "qlow"] <- stats::quantile(yvec, lowquant)
+        gridtmp[i, "means"] <- mean(yvec)
+        gridtmp[i, "qhigh"] <- stats::quantile(yvec, highquant)
+      }
+      gridtmp$intlevel <- intlevels[k]
+
+      if(k==1){
+        gridfinal <- gridtmp
+      }
+      if(k>1){
+        gridfinal <- rbind(gridfinal, gridtmp)
+      }
     }
   }
+
+
+  if(mod$family=='fnchypg'){
+    for(k in 1:length(intlevels)){
+      gridtmp <- grid_for_plot
+      for(i in 1:nrow(grid_for_plot)){
+        x_tmp <- grid_for_plot[i, "x"]
+        yvec <- c()
+        for(j in 1:nrow(samp_for_plot)){
+          intercept_tmp <- samp_for_plot[j, "intercept"]
+          beta_sp_tmp <- samp_for_plot[j, "beta_sp"]
+          beta_dy_tmp <- samp_for_plot[j, "beta_dy"]
+          xbeta_other_tmp <- samp_for_plot[j, "xbeta_other"]
+
+          if(xvar%in%rownames(mod$spvars_dist_summs)){
+            ytmp <- (intercept_tmp +
+                       xbeta_other_tmp +
+                       beta_sp_tmp*intlevels[k] +
+                       beta_sp_tmp*grid_for_plot[i,"x"] +
+                       beta_dy_tmp*abs(grid_for_plot[i,"x"] - intlevels[k]))
+          }
+          if(xvar%in%rownames(mod$spvars_multi_summs)){
+            ytmp <- (intercept_tmp +
+                       xbeta_other_tmp +
+                       beta_sp_tmp*intlevels[k] +
+                       beta_sp_tmp*grid_for_plot[i,"x"] +
+                       beta_dy_tmp*grid_for_plot[i,"x"]*intlevels[k])
+          }
+
+          yvec <- c(yvec, ytmp)
+        }
+        gridtmp[i, "qlow"] <- stats::quantile(yvec, lowquant)
+        gridtmp[i, "means"] <- mean(yvec)
+        gridtmp[i, "qhigh"] <- stats::quantile(yvec, highquant)
+      }
+      gridtmp$intlevel <- intlevels[k]
+
+      if(k==1){
+        gridfinal <- gridtmp
+      }
+      if(k>1){
+        gridfinal <- rbind(gridfinal, gridtmp)
+      }
+    }
+  }
+
 
   gridfinal$qlow <- (gridfinal$qlow)
   gridfinal$means <- (gridfinal$means)

@@ -106,8 +106,6 @@ plot_interaction <- function(mod,
   }
 
 
-
-
   if(mod$family=='binomial'){
     for(k in 1:length(intlevels)){
       gridtmp <- grid_for_plot
@@ -151,7 +149,6 @@ plot_interaction <- function(mod,
       }
     }
   }
-
 
 
   if(mod$family=='fnchypg'){
