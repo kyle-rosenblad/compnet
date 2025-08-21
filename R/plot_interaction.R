@@ -195,11 +195,6 @@ plot_interaction <- function(mod,
     }
   }
 
-
-  gridfinal$qlow <- (gridfinal$qlow)
-  gridfinal$means <- (gridfinal$means)
-  gridfinal$qhigh <- (gridfinal$qhigh)
-
   d <- mod$d
   if(orig.scale==TRUE){
     if(xvar%in%rownames(mod$spvars_dist_summs)){

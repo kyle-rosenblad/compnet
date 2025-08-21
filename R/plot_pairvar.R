@@ -11,8 +11,6 @@
 #' @param orig.scale Logical value indicating whether to back-transform trait data to the original
 #'    scale (TRUE) or leave them with mean zero and unit variance (FALSE).
 #' @param ci_width A real number (0,1) describing the desired widths of credible band. Defaults to 0.95.
-#' @param ymin Real number indicating the location of the bottom of the plot's y axis.
-#' @param ymax Real number indicating the location of the top of the plot's y axis.
 #' @param grid_size A positive integer defining the number of discrete steps to use in approximating
 #'    the shape of mean prediction curves and credible bands. Defaults to 100.
 #' @param thin Logical value determining whether to use a random subsample of the full posterior sample.
@@ -34,16 +32,10 @@ plot_pairvar <- function(mod,
                             xlabel,
                             color="red",
                             orig.scale=TRUE,
-                            ymin=0,
-                            ymax=1,
                             ci_width=0.95,
                             grid_size=100,
                             thin=TRUE,
                             thin_to=100){
-
-  if(mod$family=='fnchypg'){
-    stop("This function currently only supports binomial models. Will be updated in future version.")
-  }
 
   ### error for when xvar is not a pairvar
   if(xvar%in%rownames(mod$pairvars_summs)==FALSE){
@@ -55,7 +47,7 @@ plot_pairvar <- function(mod,
   samp_temp <- mod$stanmod_samp
 
   # get posterior samples of intercept and the beta of interest
-  alpha <- samp_temp$intercept
+  intercept <- samp_temp$intercept
   colpos <- which(colnames(mod$Xdy)==xvar)
   beta <- samp_temp$beta_dy[,colpos]
 
@@ -83,7 +75,7 @@ plot_pairvar <- function(mod,
     xbeta_other <- xbeta_other + xbeta_other_dy
   }
 
-  samp_for_plot <- data.frame(alpha=alpha, beta=beta, xbeta_other=xbeta_other)
+  samp_for_plot <- data.frame(intercept=intercept, beta=beta, xbeta_other=xbeta_other)
   grid_for_plot <- data.frame(
     x=seq(
       from=Xmin,
@@ -94,27 +86,48 @@ plot_pairvar <- function(mod,
     samp_for_plot <- samp_for_plot[sample(1:nrow(samp_for_plot), replace=FALSE, size=min(nrow(samp_for_plot),thin_to)),]
   }
 
-  for(i in 1:nrow(grid_for_plot)){
-    x_tmp <- grid_for_plot[i, "x"]
-    yvec <- c()
-    for(j in 1:nrow(samp_for_plot)){
-      alpha_tmp <- samp_for_plot[j, "alpha"]
-      beta_tmp <- samp_for_plot[j, "beta"]
-      xbeta_other_tmp <- samp_for_plot[j, "xbeta_other"]
-      ytmp <- expit(alpha_tmp +
-                      xbeta_other_tmp +
-                      beta_tmp*grid_for_plot[i,"x"])
-      yvec <- c(yvec, ytmp)
-    }
-    grid_for_plot[i, "qlow"] <- stats::quantile(yvec, lowquant)
-    grid_for_plot[i, "means"] <- mean(yvec)
-    grid_for_plot[i, "qhigh"] <- stats::quantile(yvec, highquant)
-  }
-  gridfinal <- grid_for_plot
 
-  gridfinal$qlow <- (gridfinal$qlow)
-  gridfinal$means <- (gridfinal$means)
-  gridfinal$qhigh <- (gridfinal$qhigh)
+  if(mod$family=='binomial'){
+    for(i in 1:nrow(grid_for_plot)){
+      x_tmp <- grid_for_plot[i, "x"]
+      yvec <- c()
+      for(j in 1:nrow(samp_for_plot)){
+        intercept_tmp <- samp_for_plot[j, "intercept"]
+        beta_tmp <- samp_for_plot[j, "beta"]
+        xbeta_other_tmp <- samp_for_plot[j, "xbeta_other"]
+        ytmp <- expit(intercept_tmp +
+                        xbeta_other_tmp +
+                        beta_tmp*grid_for_plot[i,"x"])
+        yvec <- c(yvec, ytmp)
+      }
+      grid_for_plot[i, "qlow"] <- stats::quantile(yvec, lowquant)
+      grid_for_plot[i, "means"] <- mean(yvec)
+      grid_for_plot[i, "qhigh"] <- stats::quantile(yvec, highquant)
+    }
+  }
+
+
+
+  if(mod$family=='fnchypg'){
+    for(i in 1:nrow(grid_for_plot)){
+      x_tmp <- grid_for_plot[i, "x"]
+      yvec <- c()
+      for(j in 1:nrow(samp_for_plot)){
+        intercept_tmp <- samp_for_plot[j, "intercept"]
+        beta_tmp <- samp_for_plot[j, "beta"]
+        xbeta_other_tmp <- samp_for_plot[j, "xbeta_other"]
+        ytmp <- (intercept_tmp +
+                        xbeta_other_tmp +
+                        beta_tmp*grid_for_plot[i,"x"])
+        yvec <- c(yvec, ytmp)
+      }
+      grid_for_plot[i, "qlow"] <- stats::quantile(yvec, lowquant)
+      grid_for_plot[i, "means"] <- mean(yvec)
+      grid_for_plot[i, "qhigh"] <- stats::quantile(yvec, highquant)
+    }
+  }
+
+  gridfinal <- grid_for_plot
 
   d <- mod$d
   if(orig.scale==TRUE){
@@ -126,12 +139,24 @@ plot_pairvar <- function(mod,
     xlabel <- xvar
   }
 
-  ggplot2::ggplot()+
-    ggplot2::geom_ribbon(data=gridfinal, aes(x=.data$x, ymin=.data$qlow, ymax=.data$qhigh), alpha=0.2, fill=color)+
-    ggplot2::geom_line(data=gridfinal, aes(x=.data$x, y=.data$means), lwd=1, color=color)+
-    ggplot2::xlab(xlabel)+
-    ggplot2::ylab("P(Co-occurrence)")+
-    ggplot2::ylim(c(ymin, ymax))+
-    ggplot2::theme_bw()+
-    ggplot2::theme(aspect.ratio=1)
+  if(mod$family=='binomial'){
+    out <-   ggplot2::ggplot()+
+      ggplot2::geom_ribbon(data=gridfinal, aes(x=.data$x, ymin=.data$qlow, ymax=.data$qhigh), alpha=0.2, fill=color)+
+      ggplot2::geom_line(data=gridfinal, aes(x=.data$x, y=.data$means), lwd=1, color=color)+
+      ggplot2::xlab(xlabel)+
+      ggplot2::ylab("P(Co-occurrence)")+
+      ggplot2::theme_bw()+
+      ggplot2::theme(aspect.ratio=1)
+  }
+  if(mod$family=='fnchypg'){
+    out <-   ggplot2::ggplot()+
+      ggplot2::geom_ribbon(data=gridfinal, aes(x=.data$x, ymin=.data$qlow, ymax=.data$qhigh), alpha=0.2, fill=color)+
+      ggplot2::geom_line(data=gridfinal, aes(x=.data$x, y=.data$means), lwd=1, color=color)+
+      ggplot2::xlab(xlabel)+
+      ggplot2::ylab("Co-occurrence Affinity")+
+      ggplot2::theme_bw()+
+      ggplot2::theme(aspect.ratio=1)
+  }
+
+  out
 }
