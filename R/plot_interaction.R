@@ -2,7 +2,7 @@
 #'
 #' @importFrom stats quantile
 #' @importFrom ggplot2 ggplot aes geom_ribbon geom_line scale_color_viridis_c scale_fill_viridis_c
-#'    geom_point xlab ylab ylim theme_bw theme
+#'    geom_point xlab ylab theme_bw theme
 #' @export
 #' @param mod An object of class "compnet" created by the buildcompnet() function.
 #' @param xvar Character string for the name of the trait to be used. Must match the trait name in
@@ -244,5 +244,7 @@ plot_interaction <- function(mod,
       ggplot2::theme_bw()+
       ggplot2::theme(aspect.ratio=1)
   }
+
+  out
 }
 
