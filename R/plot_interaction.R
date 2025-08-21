@@ -43,10 +43,6 @@ plot_interaction <- function(mod,
                                 thin=TRUE,
                                 thin_to=100){
 
-  if(mod$family=='fnchypg'){
-    stop("This function currently only supports binomial models. Will be updated in future version.")
-  }
-
   ### error for categorical xvar or pairvar or non-interacting continuous trait
   if(xvar%in%rownames(mod$spvars_multi_summs)==FALSE &
      xvar%in%rownames(mod$spvars_dist_summs)==FALSE){
@@ -61,7 +57,7 @@ plot_interaction <- function(mod,
 
   # for the trait of interest get posterior samples of:
   # intercept, species beta, and interaction beta (either distance or product).
-  alpha <- samp_temp$intercept
+  intercept <- samp_temp$intercept
   colpos <- which(colnames(mod$XA)==paste(xvar, "A", sep="_"))
   beta_sp <- samp_temp$beta_sp[,colpos]
 
@@ -102,7 +98,7 @@ plot_interaction <- function(mod,
 
   xbeta_other <- xbeta_other_A + xbeta_other_B + xbeta_other_dy
 
-  samp_for_plot <- data.frame(alpha=alpha, beta_sp=beta_sp, beta_dy=beta_dy, xbeta_other=xbeta_other)
+  samp_for_plot <- data.frame(intercept=intercept, beta_sp=beta_sp, beta_dy=beta_dy, xbeta_other=xbeta_other)
   grid_for_plot <- data.frame(
     x=seq(
       from=XAmin,
@@ -119,24 +115,45 @@ plot_interaction <- function(mod,
       x_tmp <- grid_for_plot[i, "x"]
       yvec <- c()
       for(j in 1:nrow(samp_for_plot)){
-        alpha_tmp <- samp_for_plot[j, "alpha"]
+        intercept_tmp <- samp_for_plot[j, "intercept"]
         beta_sp_tmp <- samp_for_plot[j, "beta_sp"]
         beta_dy_tmp <- samp_for_plot[j, "beta_dy"]
         xbeta_other_tmp <- samp_for_plot[j, "xbeta_other"]
-        if(xvar%in%rownames(mod$spvars_dist_summs)){
-          ytmp <- expit(alpha_tmp +
-                          xbeta_other_tmp +
-                          beta_sp_tmp*intlevels[k] +
-                          beta_sp_tmp*grid_for_plot[i,"x"] +
-                          beta_dy_tmp*abs(grid_for_plot[i,"x"] - intlevels[k]))
+
+        if(mod$family=='binomial'){
+          if(xvar%in%rownames(mod$spvars_dist_summs)){
+            ytmp <- expit(intercept_tmp +
+                            xbeta_other_tmp +
+                            beta_sp_tmp*intlevels[k] +
+                            beta_sp_tmp*grid_for_plot[i,"x"] +
+                            beta_dy_tmp*abs(grid_for_plot[i,"x"] - intlevels[k]))
+          }
+          if(xvar%in%rownames(mod$spvars_multi_summs)){
+            ytmp <- expit(intercept_tmp +
+                            xbeta_other_tmp +
+                            beta_sp_tmp*intlevels[k] +
+                            beta_sp_tmp*grid_for_plot[i,"x"] +
+                            beta_dy_tmp*grid_for_plot[i,"x"]*intlevels[k])
+          }
         }
-        if(xvar%in%rownames(mod$spvars_multi_summs)){
-          ytmp <- expit(alpha_tmp +
-                          xbeta_other_tmp +
-                          beta_sp_tmp*intlevels[k] +
-                          beta_sp_tmp*grid_for_plot[i,"x"] +
-                          beta_dy_tmp*grid_for_plot[i,"x"]*intlevels[k])
+
+        if(mod$family=='fnchypg'){
+          if(xvar%in%rownames(mod$spvars_dist_summs)){
+            ytmp <- (intercept_tmp +
+                       xbeta_other_tmp +
+                       beta_sp_tmp*intlevels[k] +
+                       beta_sp_tmp*grid_for_plot[i,"x"] +
+                       beta_dy_tmp*abs(grid_for_plot[i,"x"] - intlevels[k]))
+          }
+          if(xvar%in%rownames(mod$spvars_multi_summs)){
+            ytmp <- (intercept_tmp +
+                       xbeta_other_tmp +
+                       beta_sp_tmp*intlevels[k] +
+                       beta_sp_tmp*grid_for_plot[i,"x"] +
+                       beta_dy_tmp*grid_for_plot[i,"x"]*intlevels[k])
+          }
         }
+
         yvec <- c(yvec, ytmp)
       }
       gridtmp[i, "qlow"] <- stats::quantile(yvec, lowquant)
@@ -175,14 +192,29 @@ plot_interaction <- function(mod,
     xlabel <- xvar
   }
 
-  ggplot2::ggplot()+
-    ggplot2::geom_ribbon(data=gridfinal, ggplot2::aes(x=.data$x, ymin=.data$qlow, ymax=.data$qhigh, group=.data$intlevel, fill=.data$intlevel), alpha=0.2)+
-    ggplot2::geom_line(data=gridfinal, ggplot2::aes(x=.data$x, y=.data$means, group=.data$intlevel, color=.data$intlevel), lwd=1)+
-    ggplot2::scale_color_viridis_c(name=paste(xlabel, "\nSp. B", sep=""))+
-    ggplot2::scale_fill_viridis_c(name=paste(xlabel, "\nSp. B", sep=""))+
-    ggplot2::xlab(paste(xlabel, "Sp. A", sep=" "))+
-    ggplot2::ylab("P(Co-occurrence)")+
-    ggplot2::ylim(c(ymin, ymax))+
-    ggplot2::theme_bw()+
-    ggplot2::theme(aspect.ratio=1)
+  if(mod$family=='binomial'){
+    ggplot2::ggplot()+
+      ggplot2::geom_ribbon(data=gridfinal, ggplot2::aes(x=.data$x, ymin=.data$qlow, ymax=.data$qhigh, group=.data$intlevel, fill=.data$intlevel), alpha=0.2)+
+      ggplot2::geom_line(data=gridfinal, ggplot2::aes(x=.data$x, y=.data$means, group=.data$intlevel, color=.data$intlevel), lwd=1)+
+      ggplot2::scale_color_viridis_c(name=paste(xlabel, "\nSp. B", sep=""))+
+      ggplot2::scale_fill_viridis_c(name=paste(xlabel, "\nSp. B", sep=""))+
+      ggplot2::xlab(paste(xlabel, "Sp. A", sep=" "))+
+      ggplot2::ylab("P(Co-occurrence)")+
+      ggplot2::ylim(c(ymin, ymax))+
+      ggplot2::theme_bw()+
+      ggplot2::theme(aspect.ratio=1)
+  }
+
+  if(mod$family=='fnchypg'){
+    ggplot2::ggplot()+
+      ggplot2::geom_ribbon(data=gridfinal, ggplot2::aes(x=.data$x, ymin=.data$qlow, ymax=.data$qhigh, group=.data$intlevel, fill=.data$intlevel), alpha=0.2)+
+      ggplot2::geom_line(data=gridfinal, ggplot2::aes(x=.data$x, y=.data$means, group=.data$intlevel, color=.data$intlevel), lwd=1)+
+      ggplot2::scale_color_viridis_c(name=paste(xlabel, "\nSp. B", sep=""))+
+      ggplot2::scale_fill_viridis_c(name=paste(xlabel, "\nSp. B", sep=""))+
+      ggplot2::xlab(paste(xlabel, "Sp. A", sep=" "))+
+      ggplot2::ylab("Co-occurrence Affinity")+
+      ggplot2::ylim(c(ymin, ymax))+
+      ggplot2::theme_bw()+
+      ggplot2::theme(aspect.ratio=1)
+  }
 }
