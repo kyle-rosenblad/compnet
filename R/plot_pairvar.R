@@ -25,7 +25,7 @@
 #' ex_compnet_phylo <- buildcompnet(presabs=ex_presabs,
 #' pairvars=ex_phylo, warmup=10, iter=20, family='binomial')
 #'
-#' plot_pairvar(ex_compnet_phylo, xvar="phylodist", ymax=0.25)
+#' plot_pairvar(ex_compnet_phylo, xvar="phylodist")
 
 plot_pairvar <- function(mod,
                             xvar,
