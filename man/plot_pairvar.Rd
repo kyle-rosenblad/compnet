@@ -10,8 +10,6 @@ plot_pairvar(
   xlabel,
   color = "red",
   orig.scale = TRUE,
-  ymin = 0,
-  ymax = 1,
   ci_width = 0.95,
   grid_size = 100,
   thin = TRUE,
@@ -30,10 +28,6 @@ the input data used to build the model.}
 
 \item{orig.scale}{Logical value indicating whether to back-transform trait data to the original
 scale (TRUE) or leave them with mean zero and unit variance (FALSE).}
-
-\item{ymin}{Real number indicating the location of the bottom of the plot's y axis.}
-
-\item{ymax}{Real number indicating the location of the top of the plot's y axis.}
 
 \item{ci_width}{A real number (0,1) describing the desired widths of credible band. Defaults to 0.95.}
 

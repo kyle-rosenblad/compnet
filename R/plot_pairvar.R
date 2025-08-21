@@ -127,6 +127,7 @@ plot_pairvar <- function(mod,
     }
   }
 
+
   gridfinal <- grid_for_plot
 
   d <- mod$d

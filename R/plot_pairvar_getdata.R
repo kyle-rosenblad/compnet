@@ -25,17 +25,12 @@
 #' plot_pairvar_getdata(ex_compnet_phylo, xvar="phylodist")
 
 plot_pairvar_getdata <- function(mod,
-                                    xvar,
-                                    orig.scale=TRUE,
-                                    ci_width=0.95,
-                                    grid_size=100,
-                                    thin=TRUE,
-                                    thin_to=100){
-
-  if(mod$family=='fnchypg'){
-    stop("This function currently only supports binomial models. Will be updated in future version.")
-  }
-
+                                 xvar,
+                                 orig.scale=TRUE,
+                                 ci_width=0.95,
+                                 grid_size=100,
+                                 thin=TRUE,
+                                 thin_to=100){
   ### error for when xvar is not a pairvar
   if(xvar%in%rownames(mod$pairvars_summs)==FALSE){
     stop("This function only supports dyad-level traits (i.e., pairvars). see ?plot_pairvar_getdata()")
@@ -85,22 +80,47 @@ plot_pairvar_getdata <- function(mod,
     samp_for_plot <- samp_for_plot[sample(1:nrow(samp_for_plot), replace=FALSE, size=min(nrow(samp_for_plot),thin_to)),]
   }
 
-  for(i in 1:nrow(grid_for_plot)){
-    x_tmp <- grid_for_plot[i, "x"]
-    yvec <- c()
-    for(j in 1:nrow(samp_for_plot)){
-      alpha_tmp <- samp_for_plot[j, "alpha"]
-      beta_tmp <- samp_for_plot[j, "beta"]
-      xbeta_other_tmp <- samp_for_plot[j, "xbeta_other"]
-      ytmp <- expit(alpha_tmp +
-                      xbeta_other_tmp +
-                      beta_tmp*grid_for_plot[i,"x"])
-      yvec <- c(yvec, ytmp)
+
+  if(mod$family=='binomial'){
+    for(i in 1:nrow(grid_for_plot)){
+      x_tmp <- grid_for_plot[i, "x"]
+      yvec <- c()
+      for(j in 1:nrow(samp_for_plot)){
+        intercept_tmp <- samp_for_plot[j, "intercept"]
+        beta_tmp <- samp_for_plot[j, "beta"]
+        xbeta_other_tmp <- samp_for_plot[j, "xbeta_other"]
+        ytmp <- expit(intercept_tmp +
+                        xbeta_other_tmp +
+                        beta_tmp*grid_for_plot[i,"x"])
+        yvec <- c(yvec, ytmp)
+      }
+      grid_for_plot[i, "qlow"] <- stats::quantile(yvec, lowquant)
+      grid_for_plot[i, "means"] <- mean(yvec)
+      grid_for_plot[i, "qhigh"] <- stats::quantile(yvec, highquant)
     }
-    grid_for_plot[i, "qlow"] <- stats::quantile(yvec, lowquant)
-    grid_for_plot[i, "means"] <- mean(yvec)
-    grid_for_plot[i, "qhigh"] <- stats::quantile(yvec, highquant)
   }
+
+
+
+  if(mod$family=='fnchypg'){
+    for(i in 1:nrow(grid_for_plot)){
+      x_tmp <- grid_for_plot[i, "x"]
+      yvec <- c()
+      for(j in 1:nrow(samp_for_plot)){
+        intercept_tmp <- samp_for_plot[j, "intercept"]
+        beta_tmp <- samp_for_plot[j, "beta"]
+        xbeta_other_tmp <- samp_for_plot[j, "xbeta_other"]
+        ytmp <- (intercept_tmp +
+                   xbeta_other_tmp +
+                   beta_tmp*grid_for_plot[i,"x"])
+        yvec <- c(yvec, ytmp)
+      }
+      grid_for_plot[i, "qlow"] <- stats::quantile(yvec, lowquant)
+      grid_for_plot[i, "means"] <- mean(yvec)
+      grid_for_plot[i, "qhigh"] <- stats::quantile(yvec, highquant)
+    }
+  }
+
   gridfinal <- grid_for_plot
 
   gridfinal$qlow <- (gridfinal$qlow)
