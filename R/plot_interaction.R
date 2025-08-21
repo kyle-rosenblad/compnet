@@ -105,18 +105,21 @@ plot_interaction <- function(mod,
     samp_for_plot <- samp_for_plot[sample(1:nrow(samp_for_plot), replace=FALSE, size=min(nrow(samp_for_plot),thin_to)),]
   }
 
-  for(k in 1:length(intlevels)){
-    gridtmp <- grid_for_plot
-    for(i in 1:nrow(grid_for_plot)){
-      x_tmp <- grid_for_plot[i, "x"]
-      yvec <- c()
-      for(j in 1:nrow(samp_for_plot)){
-        intercept_tmp <- samp_for_plot[j, "intercept"]
-        beta_sp_tmp <- samp_for_plot[j, "beta_sp"]
-        beta_dy_tmp <- samp_for_plot[j, "beta_dy"]
-        xbeta_other_tmp <- samp_for_plot[j, "xbeta_other"]
 
-        if(mod$family=='binomial'){
+
+
+  if(mod$family=='binomial'){
+    for(k in 1:length(intlevels)){
+      gridtmp <- grid_for_plot
+      for(i in 1:nrow(grid_for_plot)){
+        x_tmp <- grid_for_plot[i, "x"]
+        yvec <- c()
+        for(j in 1:nrow(samp_for_plot)){
+          intercept_tmp <- samp_for_plot[j, "intercept"]
+          beta_sp_tmp <- samp_for_plot[j, "beta_sp"]
+          beta_dy_tmp <- samp_for_plot[j, "beta_dy"]
+          xbeta_other_tmp <- samp_for_plot[j, "xbeta_other"]
+
           if(xvar%in%rownames(mod$spvars_dist_summs)){
             ytmp <- expit(intercept_tmp +
                             xbeta_other_tmp +
@@ -131,9 +134,38 @@ plot_interaction <- function(mod,
                             beta_sp_tmp*grid_for_plot[i,"x"] +
                             beta_dy_tmp*grid_for_plot[i,"x"]*intlevels[k])
           }
-        }
 
-        if(mod$family=='fnchypg'){
+          yvec <- c(yvec, ytmp)
+        }
+        gridtmp[i, "qlow"] <- stats::quantile(yvec, lowquant)
+        gridtmp[i, "means"] <- mean(yvec)
+        gridtmp[i, "qhigh"] <- stats::quantile(yvec, highquant)
+      }
+      gridtmp$intlevel <- intlevels[k]
+
+      if(k==1){
+        gridfinal <- gridtmp
+      }
+      if(k>1){
+        gridfinal <- rbind(gridfinal, gridtmp)
+      }
+    }
+  }
+
+
+
+  if(mod$family=='fnchypg'){
+    for(k in 1:length(intlevels)){
+      gridtmp <- grid_for_plot
+      for(i in 1:nrow(grid_for_plot)){
+        x_tmp <- grid_for_plot[i, "x"]
+        yvec <- c()
+        for(j in 1:nrow(samp_for_plot)){
+          intercept_tmp <- samp_for_plot[j, "intercept"]
+          beta_sp_tmp <- samp_for_plot[j, "beta_sp"]
+          beta_dy_tmp <- samp_for_plot[j, "beta_dy"]
+          xbeta_other_tmp <- samp_for_plot[j, "xbeta_other"]
+
           if(xvar%in%rownames(mod$spvars_dist_summs)){
             ytmp <- (intercept_tmp +
                        xbeta_other_tmp +
@@ -148,23 +180,24 @@ plot_interaction <- function(mod,
                        beta_sp_tmp*grid_for_plot[i,"x"] +
                        beta_dy_tmp*grid_for_plot[i,"x"]*intlevels[k])
           }
+
+          yvec <- c(yvec, ytmp)
         }
-
-        yvec <- c(yvec, ytmp)
+        gridtmp[i, "qlow"] <- stats::quantile(yvec, lowquant)
+        gridtmp[i, "means"] <- mean(yvec)
+        gridtmp[i, "qhigh"] <- stats::quantile(yvec, highquant)
       }
-      gridtmp[i, "qlow"] <- stats::quantile(yvec, lowquant)
-      gridtmp[i, "means"] <- mean(yvec)
-      gridtmp[i, "qhigh"] <- stats::quantile(yvec, highquant)
-    }
-    gridtmp$intlevel <- intlevels[k]
+      gridtmp$intlevel <- intlevels[k]
 
-    if(k==1){
-      gridfinal <- gridtmp
-    }
-    if(k>1){
-      gridfinal <- rbind(gridfinal, gridtmp)
+      if(k==1){
+        gridfinal <- gridtmp
+      }
+      if(k>1){
+        gridfinal <- rbind(gridfinal, gridtmp)
+      }
     }
   }
+
 
   gridfinal$qlow <- (gridfinal$qlow)
   gridfinal$means <- (gridfinal$means)
@@ -189,7 +222,7 @@ plot_interaction <- function(mod,
   }
 
   if(mod$family=='binomial'){
-    ggplot2::ggplot()+
+    out <- ggplot2::ggplot()+
       ggplot2::geom_ribbon(data=gridfinal, ggplot2::aes(x=.data$x, ymin=.data$qlow, ymax=.data$qhigh, group=.data$intlevel, fill=.data$intlevel), alpha=0.2)+
       ggplot2::geom_line(data=gridfinal, ggplot2::aes(x=.data$x, y=.data$means, group=.data$intlevel, color=.data$intlevel), lwd=1)+
       ggplot2::scale_color_viridis_c(name=paste(xlabel, "\nSp. B", sep=""))+
@@ -201,7 +234,7 @@ plot_interaction <- function(mod,
   }
 
   if(mod$family=='fnchypg'){
-    ggplot2::ggplot()+
+    out <- ggplot2::ggplot()+
       ggplot2::geom_ribbon(data=gridfinal, ggplot2::aes(x=.data$x, ymin=.data$qlow, ymax=.data$qhigh, group=.data$intlevel, fill=.data$intlevel), alpha=0.2)+
       ggplot2::geom_line(data=gridfinal, ggplot2::aes(x=.data$x, y=.data$means, group=.data$intlevel, color=.data$intlevel), lwd=1)+
       ggplot2::scale_color_viridis_c(name=paste(xlabel, "\nSp. B", sep=""))+
@@ -212,3 +245,4 @@ plot_interaction <- function(mod,
       ggplot2::theme(aspect.ratio=1)
   }
 }
+
