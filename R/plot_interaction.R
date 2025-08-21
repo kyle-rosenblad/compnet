@@ -13,8 +13,6 @@
 #' @param intlevels Vector of real values on the interval \eqn{[0,1]} indicating what levels of the x
 #'    variable to condition on for species B when plotting species A's mean response.
 #' @param ci_width A real number (0,1) describing the desired widths of credible bands. Defaults to 0.95.
-#' @param ymin Real number indicating the location of the bottom of the plot's y axis.
-#' @param ymax Real number indicating the location of the top of the plot's y axis.
 #' @param grid_size A positive integer defining the number of discrete steps to use in approximating
 #'    the shape of mean prediction curves and credible bands. Defaults to 100.
 #' @param thin Logical value determining whether to use a random subsample of the full posterior sample.
@@ -36,8 +34,6 @@ plot_interaction <- function(mod,
                                 xlabel,
                                 orig.scale=TRUE,
                                 intlevels=c(0.05,0.5,0.95),
-                                ymin=0,
-                                ymax=1,
                                 ci_width=0.95,
                                 grid_size=100,
                                 thin=TRUE,
@@ -200,7 +196,6 @@ plot_interaction <- function(mod,
       ggplot2::scale_fill_viridis_c(name=paste(xlabel, "\nSp. B", sep=""))+
       ggplot2::xlab(paste(xlabel, "Sp. A", sep=" "))+
       ggplot2::ylab("P(Co-occurrence)")+
-      ggplot2::ylim(c(ymin, ymax))+
       ggplot2::theme_bw()+
       ggplot2::theme(aspect.ratio=1)
   }
@@ -213,7 +208,6 @@ plot_interaction <- function(mod,
       ggplot2::scale_fill_viridis_c(name=paste(xlabel, "\nSp. B", sep=""))+
       ggplot2::xlab(paste(xlabel, "Sp. A", sep=" "))+
       ggplot2::ylab("Co-occurrence Affinity")+
-      ggplot2::ylim(c(ymin, ymax))+
       ggplot2::theme_bw()+
       ggplot2::theme(aspect.ratio=1)
   }

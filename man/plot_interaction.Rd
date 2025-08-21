@@ -10,8 +10,6 @@ plot_interaction(
   xlabel,
   orig.scale = TRUE,
   intlevels = c(0.05, 0.5, 0.95),
-  ymin = 0,
-  ymax = 1,
   ci_width = 0.95,
   grid_size = 100,
   thin = TRUE,
@@ -31,10 +29,6 @@ scale (TRUE) or leave them with mean zero and unit variance (FALSE).}
 
 \item{intlevels}{Vector of real values on the interval \eqn{[0,1]} indicating what levels of the x
 variable to condition on for species B when plotting species A's mean response.}
-
-\item{ymin}{Real number indicating the location of the bottom of the plot's y axis.}
-
-\item{ymax}{Real number indicating the location of the top of the plot's y axis.}
 
 \item{ci_width}{A real number (0,1) describing the desired widths of credible bands. Defaults to 0.95.}
 
