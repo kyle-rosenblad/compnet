@@ -41,7 +41,7 @@ plot_pairvar_getdata <- function(mod,
   samp_temp <- mod$stanmod_samp
 
   # get posterior samples of intercept and the beta of interest
-  alpha <- samp_temp$intercept
+  intercept <- samp_temp$intercept
   colpos <- which(colnames(mod$Xdy)==xvar)
   beta <- samp_temp$beta_dy[,colpos]
 
@@ -69,7 +69,7 @@ plot_pairvar_getdata <- function(mod,
     xbeta_other <- xbeta_other + xbeta_other_dy
   }
 
-  samp_for_plot <- data.frame(alpha=alpha, beta=beta, xbeta_other=xbeta_other)
+  samp_for_plot <- data.frame(intercept=intercept, beta=beta, xbeta_other=xbeta_other)
   grid_for_plot <- data.frame(
     x=seq(
       from=Xmin,

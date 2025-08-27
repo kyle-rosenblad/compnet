@@ -50,7 +50,7 @@ plot_interaction_getdata <- function(mod,
 
   # for the trait of interest get posterior samples of:
   # intercept, species beta, and interaction beta (either distance or product).
-  alpha <- samp_temp$intercept
+  intercept <- samp_temp$intercept
   colpos <- which(colnames(mod$XA)==paste(xvar, "A", sep="_"))
   beta_sp <- samp_temp$beta_sp[,colpos]
 
@@ -91,7 +91,7 @@ plot_interaction_getdata <- function(mod,
 
   xbeta_other <- xbeta_other_A + xbeta_other_B + xbeta_other_dy
 
-  samp_for_plot <- data.frame(alpha=alpha, beta_sp=beta_sp, beta_dy=beta_dy, xbeta_other=xbeta_other)
+  samp_for_plot <- data.frame(intercept=intercept, beta_sp=beta_sp, beta_dy=beta_dy, xbeta_other=xbeta_other)
   grid_for_plot <- data.frame(
     x=seq(
       from=XAmin,
