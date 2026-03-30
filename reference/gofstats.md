@@ -64,8 +64,8 @@ spvars_dist_int=ex_traits[c("ndtrait")], warmup=10, iter=20)
 #> 
 #> SAMPLING FOR MODEL 'srm_fnchypg' NOW (CHAIN 1).
 #> Chain 1: 
-#> Chain 1: Gradient evaluation took 0.000364 seconds
-#> Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 3.64 seconds.
+#> Chain 1: Gradient evaluation took 0.000361 seconds
+#> Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 3.61 seconds.
 #> Chain 1: Adjust your expectations accordingly!
 #> Chain 1: 
 #> Chain 1: 
@@ -85,9 +85,9 @@ spvars_dist_int=ex_traits[c("ndtrait")], warmup=10, iter=20)
 #> Chain 1: Iteration: 18 / 20 [ 90%]  (Sampling)
 #> Chain 1: Iteration: 20 / 20 [100%]  (Sampling)
 #> Chain 1: 
-#> Chain 1:  Elapsed Time: 0.211 seconds (Warm-up)
-#> Chain 1:                0.209 seconds (Sampling)
-#> Chain 1:                0.42 seconds (Total)
+#> Chain 1:  Elapsed Time: 0.225 seconds (Warm-up)
+#> Chain 1:                0.221 seconds (Sampling)
+#> Chain 1:                0.446 seconds (Total)
 #> Chain 1: 
 #> Warning: The largest R-hat is 2.12, indicating chains have not mixed.
 #> Running the chains for more iterations may help. See
@@ -106,19 +106,19 @@ gofstats(ex_compnet)
 #> 
 #> SAMPLING FOR MODEL 'base_fnchypg' NOW (CHAIN 2).
 #> Chain 1: 
-#> Chain 1: Gradient evaluation took 0.000714 seconds
-#> Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 7.14 seconds.
+#> Chain 1: Gradient evaluation took 0.000745 seconds
+#> Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 7.45 seconds.
 #> Chain 1: Adjust your expectations accordingly!
 #> Chain 1: 
 #> Chain 1: 
 #> Chain 2: 
-#> Chain 2: Gradient evaluation took 0.000629 seconds
-#> Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 6.29 seconds.
+#> Chain 2: Gradient evaluation took 0.000591 seconds
+#> Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 5.91 seconds.
 #> Chain 2: Adjust your expectations accordingly!
 #> Chain 2: 
 #> Chain 2: 
-#> Chain 2: Iteration:    1 / 2000 [  0%]  (Warmup)
 #> Chain 1: Iteration:    1 / 2000 [  0%]  (Warmup)
+#> Chain 2: Iteration:    1 / 2000 [  0%]  (Warmup)
 #> Chain 2: Iteration:  200 / 2000 [ 10%]  (Warmup)
 #> Chain 1: Iteration:  200 / 2000 [ 10%]  (Warmup)
 #> Chain 2: Iteration:  400 / 2000 [ 20%]  (Warmup)
@@ -141,16 +141,16 @@ gofstats(ex_compnet)
 #> Chain 1: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 #> Chain 2: Iteration: 2000 / 2000 [100%]  (Sampling)
 #> Chain 2: 
-#> Chain 2:  Elapsed Time: 6.845 seconds (Warm-up)
-#> Chain 2:                4.432 seconds (Sampling)
-#> Chain 2:                11.277 seconds (Total)
+#> Chain 2:  Elapsed Time: 7.074 seconds (Warm-up)
+#> Chain 2:                4.565 seconds (Sampling)
+#> Chain 2:                11.639 seconds (Total)
 #> Chain 2: 
 #> Chain 1: Iteration: 2000 / 2000 [100%]  (Sampling)
 #> Chain 1: 
-#> Chain 1:  Elapsed Time: 6.889 seconds (Warm-up)
-#> Chain 1:                4.446 seconds (Sampling)
-#> Chain 1:                11.335 seconds (Total)
+#> Chain 1:  Elapsed Time: 7.167 seconds (Warm-up)
+#> Chain 1:                4.625 seconds (Sampling)
+#> Chain 1:                11.792 seconds (Total)
 #> Chain 1: 
 #> p.sd.rowmeans   p.cycle.dep 
-#>     0.4566667     0.9640000 
+#>     0.4740000     0.9703333 
 ```

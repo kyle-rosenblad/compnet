@@ -135,8 +135,8 @@ shortrun <- buildcompnet(presabs=ex_presabs,
 #> 
 #> SAMPLING FOR MODEL 'srm_fnchypg' NOW (CHAIN 1).
 #> Chain 1: 
-#> Chain 1: Gradient evaluation took 0.00039 seconds
-#> Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 3.9 seconds.
+#> Chain 1: Gradient evaluation took 0.000388 seconds
+#> Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 3.88 seconds.
 #> Chain 1: Adjust your expectations accordingly!
 #> Chain 1: 
 #> Chain 1: 
@@ -161,9 +161,9 @@ shortrun <- buildcompnet(presabs=ex_presabs,
 #> Chain 1: Iteration: 180 / 200 [ 90%]  (Sampling)
 #> Chain 1: Iteration: 200 / 200 [100%]  (Sampling)
 #> Chain 1: 
-#> Chain 1:  Elapsed Time: 3.503 seconds (Warm-up)
-#> Chain 1:                2.126 seconds (Sampling)
-#> Chain 1:                5.629 seconds (Total)
+#> Chain 1:  Elapsed Time: 3.665 seconds (Warm-up)
+#> Chain 1:                2.212 seconds (Sampling)
+#> Chain 1:                5.877 seconds (Total)
 #> Chain 1:
 #> Warning: The largest R-hat is 1.12, indicating chains have not mixed.
 #> Running the chains for more iterations may help. See
@@ -196,8 +196,8 @@ nd_0_mod <- buildcompnet(presabs=ex_presabs,
 #> 
 #> SAMPLING FOR MODEL 'srm_fnchypg' NOW (CHAIN 1).
 #> Chain 1: 
-#> Chain 1: Gradient evaluation took 0.000441 seconds
-#> Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 4.41 seconds.
+#> Chain 1: Gradient evaluation took 0.000362 seconds
+#> Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 3.62 seconds.
 #> Chain 1: Adjust your expectations accordingly!
 #> Chain 1: 
 #> Chain 1: 
@@ -214,9 +214,9 @@ nd_0_mod <- buildcompnet(presabs=ex_presabs,
 #> Chain 1: Iteration: 1120 / 1200 [ 93%]  (Sampling)
 #> Chain 1: Iteration: 1200 / 1200 [100%]  (Sampling)
 #> Chain 1: 
-#> Chain 1:  Elapsed Time: 7.447 seconds (Warm-up)
-#> Chain 1:                8.534 seconds (Sampling)
-#> Chain 1:                15.981 seconds (Total)
+#> Chain 1:  Elapsed Time: 7.788 seconds (Warm-up)
+#> Chain 1:                8.937 seconds (Sampling)
+#> Chain 1:                16.725 seconds (Total)
 #> Chain 1: 
 #> [1] "compnet uses Stan under the hood. You may see warnings from Stan alongside, \nthis message. To deal with any warnings Stan might issue, \nPlease see the links provided in Stan's output, as well as the compnet website:\nhttps://kyle-rosenblad.github.io/compnet/"
 ```
@@ -234,20 +234,20 @@ nd_0_mod_gofstats <- gofstats(nd_0_mod)
 #> SAMPLING FOR MODEL 'base_fnchypg' NOW (CHAIN 1).
 #> 
 #> SAMPLING FOR MODEL 'base_fnchypg' NOW (CHAIN 2).
-#> Chain 2: 
-#> Chain 2: Gradient evaluation took 0.000579 seconds
-#> Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 5.79 seconds.
-#> Chain 2: Adjust your expectations accordingly!
-#> Chain 2: 
-#> Chain 2: 
-#> Chain 2: Iteration:    1 / 2000 [  0%]  (Warmup)
 #> Chain 1: 
-#> Chain 1: Gradient evaluation took 0.000727 seconds
-#> Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 7.27 seconds.
+#> Chain 1: Gradient evaluation took 0.000561 seconds
+#> Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 5.61 seconds.
 #> Chain 1: Adjust your expectations accordingly!
 #> Chain 1: 
 #> Chain 1: 
+#> Chain 2: 
+#> Chain 2: Gradient evaluation took 0.000553 seconds
+#> Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 5.53 seconds.
+#> Chain 2: Adjust your expectations accordingly!
+#> Chain 2: 
+#> Chain 2: 
 #> Chain 1: Iteration:    1 / 2000 [  0%]  (Warmup)
+#> Chain 2: Iteration:    1 / 2000 [  0%]  (Warmup)
 #> Chain 1: Iteration:  200 / 2000 [ 10%]  (Warmup)
 #> Chain 2: Iteration:  200 / 2000 [ 10%]  (Warmup)
 #> Chain 1: Iteration:  400 / 2000 [ 20%]  (Warmup)
@@ -270,19 +270,19 @@ nd_0_mod_gofstats <- gofstats(nd_0_mod)
 #> Chain 2: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 #> Chain 1: Iteration: 2000 / 2000 [100%]  (Sampling)
 #> Chain 1: 
-#> Chain 1:  Elapsed Time: 6.677 seconds (Warm-up)
-#> Chain 1:                4.443 seconds (Sampling)
-#> Chain 1:                11.12 seconds (Total)
+#> Chain 1:  Elapsed Time: 6.857 seconds (Warm-up)
+#> Chain 1:                4.547 seconds (Sampling)
+#> Chain 1:                11.404 seconds (Total)
 #> Chain 1: 
 #> Chain 2: Iteration: 2000 / 2000 [100%]  (Sampling)
 #> Chain 2: 
-#> Chain 2:  Elapsed Time: 6.98 seconds (Warm-up)
-#> Chain 2:                4.493 seconds (Sampling)
-#> Chain 2:                11.473 seconds (Total)
+#> Chain 2:  Elapsed Time: 7.183 seconds (Warm-up)
+#> Chain 2:                4.673 seconds (Sampling)
+#> Chain 2:                11.856 seconds (Total)
 #> Chain 2:
 nd_0_mod_gofstats
 #> p.sd.rowmeans   p.cycle.dep 
-#>    0.05422222    0.74131111
+#>    0.05371111    0.76108889
 ```
 
 The first ‘p-value’, ‘p.sd.rowmeans’, tells us about patterns driven by
@@ -314,8 +314,8 @@ nd_1_mod <- buildcompnet(presabs=ex_presabs,
 #> 
 #> SAMPLING FOR MODEL 'ame_fnchypg' NOW (CHAIN 1).
 #> Chain 1: 
-#> Chain 1: Gradient evaluation took 0.000655 seconds
-#> Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 6.55 seconds.
+#> Chain 1: Gradient evaluation took 0.00065 seconds
+#> Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 6.5 seconds.
 #> Chain 1: Adjust your expectations accordingly!
 #> Chain 1: 
 #> Chain 1: 
@@ -332,9 +332,9 @@ nd_1_mod <- buildcompnet(presabs=ex_presabs,
 #> Chain 1: Iteration: 900 / 1000 [ 90%]  (Sampling)
 #> Chain 1: Iteration: 1000 / 1000 [100%]  (Sampling)
 #> Chain 1: 
-#> Chain 1:  Elapsed Time: 8.673 seconds (Warm-up)
-#> Chain 1:                12.646 seconds (Sampling)
-#> Chain 1:                21.319 seconds (Total)
+#> Chain 1:  Elapsed Time: 8.726 seconds (Warm-up)
+#> Chain 1:                12.614 seconds (Sampling)
+#> Chain 1:                21.34 seconds (Total)
 #> Chain 1:
 #> Warning: The largest R-hat is 1.05, indicating chains have not mixed.
 #> Running the chains for more iterations may help. See
@@ -349,15 +349,15 @@ nd_1_mod_gofstats <- gofstats(nd_1_mod)
 #> 
 #> SAMPLING FOR MODEL 'base_fnchypg' NOW (CHAIN 2).
 #> Chain 1: 
-#> Chain 1: Gradient evaluation took 0.000616 seconds
-#> Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 6.16 seconds.
+#> Chain 1: Gradient evaluation took 0.000583 seconds
+#> Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 5.83 seconds.
 #> Chain 1: Adjust your expectations accordingly!
 #> Chain 1: 
 #> Chain 1: 
 #> Chain 1: Iteration:    1 / 2000 [  0%]  (Warmup)
 #> Chain 2: 
-#> Chain 2: Gradient evaluation took 0.000597 seconds
-#> Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 5.97 seconds.
+#> Chain 2: Gradient evaluation took 0.000544 seconds
+#> Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 5.44 seconds.
 #> Chain 2: Adjust your expectations accordingly!
 #> Chain 2: 
 #> Chain 2: 
@@ -384,19 +384,19 @@ nd_1_mod_gofstats <- gofstats(nd_1_mod)
 #> Chain 2: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 #> Chain 1: Iteration: 2000 / 2000 [100%]  (Sampling)
 #> Chain 1: 
-#> Chain 1:  Elapsed Time: 6.944 seconds (Warm-up)
-#> Chain 1:                4.551 seconds (Sampling)
-#> Chain 1:                11.495 seconds (Total)
+#> Chain 1:  Elapsed Time: 7.064 seconds (Warm-up)
+#> Chain 1:                4.636 seconds (Sampling)
+#> Chain 1:                11.7 seconds (Total)
 #> Chain 1: 
 #> Chain 2: Iteration: 2000 / 2000 [100%]  (Sampling)
 #> Chain 2: 
-#> Chain 2:  Elapsed Time: 7.169 seconds (Warm-up)
-#> Chain 2:                4.533 seconds (Sampling)
-#> Chain 2:                11.702 seconds (Total)
+#> Chain 2:  Elapsed Time: 7.346 seconds (Warm-up)
+#> Chain 2:                4.714 seconds (Sampling)
+#> Chain 2:                12.06 seconds (Total)
 #> Chain 2:
 nd_1_mod_gofstats
 #> p.sd.rowmeans   p.cycle.dep 
-#>   0.020444444   0.004688889
+#>   0.019111111   0.004466667
 ```
 
 Unsurprisingly, our gofstats look fine.
@@ -445,7 +445,7 @@ testDispersion(nd_1_mod_dharma)
     #>  Test for location of quantiles via qgam
     #> 
     #> data:  res
-    #> p-value = 5.183e-05
+    #> p-value = 5.179e-05
     #> alternative hypothesis: both
     testUniformity(nd_1_mod_dharma)
 
@@ -489,8 +489,8 @@ nd_1_mod <- buildcompnet(presabs=ex_presabs,
 #> 
 #> SAMPLING FOR MODEL 'ame_binomial' NOW (CHAIN 1).
 #> Chain 1: 
-#> Chain 1: Gradient evaluation took 0.000222 seconds
-#> Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 2.22 seconds.
+#> Chain 1: Gradient evaluation took 0.000225 seconds
+#> Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 2.25 seconds.
 #> Chain 1: Adjust your expectations accordingly!
 #> Chain 1: 
 #> Chain 1: 
@@ -507,9 +507,9 @@ nd_1_mod <- buildcompnet(presabs=ex_presabs,
 #> Chain 1: Iteration: 900 / 1000 [ 90%]  (Sampling)
 #> Chain 1: Iteration: 1000 / 1000 [100%]  (Sampling)
 #> Chain 1: 
-#> Chain 1:  Elapsed Time: 3.124 seconds (Warm-up)
-#> Chain 1:                4.851 seconds (Sampling)
-#> Chain 1:                7.975 seconds (Total)
+#> Chain 1:  Elapsed Time: 3.738 seconds (Warm-up)
+#> Chain 1:                5.811 seconds (Sampling)
+#> Chain 1:                9.549 seconds (Total)
 #> Chain 1:
 #> Warning: Bulk Effective Samples Size (ESS) is too low, indicating posterior means and medians may be unreliable.
 #> Running the chains for more iterations may help. See
@@ -684,8 +684,8 @@ nd_dom_0_mod <- buildcompnet(presabs=ex_presabs,
 #> 
 #> SAMPLING FOR MODEL 'srm_binomial' NOW (CHAIN 1).
 #> Chain 1: 
-#> Chain 1: Gradient evaluation took 7.7e-05 seconds
-#> Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.77 seconds.
+#> Chain 1: Gradient evaluation took 8.4e-05 seconds
+#> Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.84 seconds.
 #> Chain 1: Adjust your expectations accordingly!
 #> Chain 1: 
 #> Chain 1: 
@@ -702,9 +702,9 @@ nd_dom_0_mod <- buildcompnet(presabs=ex_presabs,
 #> Chain 1: Iteration: 1120 / 1200 [ 93%]  (Sampling)
 #> Chain 1: Iteration: 1200 / 1200 [100%]  (Sampling)
 #> Chain 1: 
-#> Chain 1:  Elapsed Time: 0.932 seconds (Warm-up)
-#> Chain 1:                1.096 seconds (Sampling)
-#> Chain 1:                2.028 seconds (Total)
+#> Chain 1:  Elapsed Time: 1.447 seconds (Warm-up)
+#> Chain 1:                1.724 seconds (Sampling)
+#> Chain 1:                3.171 seconds (Total)
 #> Chain 1: 
 #> [1] "compnet uses Stan under the hood. You may see warnings from Stan alongside, \nthis message. To deal with any warnings Stan might issue, \nPlease see the links provided in Stan's output, as well as the compnet website:\nhttps://kyle-rosenblad.github.io/compnet/"
 
@@ -733,6 +733,8 @@ testDispersion(nd_dom_0_mod_dharma, plot=FALSE)
 #> dispersion = 1.8247, p-value = 0.01
 #> alternative hypothesis: two.sided
 testQuantiles(nd_dom_0_mod_dharma, plot=FALSE)
+#> Warning in newton(lsp = lsp, X = G$X, y = G$y, Eb = G$Eb, UrS = G$UrS, L = G$L,
+#> : Fitting terminated with step failure - check results carefully
 #> 
 #>  Test for location of quantiles via qgam
 #> 
@@ -772,8 +774,8 @@ nd_dom_1_mod <- buildcompnet(presabs=ex_presabs,
 #> 
 #> SAMPLING FOR MODEL 'ame_binomial' NOW (CHAIN 1).
 #> Chain 1: 
-#> Chain 1: Gradient evaluation took 0.000165 seconds
-#> Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 1.65 seconds.
+#> Chain 1: Gradient evaluation took 0.000158 seconds
+#> Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 1.58 seconds.
 #> Chain 1: Adjust your expectations accordingly!
 #> Chain 1: 
 #> Chain 1: 
@@ -790,9 +792,9 @@ nd_dom_1_mod <- buildcompnet(presabs=ex_presabs,
 #> Chain 1: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 #> Chain 1: Iteration: 2000 / 2000 [100%]  (Sampling)
 #> Chain 1: 
-#> Chain 1:  Elapsed Time: 9.392 seconds (Warm-up)
-#> Chain 1:                7.421 seconds (Sampling)
-#> Chain 1:                16.813 seconds (Total)
+#> Chain 1:  Elapsed Time: 11.229 seconds (Warm-up)
+#> Chain 1:                8.846 seconds (Sampling)
+#> Chain 1:                20.075 seconds (Total)
 #> Chain 1: 
 #> [1] "compnet uses Stan under the hood. You may see warnings from Stan alongside, \nthis message. To deal with any warnings Stan might issue, \nPlease see the links provided in Stan's output, as well as the compnet website:\nhttps://kyle-rosenblad.github.io/compnet/"
 
@@ -902,8 +904,8 @@ c_0_mod <- buildcompnet(presabs=ex_presabs,
 #> 
 #> SAMPLING FOR MODEL 'srm_binomial' NOW (CHAIN 1).
 #> Chain 1: 
-#> Chain 1: Gradient evaluation took 7.2e-05 seconds
-#> Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.72 seconds.
+#> Chain 1: Gradient evaluation took 8.3e-05 seconds
+#> Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.83 seconds.
 #> Chain 1: Adjust your expectations accordingly!
 #> Chain 1: 
 #> Chain 1: 
@@ -920,9 +922,9 @@ c_0_mod <- buildcompnet(presabs=ex_presabs,
 #> Chain 1: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 #> Chain 1: Iteration: 2000 / 2000 [100%]  (Sampling)
 #> Chain 1: 
-#> Chain 1:  Elapsed Time: 2.379 seconds (Warm-up)
-#> Chain 1:                2.052 seconds (Sampling)
-#> Chain 1:                4.431 seconds (Total)
+#> Chain 1:  Elapsed Time: 3.778 seconds (Warm-up)
+#> Chain 1:                3.265 seconds (Sampling)
+#> Chain 1:                7.043 seconds (Total)
 #> Chain 1: 
 #> [1] "compnet uses Stan under the hood. You may see warnings from Stan alongside, \nthis message. To deal with any warnings Stan might issue, \nPlease see the links provided in Stan's output, as well as the compnet website:\nhttps://kyle-rosenblad.github.io/compnet/"
 ```
@@ -990,8 +992,8 @@ phylo_0_mod <- buildcompnet(presabs=ex_presabs,
 #> 
 #> SAMPLING FOR MODEL 'srm_binomial' NOW (CHAIN 1).
 #> Chain 1: 
-#> Chain 1: Gradient evaluation took 8.6e-05 seconds
-#> Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.86 seconds.
+#> Chain 1: Gradient evaluation took 8.1e-05 seconds
+#> Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.81 seconds.
 #> Chain 1: Adjust your expectations accordingly!
 #> Chain 1: 
 #> Chain 1: 
@@ -1008,9 +1010,9 @@ phylo_0_mod <- buildcompnet(presabs=ex_presabs,
 #> Chain 1: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 #> Chain 1: Iteration: 2000 / 2000 [100%]  (Sampling)
 #> Chain 1: 
-#> Chain 1:  Elapsed Time: 1.308 seconds (Warm-up)
-#> Chain 1:                1.32 seconds (Sampling)
-#> Chain 1:                2.628 seconds (Total)
+#> Chain 1:  Elapsed Time: 2.145 seconds (Warm-up)
+#> Chain 1:                2.169 seconds (Sampling)
+#> Chain 1:                4.314 seconds (Total)
 #> Chain 1: 
 #> [1] "compnet uses Stan under the hood. You may see warnings from Stan alongside, \nthis message. To deal with any warnings Stan might issue, \nPlease see the links provided in Stan's output, as well as the compnet website:\nhttps://kyle-rosenblad.github.io/compnet/"
 ```
@@ -1077,8 +1079,8 @@ phylo_1_mod <- buildcompnet(presabs=ex_presabs,
 #> 
 #> SAMPLING FOR MODEL 'ame_binomial' NOW (CHAIN 1).
 #> Chain 1: 
-#> Chain 1: Gradient evaluation took 0.000162 seconds
-#> Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 1.62 seconds.
+#> Chain 1: Gradient evaluation took 0.000154 seconds
+#> Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 1.54 seconds.
 #> Chain 1: Adjust your expectations accordingly!
 #> Chain 1: 
 #> Chain 1: 
@@ -1095,9 +1097,9 @@ phylo_1_mod <- buildcompnet(presabs=ex_presabs,
 #> Chain 1: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 #> Chain 1: Iteration: 2000 / 2000 [100%]  (Sampling)
 #> Chain 1: 
-#> Chain 1:  Elapsed Time: 7.348 seconds (Warm-up)
-#> Chain 1:                7.811 seconds (Sampling)
-#> Chain 1:                15.159 seconds (Total)
+#> Chain 1:  Elapsed Time: 8.762 seconds (Warm-up)
+#> Chain 1:                9.293 seconds (Sampling)
+#> Chain 1:                18.055 seconds (Total)
 #> Chain 1:
 #> Warning: The largest R-hat is 1.07, indicating chains have not mixed.
 #> Running the chains for more iterations may help. See
