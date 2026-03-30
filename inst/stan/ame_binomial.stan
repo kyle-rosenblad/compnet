@@ -37,7 +37,7 @@ transformed parameters{
   // to waste time toggling between functionally equivalent mirror-image configurations of latent factors.
   matrix[n_nodes, K] U;
   for (k in 1:K) {
-    U[1, k] = fabs(U_raw[1, k]);  // get absolute value of first node
+    U[1, k] = abs(U_raw[1, k]);  // get absolute value of first node
     for (i in 2:n_nodes) {
       U[i, k] = U_raw[i, k];      // leave other nodes alone
     }
