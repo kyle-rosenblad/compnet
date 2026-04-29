@@ -32,8 +32,8 @@ spvars_dist_int=ex_traits[c("ndtrait")], warmup=10, iter=20)
 #> 
 #> SAMPLING FOR MODEL 'srm_binomial' NOW (CHAIN 1).
 #> Chain 1: 
-#> Chain 1: Gradient evaluation took 8.6e-05 seconds
-#> Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.86 seconds.
+#> Chain 1: Gradient evaluation took 7.8e-05 seconds
+#> Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.78 seconds.
 #> Chain 1: Adjust your expectations accordingly!
 #> Chain 1: 
 #> Chain 1: 
@@ -53,9 +53,9 @@ spvars_dist_int=ex_traits[c("ndtrait")], warmup=10, iter=20)
 #> Chain 1: Iteration: 18 / 20 [ 90%]  (Sampling)
 #> Chain 1: Iteration: 20 / 20 [100%]  (Sampling)
 #> Chain 1: 
-#> Chain 1:  Elapsed Time: 0.027 seconds (Warm-up)
-#> Chain 1:                0.027 seconds (Sampling)
-#> Chain 1:                0.054 seconds (Total)
+#> Chain 1:  Elapsed Time: 0.017 seconds (Warm-up)
+#> Chain 1:                0.017 seconds (Sampling)
+#> Chain 1:                0.034 seconds (Total)
 #> Chain 1: 
 #> Warning: There were 2 divergent transitions after warmup. See
 #> https://mc-stan.org/misc/warnings.html#divergent-transitions-after-warmup

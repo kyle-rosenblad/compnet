@@ -58,9 +58,9 @@ spvars_dist_int=ex_traits[c("ndtrait")], warmup=10, iter=20)
 #> Chain 1: Iteration: 18 / 20 [ 90%]  (Sampling)
 #> Chain 1: Iteration: 20 / 20 [100%]  (Sampling)
 #> Chain 1: 
-#> Chain 1:  Elapsed Time: 0.006 seconds (Warm-up)
-#> Chain 1:                0.024 seconds (Sampling)
-#> Chain 1:                0.03 seconds (Total)
+#> Chain 1:  Elapsed Time: 0.004 seconds (Warm-up)
+#> Chain 1:                0.015 seconds (Sampling)
+#> Chain 1:                0.019 seconds (Total)
 #> Chain 1: 
 #> Warning: There were 1 chains where the estimated Bayesian Fraction of Missing Information was low. See
 #> https://mc-stan.org/misc/warnings.html#bfmi-low
