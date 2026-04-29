@@ -60,12 +60,11 @@ data(ex_traits)
 # Run with default warmup and iter for good posterior sampling.
 ex_compnet <- buildcompnet(presabs=ex_presabs,
 spvars_dist_int=ex_traits[c("ndtrait")], warmup=10, iter=20)
-#> [1] "You are currently running a compnet model with a Fisher's noncentral hypergeometric likelihood. This is the default option because there is strong theory supporting it. However, choosing a binomial likelihood (i.e., setting family='binomial') instead may result in a substantially faster run. This alternative option performs equally well in simulation-based testing. See https://kyle-rosenblad.github.io/compnet/ for more details"
 #> 
-#> SAMPLING FOR MODEL 'srm_fnchypg' NOW (CHAIN 1).
+#> SAMPLING FOR MODEL 'srm_binomial' NOW (CHAIN 1).
 #> Chain 1: 
-#> Chain 1: Gradient evaluation took 0.000361 seconds
-#> Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 3.61 seconds.
+#> Chain 1: Gradient evaluation took 0.000107 seconds
+#> Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 1.07 seconds.
 #> Chain 1: Adjust your expectations accordingly!
 #> Chain 1: 
 #> Chain 1: 
@@ -85,10 +84,13 @@ spvars_dist_int=ex_traits[c("ndtrait")], warmup=10, iter=20)
 #> Chain 1: Iteration: 18 / 20 [ 90%]  (Sampling)
 #> Chain 1: Iteration: 20 / 20 [100%]  (Sampling)
 #> Chain 1: 
-#> Chain 1:  Elapsed Time: 0.225 seconds (Warm-up)
-#> Chain 1:                0.221 seconds (Sampling)
-#> Chain 1:                0.446 seconds (Total)
+#> Chain 1:  Elapsed Time: 0.004 seconds (Warm-up)
+#> Chain 1:                0.021 seconds (Sampling)
+#> Chain 1:                0.025 seconds (Total)
 #> Chain 1: 
+#> Warning: There were 1 chains where the estimated Bayesian Fraction of Missing Information was low. See
+#> https://mc-stan.org/misc/warnings.html#bfmi-low
+#> Warning: Examine the pairs() plot to diagnose sampling problems
 #> Warning: The largest R-hat is 2.12, indicating chains have not mixed.
 #> Running the chains for more iterations may help. See
 #> https://mc-stan.org/misc/warnings.html#r-hat
@@ -98,59 +100,12 @@ spvars_dist_int=ex_traits[c("ndtrait")], warmup=10, iter=20)
 #> Warning: Tail Effective Samples Size (ESS) is too low, indicating posterior variances and tail quantiles may be unreliable.
 #> Running the chains for more iterations may help. See
 #> https://mc-stan.org/misc/warnings.html#tail-ess
-#> [1] "compnet uses Stan under the hood. You may see warnings from Stan alongside, \nthis message. To deal with any warnings Stan might issue, \nPlease see the links provided in Stan's output, as well as the compnet website:\nhttps://kyle-rosenblad.github.io/compnet/"
+#> [1] "compnet uses Stan under the hood. You may see warnings from Stan alongside, this message. To deal with any warnings Stan might issue, Please see the links provided in Stan's output, as well as the compnet website:https://kyle-rosenblad.github.io/compnet/"
 
 gofstats(ex_compnet)
-#> Fitting base model for comparison with full model
-#> SAMPLING FOR MODEL 'base_fnchypg' NOW (CHAIN 1).
-#> 
-#> SAMPLING FOR MODEL 'base_fnchypg' NOW (CHAIN 2).
-#> Chain 1: 
-#> Chain 1: Gradient evaluation took 0.000745 seconds
-#> Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 7.45 seconds.
-#> Chain 1: Adjust your expectations accordingly!
-#> Chain 1: 
-#> Chain 1: 
-#> Chain 2: 
-#> Chain 2: Gradient evaluation took 0.000591 seconds
-#> Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 5.91 seconds.
-#> Chain 2: Adjust your expectations accordingly!
-#> Chain 2: 
-#> Chain 2: 
-#> Chain 1: Iteration:    1 / 2000 [  0%]  (Warmup)
-#> Chain 2: Iteration:    1 / 2000 [  0%]  (Warmup)
-#> Chain 2: Iteration:  200 / 2000 [ 10%]  (Warmup)
-#> Chain 1: Iteration:  200 / 2000 [ 10%]  (Warmup)
-#> Chain 2: Iteration:  400 / 2000 [ 20%]  (Warmup)
-#> Chain 1: Iteration:  400 / 2000 [ 20%]  (Warmup)
-#> Chain 2: Iteration:  600 / 2000 [ 30%]  (Warmup)
-#> Chain 1: Iteration:  600 / 2000 [ 30%]  (Warmup)
-#> Chain 2: Iteration:  800 / 2000 [ 40%]  (Warmup)
-#> Chain 1: Iteration:  800 / 2000 [ 40%]  (Warmup)
-#> Chain 2: Iteration: 1000 / 2000 [ 50%]  (Warmup)
-#> Chain 2: Iteration: 1001 / 2000 [ 50%]  (Sampling)
-#> Chain 1: Iteration: 1000 / 2000 [ 50%]  (Warmup)
-#> Chain 1: Iteration: 1001 / 2000 [ 50%]  (Sampling)
-#> Chain 2: Iteration: 1200 / 2000 [ 60%]  (Sampling)
-#> Chain 1: Iteration: 1200 / 2000 [ 60%]  (Sampling)
-#> Chain 2: Iteration: 1400 / 2000 [ 70%]  (Sampling)
-#> Chain 1: Iteration: 1400 / 2000 [ 70%]  (Sampling)
-#> Chain 2: Iteration: 1600 / 2000 [ 80%]  (Sampling)
-#> Chain 1: Iteration: 1600 / 2000 [ 80%]  (Sampling)
-#> Chain 2: Iteration: 1800 / 2000 [ 90%]  (Sampling)
-#> Chain 1: Iteration: 1800 / 2000 [ 90%]  (Sampling)
-#> Chain 2: Iteration: 2000 / 2000 [100%]  (Sampling)
-#> Chain 2: 
-#> Chain 2:  Elapsed Time: 7.074 seconds (Warm-up)
-#> Chain 2:                4.565 seconds (Sampling)
-#> Chain 2:                11.639 seconds (Total)
-#> Chain 2: 
-#> Chain 1: Iteration: 2000 / 2000 [100%]  (Sampling)
-#> Chain 1: 
-#> Chain 1:  Elapsed Time: 7.167 seconds (Warm-up)
-#> Chain 1:                4.625 seconds (Sampling)
-#> Chain 1:                11.792 seconds (Total)
-#> Chain 1: 
+#> Approx. completion
+#> 50%
+#> 100%
 #> p.sd.rowmeans   p.cycle.dep 
-#>     0.4740000     0.9703333 
+#>           0.1           0.9 
 ```

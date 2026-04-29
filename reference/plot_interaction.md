@@ -84,8 +84,8 @@ spvars_dist_int=ex_traits[c("ndtrait")], warmup=10, iter=20, family='binomial')
 #> 
 #> SAMPLING FOR MODEL 'srm_binomial' NOW (CHAIN 1).
 #> Chain 1: 
-#> Chain 1: Gradient evaluation took 0.000114 seconds
-#> Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 1.14 seconds.
+#> Chain 1: Gradient evaluation took 8.3e-05 seconds
+#> Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.83 seconds.
 #> Chain 1: Adjust your expectations accordingly!
 #> Chain 1: 
 #> Chain 1: 
@@ -105,13 +105,10 @@ spvars_dist_int=ex_traits[c("ndtrait")], warmup=10, iter=20, family='binomial')
 #> Chain 1: Iteration: 18 / 20 [ 90%]  (Sampling)
 #> Chain 1: Iteration: 20 / 20 [100%]  (Sampling)
 #> Chain 1: 
-#> Chain 1:  Elapsed Time: 0.028 seconds (Warm-up)
-#> Chain 1:                0.05 seconds (Sampling)
-#> Chain 1:                0.078 seconds (Total)
+#> Chain 1:  Elapsed Time: 0.017 seconds (Warm-up)
+#> Chain 1:                0.042 seconds (Sampling)
+#> Chain 1:                0.059 seconds (Total)
 #> Chain 1: 
-#> Warning: There were 1 chains where the estimated Bayesian Fraction of Missing Information was low. See
-#> https://mc-stan.org/misc/warnings.html#bfmi-low
-#> Warning: Examine the pairs() plot to diagnose sampling problems
 #> Warning: The largest R-hat is 2.12, indicating chains have not mixed.
 #> Running the chains for more iterations may help. See
 #> https://mc-stan.org/misc/warnings.html#r-hat
@@ -121,6 +118,6 @@ spvars_dist_int=ex_traits[c("ndtrait")], warmup=10, iter=20, family='binomial')
 #> Warning: Tail Effective Samples Size (ESS) is too low, indicating posterior variances and tail quantiles may be unreliable.
 #> Running the chains for more iterations may help. See
 #> https://mc-stan.org/misc/warnings.html#tail-ess
-#> [1] "compnet uses Stan under the hood. You may see warnings from Stan alongside, \nthis message. To deal with any warnings Stan might issue, \nPlease see the links provided in Stan's output, as well as the compnet website:\nhttps://kyle-rosenblad.github.io/compnet/"
+#> [1] "compnet uses Stan under the hood. You may see warnings from Stan alongside, this message. To deal with any warnings Stan might issue, Please see the links provided in Stan's output, as well as the compnet website:https://kyle-rosenblad.github.io/compnet/"
 plotdata <- plot_interaction(ex_compnet, xvar="ndtrait")
 ```

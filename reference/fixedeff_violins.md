@@ -29,12 +29,11 @@ data(ex_traits)
 # Run with default warmup and iter for good posterior sampling.
 ex_compnet <- buildcompnet(presabs=ex_presabs,
 spvars_dist_int=ex_traits[c("ndtrait")], warmup=10, iter=20)
-#> [1] "You are currently running a compnet model with a Fisher's noncentral hypergeometric likelihood. This is the default option because there is strong theory supporting it. However, choosing a binomial likelihood (i.e., setting family='binomial') instead may result in a substantially faster run. This alternative option performs equally well in simulation-based testing. See https://kyle-rosenblad.github.io/compnet/ for more details"
 #> 
-#> SAMPLING FOR MODEL 'srm_fnchypg' NOW (CHAIN 1).
+#> SAMPLING FOR MODEL 'srm_binomial' NOW (CHAIN 1).
 #> Chain 1: 
-#> Chain 1: Gradient evaluation took 0.000368 seconds
-#> Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 3.68 seconds.
+#> Chain 1: Gradient evaluation took 9.1e-05 seconds
+#> Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.91 seconds.
 #> Chain 1: Adjust your expectations accordingly!
 #> Chain 1: 
 #> Chain 1: 
@@ -54,10 +53,16 @@ spvars_dist_int=ex_traits[c("ndtrait")], warmup=10, iter=20)
 #> Chain 1: Iteration: 18 / 20 [ 90%]  (Sampling)
 #> Chain 1: Iteration: 20 / 20 [100%]  (Sampling)
 #> Chain 1: 
-#> Chain 1:  Elapsed Time: 0.229 seconds (Warm-up)
-#> Chain 1:                0.222 seconds (Sampling)
-#> Chain 1:                0.451 seconds (Total)
+#> Chain 1:  Elapsed Time: 0.027 seconds (Warm-up)
+#> Chain 1:                0.028 seconds (Sampling)
+#> Chain 1:                0.055 seconds (Total)
 #> Chain 1: 
+#> Warning: There were 2 divergent transitions after warmup. See
+#> https://mc-stan.org/misc/warnings.html#divergent-transitions-after-warmup
+#> to find out why this is a problem and how to eliminate them.
+#> Warning: There were 1 chains where the estimated Bayesian Fraction of Missing Information was low. See
+#> https://mc-stan.org/misc/warnings.html#bfmi-low
+#> Warning: Examine the pairs() plot to diagnose sampling problems
 #> Warning: The largest R-hat is 2.12, indicating chains have not mixed.
 #> Running the chains for more iterations may help. See
 #> https://mc-stan.org/misc/warnings.html#r-hat
@@ -67,7 +72,7 @@ spvars_dist_int=ex_traits[c("ndtrait")], warmup=10, iter=20)
 #> Warning: Tail Effective Samples Size (ESS) is too low, indicating posterior variances and tail quantiles may be unreliable.
 #> Running the chains for more iterations may help. See
 #> https://mc-stan.org/misc/warnings.html#tail-ess
-#> [1] "compnet uses Stan under the hood. You may see warnings from Stan alongside, \nthis message. To deal with any warnings Stan might issue, \nPlease see the links provided in Stan's output, as well as the compnet website:\nhttps://kyle-rosenblad.github.io/compnet/"
+#> [1] "compnet uses Stan under the hood. You may see warnings from Stan alongside, this message. To deal with any warnings Stan might issue, Please see the links provided in Stan's output, as well as the compnet website:https://kyle-rosenblad.github.io/compnet/"
 fixedeff_violins(ex_compnet)
 
 ```

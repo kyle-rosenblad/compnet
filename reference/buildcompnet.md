@@ -14,7 +14,7 @@ buildcompnet(
   spvars_cat_int = NULL,
   pairvars = NULL,
   rank = 0,
-  family = "fnchypg",
+  family = "binomial",
   olre = TRUE,
   prior_intercept_scale = 5,
   prior_betas_scale = 5,
@@ -87,18 +87,14 @@ buildcompnet(
 
 - family:
 
-  Distribution family for regression model. Defaults to 'fnchypg', or
-  Fisher's noncentral hypergeometric distribution. In this case, the
-  quantity we are modeling, as a function of species traits, dyadic
-  random effects, etc. is Mainali et al.'s (2022, Science Advances)
-  "alpha" or "cooccurrence affinity" parameter in the fnchypg
-  distribution. Link function is identity. 'binomial', also supported,
-  is not as theoretically well justified– see Mainali et al. (2022,
-  Science Advances)–but, in simulations, produces qualitatively similar
-  results, runs faster, and more consistently avoids problems like
-  overdispersion. In this case, we are modeling p, the probability that
-  both species co-occur at a given site, given that at least one is
-  present. Link function is logit. May be useful for pilot analyses.
+  Distribution family for regression model. Defaults to 'binomial'. If
+  family='fnchypg', or Fisher's noncentral hypergeometric distribution.
+  In this case, the quantity we are modeling, as a function of species
+  traits, dyadic random effects, etc. is Mainali et al.'s (2022, Science
+  Advances) "alpha" or "co-occurrence affinity" parameter in the fnchypg
+  distribution. Link function is identity. If family='binomial', we are
+  modeling p, the probability that both species co-occur at a given
+  site, given that at least one is present. Link function is logit.
 
 - olre:
 
@@ -198,12 +194,11 @@ data(ex_traits)
 # Run with default warmup and iter for good posterior sampling.
 ex_compnet <- buildcompnet(presabs=ex_presabs,
 spvars_dist_int=ex_traits[c("ndtrait")], warmup=10, iter=20)
-#> [1] "You are currently running a compnet model with a Fisher's noncentral hypergeometric likelihood. This is the default option because there is strong theory supporting it. However, choosing a binomial likelihood (i.e., setting family='binomial') instead may result in a substantially faster run. This alternative option performs equally well in simulation-based testing. See https://kyle-rosenblad.github.io/compnet/ for more details"
 #> 
-#> SAMPLING FOR MODEL 'srm_fnchypg' NOW (CHAIN 1).
+#> SAMPLING FOR MODEL 'srm_binomial' NOW (CHAIN 1).
 #> Chain 1: 
-#> Chain 1: Gradient evaluation took 0.000409 seconds
-#> Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 4.09 seconds.
+#> Chain 1: Gradient evaluation took 0.000148 seconds
+#> Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 1.48 seconds.
 #> Chain 1: Adjust your expectations accordingly!
 #> Chain 1: 
 #> Chain 1: 
@@ -223,10 +218,13 @@ spvars_dist_int=ex_traits[c("ndtrait")], warmup=10, iter=20)
 #> Chain 1: Iteration: 18 / 20 [ 90%]  (Sampling)
 #> Chain 1: Iteration: 20 / 20 [100%]  (Sampling)
 #> Chain 1: 
-#> Chain 1:  Elapsed Time: 0.395 seconds (Warm-up)
-#> Chain 1:                0.225 seconds (Sampling)
-#> Chain 1:                0.62 seconds (Total)
+#> Chain 1:  Elapsed Time: 0.019 seconds (Warm-up)
+#> Chain 1:                0.037 seconds (Sampling)
+#> Chain 1:                0.056 seconds (Total)
 #> Chain 1: 
+#> Warning: There were 1 chains where the estimated Bayesian Fraction of Missing Information was low. See
+#> https://mc-stan.org/misc/warnings.html#bfmi-low
+#> Warning: Examine the pairs() plot to diagnose sampling problems
 #> Warning: The largest R-hat is 2.12, indicating chains have not mixed.
 #> Running the chains for more iterations may help. See
 #> https://mc-stan.org/misc/warnings.html#r-hat
@@ -236,5 +234,5 @@ spvars_dist_int=ex_traits[c("ndtrait")], warmup=10, iter=20)
 #> Warning: Tail Effective Samples Size (ESS) is too low, indicating posterior variances and tail quantiles may be unreliable.
 #> Running the chains for more iterations may help. See
 #> https://mc-stan.org/misc/warnings.html#tail-ess
-#> [1] "compnet uses Stan under the hood. You may see warnings from Stan alongside, \nthis message. To deal with any warnings Stan might issue, \nPlease see the links provided in Stan's output, as well as the compnet website:\nhttps://kyle-rosenblad.github.io/compnet/"
+#> [1] "compnet uses Stan under the hood. You may see warnings from Stan alongside, this message. To deal with any warnings Stan might issue, Please see the links provided in Stan's output, as well as the compnet website:https://kyle-rosenblad.github.io/compnet/"
 ```

@@ -131,12 +131,11 @@ shortrun <- buildcompnet(presabs=ex_presabs,
                   spvars_dist_int=ex_traits[c("ndtrait")],
                   warmup=100,
                   iter=200)
-#> [1] "You are currently running a compnet model with a Fisher's noncentral hypergeometric likelihood. This is the default option because there is strong theory supporting it. However, choosing a binomial likelihood (i.e., setting family='binomial') instead may result in a substantially faster run. This alternative option performs equally well in simulation-based testing. See https://kyle-rosenblad.github.io/compnet/ for more details"
 #> 
-#> SAMPLING FOR MODEL 'srm_fnchypg' NOW (CHAIN 1).
+#> SAMPLING FOR MODEL 'srm_binomial' NOW (CHAIN 1).
 #> Chain 1: 
-#> Chain 1: Gradient evaluation took 0.000388 seconds
-#> Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 3.88 seconds.
+#> Chain 1: Gradient evaluation took 0.000125 seconds
+#> Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 1.25 seconds.
 #> Chain 1: Adjust your expectations accordingly!
 #> Chain 1: 
 #> Chain 1: 
@@ -161,11 +160,11 @@ shortrun <- buildcompnet(presabs=ex_presabs,
 #> Chain 1: Iteration: 180 / 200 [ 90%]  (Sampling)
 #> Chain 1: Iteration: 200 / 200 [100%]  (Sampling)
 #> Chain 1: 
-#> Chain 1:  Elapsed Time: 3.665 seconds (Warm-up)
-#> Chain 1:                2.212 seconds (Sampling)
-#> Chain 1:                5.877 seconds (Total)
+#> Chain 1:  Elapsed Time: 0.534 seconds (Warm-up)
+#> Chain 1:                0.446 seconds (Sampling)
+#> Chain 1:                0.98 seconds (Total)
 #> Chain 1:
-#> Warning: The largest R-hat is 1.12, indicating chains have not mixed.
+#> Warning: The largest R-hat is 1.13, indicating chains have not mixed.
 #> Running the chains for more iterations may help. See
 #> https://mc-stan.org/misc/warnings.html#r-hat
 #> Warning: Bulk Effective Samples Size (ESS) is too low, indicating posterior means and medians may be unreliable.
@@ -174,7 +173,7 @@ shortrun <- buildcompnet(presabs=ex_presabs,
 #> Warning: Tail Effective Samples Size (ESS) is too low, indicating posterior variances and tail quantiles may be unreliable.
 #> Running the chains for more iterations may help. See
 #> https://mc-stan.org/misc/warnings.html#tail-ess
-#> [1] "compnet uses Stan under the hood. You may see warnings from Stan alongside, \nthis message. To deal with any warnings Stan might issue, \nPlease see the links provided in Stan's output, as well as the compnet website:\nhttps://kyle-rosenblad.github.io/compnet/"
+#> [1] "compnet uses Stan under the hood. You may see warnings from Stan alongside, this message. To deal with any warnings Stan might issue, Please see the links provided in Stan's output, as well as the compnet website:https://kyle-rosenblad.github.io/compnet/"
 ```
 
 Now let’s build our first distance interaction model. We’ll call it
@@ -192,12 +191,11 @@ nd_0_mod <- buildcompnet(presabs=ex_presabs,
         spvars_dist_int=ex_traits[c("ndtrait")],
         warmup=400,
         iter=1200)
-#> [1] "You are currently running a compnet model with a Fisher's noncentral hypergeometric likelihood. This is the default option because there is strong theory supporting it. However, choosing a binomial likelihood (i.e., setting family='binomial') instead may result in a substantially faster run. This alternative option performs equally well in simulation-based testing. See https://kyle-rosenblad.github.io/compnet/ for more details"
 #> 
-#> SAMPLING FOR MODEL 'srm_fnchypg' NOW (CHAIN 1).
+#> SAMPLING FOR MODEL 'srm_binomial' NOW (CHAIN 1).
 #> Chain 1: 
-#> Chain 1: Gradient evaluation took 0.000362 seconds
-#> Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 3.62 seconds.
+#> Chain 1: Gradient evaluation took 9.9e-05 seconds
+#> Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.99 seconds.
 #> Chain 1: Adjust your expectations accordingly!
 #> Chain 1: 
 #> Chain 1: 
@@ -214,11 +212,11 @@ nd_0_mod <- buildcompnet(presabs=ex_presabs,
 #> Chain 1: Iteration: 1120 / 1200 [ 93%]  (Sampling)
 #> Chain 1: Iteration: 1200 / 1200 [100%]  (Sampling)
 #> Chain 1: 
-#> Chain 1:  Elapsed Time: 7.788 seconds (Warm-up)
-#> Chain 1:                8.937 seconds (Sampling)
-#> Chain 1:                16.725 seconds (Total)
+#> Chain 1:  Elapsed Time: 1.305 seconds (Warm-up)
+#> Chain 1:                1.884 seconds (Sampling)
+#> Chain 1:                3.189 seconds (Total)
 #> Chain 1: 
-#> [1] "compnet uses Stan under the hood. You may see warnings from Stan alongside, \nthis message. To deal with any warnings Stan might issue, \nPlease see the links provided in Stan's output, as well as the compnet website:\nhttps://kyle-rosenblad.github.io/compnet/"
+#> [1] "compnet uses Stan under the hood. You may see warnings from Stan alongside, this message. To deal with any warnings Stan might issue, Please see the links provided in Stan's output, as well as the compnet website:https://kyle-rosenblad.github.io/compnet/"
 ```
 
 Before we try to interpret any results, let’s see if this model provides
@@ -230,59 +228,14 @@ non-independence in the example data set:
 
 ``` r
 nd_0_mod_gofstats <- gofstats(nd_0_mod)
-#> Fitting base model for comparison with full model
-#> SAMPLING FOR MODEL 'base_fnchypg' NOW (CHAIN 1).
-#> 
-#> SAMPLING FOR MODEL 'base_fnchypg' NOW (CHAIN 2).
-#> Chain 1: 
-#> Chain 1: Gradient evaluation took 0.000561 seconds
-#> Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 5.61 seconds.
-#> Chain 1: Adjust your expectations accordingly!
-#> Chain 1: 
-#> Chain 1: 
-#> Chain 2: 
-#> Chain 2: Gradient evaluation took 0.000553 seconds
-#> Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 5.53 seconds.
-#> Chain 2: Adjust your expectations accordingly!
-#> Chain 2: 
-#> Chain 2: 
-#> Chain 1: Iteration:    1 / 2000 [  0%]  (Warmup)
-#> Chain 2: Iteration:    1 / 2000 [  0%]  (Warmup)
-#> Chain 1: Iteration:  200 / 2000 [ 10%]  (Warmup)
-#> Chain 2: Iteration:  200 / 2000 [ 10%]  (Warmup)
-#> Chain 1: Iteration:  400 / 2000 [ 20%]  (Warmup)
-#> Chain 2: Iteration:  400 / 2000 [ 20%]  (Warmup)
-#> Chain 1: Iteration:  600 / 2000 [ 30%]  (Warmup)
-#> Chain 2: Iteration:  600 / 2000 [ 30%]  (Warmup)
-#> Chain 1: Iteration:  800 / 2000 [ 40%]  (Warmup)
-#> Chain 2: Iteration:  800 / 2000 [ 40%]  (Warmup)
-#> Chain 1: Iteration: 1000 / 2000 [ 50%]  (Warmup)
-#> Chain 1: Iteration: 1001 / 2000 [ 50%]  (Sampling)
-#> Chain 2: Iteration: 1000 / 2000 [ 50%]  (Warmup)
-#> Chain 2: Iteration: 1001 / 2000 [ 50%]  (Sampling)
-#> Chain 1: Iteration: 1200 / 2000 [ 60%]  (Sampling)
-#> Chain 2: Iteration: 1200 / 2000 [ 60%]  (Sampling)
-#> Chain 1: Iteration: 1400 / 2000 [ 70%]  (Sampling)
-#> Chain 2: Iteration: 1400 / 2000 [ 70%]  (Sampling)
-#> Chain 1: Iteration: 1600 / 2000 [ 80%]  (Sampling)
-#> Chain 2: Iteration: 1600 / 2000 [ 80%]  (Sampling)
-#> Chain 1: Iteration: 1800 / 2000 [ 90%]  (Sampling)
-#> Chain 2: Iteration: 1800 / 2000 [ 90%]  (Sampling)
-#> Chain 1: Iteration: 2000 / 2000 [100%]  (Sampling)
-#> Chain 1: 
-#> Chain 1:  Elapsed Time: 6.857 seconds (Warm-up)
-#> Chain 1:                4.547 seconds (Sampling)
-#> Chain 1:                11.404 seconds (Total)
-#> Chain 1: 
-#> Chain 2: Iteration: 2000 / 2000 [100%]  (Sampling)
-#> Chain 2: 
-#> Chain 2:  Elapsed Time: 7.183 seconds (Warm-up)
-#> Chain 2:                4.673 seconds (Sampling)
-#> Chain 2:                11.856 seconds (Total)
-#> Chain 2:
+#> Approx. completion
+#> 25%
+#> 50%
+#> 75%
+#> 100%
 nd_0_mod_gofstats
 #> p.sd.rowmeans   p.cycle.dep 
-#>    0.05371111    0.76108889
+#>     0.0500000     0.6933333
 ```
 
 The first ‘p-value’, ‘p.sd.rowmeans’, tells us about patterns driven by
@@ -310,12 +263,11 @@ nd_1_mod <- buildcompnet(presabs=ex_presabs,
         rank=1,
         warmup=300,
         iter=1000)
-#> [1] "You are currently running a compnet model with a Fisher's noncentral hypergeometric likelihood. This is the default option because there is strong theory supporting it. However, choosing a binomial likelihood (i.e., setting family='binomial') instead may result in a substantially faster run. This alternative option performs equally well in simulation-based testing. See https://kyle-rosenblad.github.io/compnet/ for more details"
 #> 
-#> SAMPLING FOR MODEL 'ame_fnchypg' NOW (CHAIN 1).
+#> SAMPLING FOR MODEL 'ame_binomial' NOW (CHAIN 1).
 #> Chain 1: 
-#> Chain 1: Gradient evaluation took 0.00065 seconds
-#> Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 6.5 seconds.
+#> Chain 1: Gradient evaluation took 0.000189 seconds
+#> Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 1.89 seconds.
 #> Chain 1: Adjust your expectations accordingly!
 #> Chain 1: 
 #> Chain 1: 
@@ -332,71 +284,20 @@ nd_1_mod <- buildcompnet(presabs=ex_presabs,
 #> Chain 1: Iteration: 900 / 1000 [ 90%]  (Sampling)
 #> Chain 1: Iteration: 1000 / 1000 [100%]  (Sampling)
 #> Chain 1: 
-#> Chain 1:  Elapsed Time: 8.726 seconds (Warm-up)
-#> Chain 1:                12.614 seconds (Sampling)
-#> Chain 1:                21.34 seconds (Total)
-#> Chain 1:
-#> Warning: The largest R-hat is 1.05, indicating chains have not mixed.
-#> Running the chains for more iterations may help. See
-#> https://mc-stan.org/misc/warnings.html#r-hat
-#> Warning: Bulk Effective Samples Size (ESS) is too low, indicating posterior means and medians may be unreliable.
-#> Running the chains for more iterations may help. See
-#> https://mc-stan.org/misc/warnings.html#bulk-ess
-#> [1] "compnet uses Stan under the hood. You may see warnings from Stan alongside, \nthis message. To deal with any warnings Stan might issue, \nPlease see the links provided in Stan's output, as well as the compnet website:\nhttps://kyle-rosenblad.github.io/compnet/"
+#> Chain 1:  Elapsed Time: 4.293 seconds (Warm-up)
+#> Chain 1:                7.277 seconds (Sampling)
+#> Chain 1:                11.57 seconds (Total)
+#> Chain 1: 
+#> [1] "compnet uses Stan under the hood. You may see warnings from Stan alongside, this message. To deal with any warnings Stan might issue, Please see the links provided in Stan's output, as well as the compnet website:https://kyle-rosenblad.github.io/compnet/"
 nd_1_mod_gofstats <- gofstats(nd_1_mod)
-#> Fitting base model for comparison with full model
-#> SAMPLING FOR MODEL 'base_fnchypg' NOW (CHAIN 1).
-#> 
-#> SAMPLING FOR MODEL 'base_fnchypg' NOW (CHAIN 2).
-#> Chain 1: 
-#> Chain 1: Gradient evaluation took 0.000583 seconds
-#> Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 5.83 seconds.
-#> Chain 1: Adjust your expectations accordingly!
-#> Chain 1: 
-#> Chain 1: 
-#> Chain 1: Iteration:    1 / 2000 [  0%]  (Warmup)
-#> Chain 2: 
-#> Chain 2: Gradient evaluation took 0.000544 seconds
-#> Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 5.44 seconds.
-#> Chain 2: Adjust your expectations accordingly!
-#> Chain 2: 
-#> Chain 2: 
-#> Chain 2: Iteration:    1 / 2000 [  0%]  (Warmup)
-#> Chain 1: Iteration:  200 / 2000 [ 10%]  (Warmup)
-#> Chain 2: Iteration:  200 / 2000 [ 10%]  (Warmup)
-#> Chain 1: Iteration:  400 / 2000 [ 20%]  (Warmup)
-#> Chain 2: Iteration:  400 / 2000 [ 20%]  (Warmup)
-#> Chain 1: Iteration:  600 / 2000 [ 30%]  (Warmup)
-#> Chain 2: Iteration:  600 / 2000 [ 30%]  (Warmup)
-#> Chain 1: Iteration:  800 / 2000 [ 40%]  (Warmup)
-#> Chain 2: Iteration:  800 / 2000 [ 40%]  (Warmup)
-#> Chain 1: Iteration: 1000 / 2000 [ 50%]  (Warmup)
-#> Chain 1: Iteration: 1001 / 2000 [ 50%]  (Sampling)
-#> Chain 2: Iteration: 1000 / 2000 [ 50%]  (Warmup)
-#> Chain 2: Iteration: 1001 / 2000 [ 50%]  (Sampling)
-#> Chain 1: Iteration: 1200 / 2000 [ 60%]  (Sampling)
-#> Chain 2: Iteration: 1200 / 2000 [ 60%]  (Sampling)
-#> Chain 1: Iteration: 1400 / 2000 [ 70%]  (Sampling)
-#> Chain 2: Iteration: 1400 / 2000 [ 70%]  (Sampling)
-#> Chain 1: Iteration: 1600 / 2000 [ 80%]  (Sampling)
-#> Chain 2: Iteration: 1600 / 2000 [ 80%]  (Sampling)
-#> Chain 1: Iteration: 1800 / 2000 [ 90%]  (Sampling)
-#> Chain 2: Iteration: 1800 / 2000 [ 90%]  (Sampling)
-#> Chain 1: Iteration: 2000 / 2000 [100%]  (Sampling)
-#> Chain 1: 
-#> Chain 1:  Elapsed Time: 7.064 seconds (Warm-up)
-#> Chain 1:                4.636 seconds (Sampling)
-#> Chain 1:                11.7 seconds (Total)
-#> Chain 1: 
-#> Chain 2: Iteration: 2000 / 2000 [100%]  (Sampling)
-#> Chain 2: 
-#> Chain 2:  Elapsed Time: 7.346 seconds (Warm-up)
-#> Chain 2:                4.714 seconds (Sampling)
-#> Chain 2:                12.06 seconds (Total)
-#> Chain 2:
+#> Approx. completion
+#> 25%
+#> 50%
+#> 75%
+#> 100%
 nd_1_mod_gofstats
 #> p.sd.rowmeans   p.cycle.dep 
-#>   0.019111111   0.004466667
+#>    0.04666667    0.69000000
 ```
 
 Unsurprisingly, our gofstats look fine.
@@ -435,7 +336,7 @@ testDispersion(nd_1_mod_dharma)
     #>  simulated
     #> 
     #> data:  simulationOutput
-    #> dispersion = 3.338, p-value < 2.2e-16
+    #> dispersion = 0.81086, p-value = 0.4629
     #> alternative hypothesis: two.sided
     testQuantiles(nd_1_mod_dharma)
 
@@ -445,7 +346,7 @@ testDispersion(nd_1_mod_dharma)
     #>  Test for location of quantiles via qgam
     #> 
     #> data:  res
-    #> p-value = 5.179e-05
+    #> p-value = 0.7967
     #> alternative hypothesis: both
     testUniformity(nd_1_mod_dharma)
 
@@ -455,7 +356,7 @@ testDispersion(nd_1_mod_dharma)
     #>  Asymptotic one-sample Kolmogorov-Smirnov test
     #> 
     #> data:  simulationOutput$scaledResiduals
-    #> D = 0.080856, p-value = 0.05417
+    #> D = 0.054753, p-value = 0.3796
     #> alternative hypothesis: two-sided
     testZeroInflation(nd_1_mod_dharma)
 
@@ -466,7 +367,7 @@ testDispersion(nd_1_mod_dharma)
     #>  simulation under H0 = fitted model
     #> 
     #> data:  simulationOutput
-    #> ratioObsSim = 0.98334, p-value = 0.6571
+    #> ratioObsSim = 1.0131, p-value = 0.7743
     #> alternative hypothesis: two.sided
 
 Yikes! We’ve got overdispersion, quantile deviations, and milder but
@@ -489,8 +390,8 @@ nd_1_mod <- buildcompnet(presabs=ex_presabs,
 #> 
 #> SAMPLING FOR MODEL 'ame_binomial' NOW (CHAIN 1).
 #> Chain 1: 
-#> Chain 1: Gradient evaluation took 0.000225 seconds
-#> Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 2.25 seconds.
+#> Chain 1: Gradient evaluation took 0.000156 seconds
+#> Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 1.56 seconds.
 #> Chain 1: Adjust your expectations accordingly!
 #> Chain 1: 
 #> Chain 1: 
@@ -507,14 +408,11 @@ nd_1_mod <- buildcompnet(presabs=ex_presabs,
 #> Chain 1: Iteration: 900 / 1000 [ 90%]  (Sampling)
 #> Chain 1: Iteration: 1000 / 1000 [100%]  (Sampling)
 #> Chain 1: 
-#> Chain 1:  Elapsed Time: 3.738 seconds (Warm-up)
-#> Chain 1:                5.811 seconds (Sampling)
-#> Chain 1:                9.549 seconds (Total)
-#> Chain 1:
-#> Warning: Bulk Effective Samples Size (ESS) is too low, indicating posterior means and medians may be unreliable.
-#> Running the chains for more iterations may help. See
-#> https://mc-stan.org/misc/warnings.html#bulk-ess
-#> [1] "compnet uses Stan under the hood. You may see warnings from Stan alongside, \nthis message. To deal with any warnings Stan might issue, \nPlease see the links provided in Stan's output, as well as the compnet website:\nhttps://kyle-rosenblad.github.io/compnet/"
+#> Chain 1:  Elapsed Time: 3.227 seconds (Warm-up)
+#> Chain 1:                5.646 seconds (Sampling)
+#> Chain 1:                8.873 seconds (Total)
+#> Chain 1: 
+#> [1] "compnet uses Stan under the hood. You may see warnings from Stan alongside, this message. To deal with any warnings Stan might issue, Please see the links provided in Stan's output, as well as the compnet website:https://kyle-rosenblad.github.io/compnet/"
 nd_1_mod_gofstats <- gofstats(nd_1_mod)
 #> Approx. completion
 #> 25%
@@ -523,7 +421,7 @@ nd_1_mod_gofstats <- gofstats(nd_1_mod)
 #> 100%
 nd_1_mod_gofstats
 #> p.sd.rowmeans   p.cycle.dep 
-#>    0.06666667    0.69000000
+#>          0.05          0.67
 ```
 
 Check DHARMa diagnostics:
@@ -546,7 +444,7 @@ testDispersion(nd_1_mod_dharma)
     #>  simulated
     #> 
     #> data:  simulationOutput
-    #> dispersion = 0.80699, p-value = 0.4857
+    #> dispersion = 0.81838, p-value = 0.5029
     #> alternative hypothesis: two.sided
     testQuantiles(nd_1_mod_dharma)
 
@@ -556,7 +454,7 @@ testDispersion(nd_1_mod_dharma)
     #>  Test for location of quantiles via qgam
     #> 
     #> data:  res
-    #> p-value = 0.3432
+    #> p-value = 0.3663
     #> alternative hypothesis: both
     testUniformity(nd_1_mod_dharma)
 
@@ -566,7 +464,7 @@ testDispersion(nd_1_mod_dharma)
     #>  Asymptotic one-sample Kolmogorov-Smirnov test
     #> 
     #> data:  simulationOutput$scaledResiduals
-    #> D = 0.051472, p-value = 0.4576
+    #> D = 0.051356, p-value = 0.4605
     #> alternative hypothesis: two-sided
     testZeroInflation(nd_1_mod_dharma)
 
@@ -577,7 +475,7 @@ testDispersion(nd_1_mod_dharma)
     #>  simulation under H0 = fitted model
     #> 
     #> data:  simulationOutput
-    #> ratioObsSim = 1.0093, p-value = 0.8543
+    #> ratioObsSim = 1.0113, p-value = 0.8314
     #> alternative hypothesis: two.sided
 
 Looks great! For the rest of this vignette, we’ll stick with the
@@ -592,10 +490,10 @@ our predictors of interest:
 
 ``` r
 summarize_compnet(nd_1_mod)
-#>                    Mean       2.5%      97.5%
-#> intercept    -5.2693426 -6.1317846 -4.4950307
-#> ndtrait_dist  0.8209096  0.5165685  1.1491554
-#> ndtrait_sp    0.1154266 -0.2494259  0.4518811
+#>                    Mean       2.5%     97.5%
+#> intercept    -5.2888365 -6.1463332 -4.563728
+#> ndtrait_dist  0.8155882  0.5110275  1.154450
+#> ndtrait_sp    0.1394091 -0.2042530  0.471086
 ```
 
 Let’s see those as violin plots:
@@ -684,8 +582,8 @@ nd_dom_0_mod <- buildcompnet(presabs=ex_presabs,
 #> 
 #> SAMPLING FOR MODEL 'srm_binomial' NOW (CHAIN 1).
 #> Chain 1: 
-#> Chain 1: Gradient evaluation took 8.4e-05 seconds
-#> Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.84 seconds.
+#> Chain 1: Gradient evaluation took 8.9e-05 seconds
+#> Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.89 seconds.
 #> Chain 1: Adjust your expectations accordingly!
 #> Chain 1: 
 #> Chain 1: 
@@ -702,11 +600,11 @@ nd_dom_0_mod <- buildcompnet(presabs=ex_presabs,
 #> Chain 1: Iteration: 1120 / 1200 [ 93%]  (Sampling)
 #> Chain 1: Iteration: 1200 / 1200 [100%]  (Sampling)
 #> Chain 1: 
-#> Chain 1:  Elapsed Time: 1.447 seconds (Warm-up)
-#> Chain 1:                1.724 seconds (Sampling)
-#> Chain 1:                3.171 seconds (Total)
+#> Chain 1:  Elapsed Time: 1.336 seconds (Warm-up)
+#> Chain 1:                1.751 seconds (Sampling)
+#> Chain 1:                3.087 seconds (Total)
 #> Chain 1: 
-#> [1] "compnet uses Stan under the hood. You may see warnings from Stan alongside, \nthis message. To deal with any warnings Stan might issue, \nPlease see the links provided in Stan's output, as well as the compnet website:\nhttps://kyle-rosenblad.github.io/compnet/"
+#> [1] "compnet uses Stan under the hood. You may see warnings from Stan alongside, this message. To deal with any warnings Stan might issue, Please see the links provided in Stan's output, as well as the compnet website:https://kyle-rosenblad.github.io/compnet/"
 
 nd_dom_0_mod_gofstats <- gofstats(nd_dom_0_mod)
 #> Approx. completion
@@ -716,7 +614,7 @@ nd_dom_0_mod_gofstats <- gofstats(nd_dom_0_mod)
 #> 100%
 nd_dom_0_mod_gofstats
 #> p.sd.rowmeans   p.cycle.dep 
-#>    0.08333333    0.88666667
+#>    0.06333333    0.87666667
 
 nd_dom_0_mod_ppred <- postpredsamp(nd_dom_0_mod)
 fpr <- apply(nd_dom_0_mod_ppred, 1, mean)
@@ -730,23 +628,21 @@ testDispersion(nd_dom_0_mod_dharma, plot=FALSE)
 #>  simulated
 #> 
 #> data:  simulationOutput
-#> dispersion = 1.8247, p-value = 0.01
+#> dispersion = 1.8211, p-value = 0.01
 #> alternative hypothesis: two.sided
 testQuantiles(nd_dom_0_mod_dharma, plot=FALSE)
-#> Warning in newton(lsp = lsp, X = G$X, y = G$y, Eb = G$Eb, UrS = G$UrS, L = G$L,
-#> : Fitting terminated with step failure - check results carefully
 #> 
 #>  Test for location of quantiles via qgam
 #> 
 #> data:  nd_dom_0_mod_dharma
-#> p-value = 0.7274
+#> p-value = 0.3404
 #> alternative hypothesis: both
 testUniformity(nd_dom_0_mod_dharma, plot=FALSE)
 #> 
 #>  Asymptotic one-sample Kolmogorov-Smirnov test
 #> 
 #> data:  simulationOutput$scaledResiduals
-#> D = 0.046043, p-value = 0.6021
+#> D = 0.052976, p-value = 0.4208
 #> alternative hypothesis: two-sided
 testZeroInflation(nd_dom_0_mod_dharma, plot=FALSE)
 #> 
@@ -754,7 +650,7 @@ testZeroInflation(nd_dom_0_mod_dharma, plot=FALSE)
 #>  simulation under H0 = fitted model
 #> 
 #> data:  simulationOutput
-#> ratioObsSim = 1.0164, p-value = 0.735
+#> ratioObsSim = 1.0158, p-value = 0.725
 #> alternative hypothesis: two.sided
 ```
 
@@ -774,8 +670,8 @@ nd_dom_1_mod <- buildcompnet(presabs=ex_presabs,
 #> 
 #> SAMPLING FOR MODEL 'ame_binomial' NOW (CHAIN 1).
 #> Chain 1: 
-#> Chain 1: Gradient evaluation took 0.000158 seconds
-#> Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 1.58 seconds.
+#> Chain 1: Gradient evaluation took 0.00016 seconds
+#> Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 1.6 seconds.
 #> Chain 1: Adjust your expectations accordingly!
 #> Chain 1: 
 #> Chain 1: 
@@ -792,11 +688,11 @@ nd_dom_1_mod <- buildcompnet(presabs=ex_presabs,
 #> Chain 1: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 #> Chain 1: Iteration: 2000 / 2000 [100%]  (Sampling)
 #> Chain 1: 
-#> Chain 1:  Elapsed Time: 11.229 seconds (Warm-up)
-#> Chain 1:                8.846 seconds (Sampling)
-#> Chain 1:                20.075 seconds (Total)
+#> Chain 1:  Elapsed Time: 10.049 seconds (Warm-up)
+#> Chain 1:                8.889 seconds (Sampling)
+#> Chain 1:                18.938 seconds (Total)
 #> Chain 1: 
-#> [1] "compnet uses Stan under the hood. You may see warnings from Stan alongside, \nthis message. To deal with any warnings Stan might issue, \nPlease see the links provided in Stan's output, as well as the compnet website:\nhttps://kyle-rosenblad.github.io/compnet/"
+#> [1] "compnet uses Stan under the hood. You may see warnings from Stan alongside, this message. To deal with any warnings Stan might issue, Please see the links provided in Stan's output, as well as the compnet website:https://kyle-rosenblad.github.io/compnet/"
 
 nd_dom_1_mod_gofstats <- gofstats(nd_dom_1_mod)
 #> Approx. completion
@@ -806,7 +702,7 @@ nd_dom_1_mod_gofstats <- gofstats(nd_dom_1_mod)
 #> 100%
 nd_dom_1_mod_gofstats
 #> p.sd.rowmeans   p.cycle.dep 
-#>    0.09666667    0.71333333
+#>    0.07333333    0.77333333
 
 nd_dom_1_mod_ppred <- compnet::postpredsamp(nd_dom_1_mod)
 fpr <- apply(nd_dom_1_mod_ppred, 1, mean)
@@ -820,21 +716,21 @@ testDispersion(nd_dom_1_mod_dharma, plot=FALSE)
 #>  simulated
 #> 
 #> data:  simulationOutput
-#> dispersion = 0.83647, p-value = 0.576
+#> dispersion = 0.84873, p-value = 0.626
 #> alternative hypothesis: two.sided
 testQuantiles(nd_dom_1_mod_dharma, plot=FALSE)
 #> 
 #>  Test for location of quantiles via qgam
 #> 
 #> data:  nd_dom_1_mod_dharma
-#> p-value = 0.7235
+#> p-value = 0.7983
 #> alternative hypothesis: both
 testUniformity(nd_dom_1_mod_dharma, plot=FALSE)
 #> 
 #>  Asymptotic one-sample Kolmogorov-Smirnov test
 #> 
 #> data:  simulationOutput$scaledResiduals
-#> D = 0.04712, p-value = 0.5723
+#> D = 0.047017, p-value = 0.5752
 #> alternative hypothesis: two-sided
 testZeroInflation(nd_dom_1_mod_dharma, plot=FALSE)
 #> 
@@ -842,7 +738,7 @@ testZeroInflation(nd_dom_1_mod_dharma, plot=FALSE)
 #>  simulation under H0 = fitted model
 #> 
 #> data:  simulationOutput
-#> ratioObsSim = 1.0022, p-value = 1
+#> ratioObsSim = 1.0048, p-value = 0.962
 #> alternative hypothesis: two.sided
 ```
 
@@ -856,17 +752,17 @@ with no covariate adjustment:
 
 ``` r
 summarize_compnet(nd_1_mod)
-#>                    Mean       2.5%      97.5%
-#> intercept    -5.2693426 -6.1317846 -4.4950307
-#> ndtrait_dist  0.8209096  0.5165685  1.1491554
-#> ndtrait_sp    0.1154266 -0.2494259  0.4518811
+#>                    Mean       2.5%     97.5%
+#> intercept    -5.2888365 -6.1463332 -4.563728
+#> ndtrait_dist  0.8155882  0.5110275  1.154450
+#> ndtrait_sp    0.1394091 -0.2042530  0.471086
 summarize_compnet(nd_dom_1_mod)
 #>                      Mean        2.5%      97.5%
-#> intercept     -4.33821310 -5.17593835 -3.6462052
-#> ndtrait_dist   1.05540241  0.73867257  1.3930362
-#> domtrait_dist -1.10206765 -1.46988324 -0.7477511
-#> ndtrait_sp    -0.08069789 -0.43684632  0.2482575
-#> domtrait_sp    0.24720582 -0.09260641  0.5740226
+#> intercept     -4.31168682 -5.09011676 -3.6451329
+#> ndtrait_dist   1.04564460  0.73912661  1.3489695
+#> domtrait_dist -1.10483290 -1.47165681 -0.7165881
+#> ndtrait_sp    -0.08058435 -0.41317150  0.1916890
+#> domtrait_sp    0.24849695 -0.07094924  0.5714901
 ```
 
 The coefficient of the “ndtrait” distance term is greater in the new
@@ -904,8 +800,8 @@ c_0_mod <- buildcompnet(presabs=ex_presabs,
 #> 
 #> SAMPLING FOR MODEL 'srm_binomial' NOW (CHAIN 1).
 #> Chain 1: 
-#> Chain 1: Gradient evaluation took 8.3e-05 seconds
-#> Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.83 seconds.
+#> Chain 1: Gradient evaluation took 8.8e-05 seconds
+#> Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.88 seconds.
 #> Chain 1: Adjust your expectations accordingly!
 #> Chain 1: 
 #> Chain 1: 
@@ -922,11 +818,11 @@ c_0_mod <- buildcompnet(presabs=ex_presabs,
 #> Chain 1: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 #> Chain 1: Iteration: 2000 / 2000 [100%]  (Sampling)
 #> Chain 1: 
-#> Chain 1:  Elapsed Time: 3.778 seconds (Warm-up)
-#> Chain 1:                3.265 seconds (Sampling)
-#> Chain 1:                7.043 seconds (Total)
+#> Chain 1:  Elapsed Time: 4.1 seconds (Warm-up)
+#> Chain 1:                3.836 seconds (Sampling)
+#> Chain 1:                7.936 seconds (Total)
 #> Chain 1: 
-#> [1] "compnet uses Stan under the hood. You may see warnings from Stan alongside, \nthis message. To deal with any warnings Stan might issue, \nPlease see the links provided in Stan's output, as well as the compnet website:\nhttps://kyle-rosenblad.github.io/compnet/"
+#> [1] "compnet uses Stan under the hood. You may see warnings from Stan alongside, this message. To deal with any warnings Stan might issue, Please see the links provided in Stan's output, as well as the compnet website:https://kyle-rosenblad.github.io/compnet/"
 ```
 
 Now let’s break down the output summary:
@@ -934,10 +830,10 @@ Now let’s break down the output summary:
 ``` r
 summarize_compnet(c_0_mod)
 #>                         Mean       2.5%      97.5%
-#> intercept         -4.6020236 -6.1073724 -3.3346624
-#> ctrait_int        -0.5992574 -0.9781232 -0.2223392
-#> ctrait_b_dummy_sp  0.1370630 -0.8875360  1.1652170
-#> ctrait_c_dummy_sp  0.4231797 -0.6237055  1.6372105
+#> intercept         -4.5813008 -5.8763178 -3.2245660
+#> ctrait_int        -0.5917007 -1.0377808 -0.2166837
+#> ctrait_b_dummy_sp  0.1647694 -0.8335247  1.2250244
+#> ctrait_c_dummy_sp  0.3839977 -0.6750995  1.4649907
 ```
 
 After the intercept, we see the results for the interaction term. This
@@ -992,8 +888,8 @@ phylo_0_mod <- buildcompnet(presabs=ex_presabs,
 #> 
 #> SAMPLING FOR MODEL 'srm_binomial' NOW (CHAIN 1).
 #> Chain 1: 
-#> Chain 1: Gradient evaluation took 8.1e-05 seconds
-#> Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.81 seconds.
+#> Chain 1: Gradient evaluation took 8.7e-05 seconds
+#> Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.87 seconds.
 #> Chain 1: Adjust your expectations accordingly!
 #> Chain 1: 
 #> Chain 1: 
@@ -1010,11 +906,11 @@ phylo_0_mod <- buildcompnet(presabs=ex_presabs,
 #> Chain 1: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 #> Chain 1: Iteration: 2000 / 2000 [100%]  (Sampling)
 #> Chain 1: 
-#> Chain 1:  Elapsed Time: 2.145 seconds (Warm-up)
-#> Chain 1:                2.169 seconds (Sampling)
-#> Chain 1:                4.314 seconds (Total)
+#> Chain 1:  Elapsed Time: 2.156 seconds (Warm-up)
+#> Chain 1:                2.148 seconds (Sampling)
+#> Chain 1:                4.304 seconds (Total)
 #> Chain 1: 
-#> [1] "compnet uses Stan under the hood. You may see warnings from Stan alongside, \nthis message. To deal with any warnings Stan might issue, \nPlease see the links provided in Stan's output, as well as the compnet website:\nhttps://kyle-rosenblad.github.io/compnet/"
+#> [1] "compnet uses Stan under the hood. You may see warnings from Stan alongside, this message. To deal with any warnings Stan might issue, Please see the links provided in Stan's output, as well as the compnet website:https://kyle-rosenblad.github.io/compnet/"
 ```
 
 Run our model checks:
@@ -1027,7 +923,7 @@ gofstats(phylo_0_mod)
 #> 75%
 #> 100%
 #> p.sd.rowmeans   p.cycle.dep 
-#>    0.02666667    0.16000000
+#>    0.05666667    0.19666667
 
 phylo_0_mod_ppred <- postpredsamp(phylo_0_mod)
 fpr <- apply(phylo_0_mod_ppred, 1, mean)
@@ -1041,21 +937,21 @@ testDispersion(phylo_0_mod_dharma, plot=FALSE)
 #>  simulated
 #> 
 #> data:  simulationOutput
-#> dispersion = 2.0576, p-value = 0.002
+#> dispersion = 2.0615, p-value = 0.002
 #> alternative hypothesis: two.sided
 testQuantiles(phylo_0_mod_dharma, plot=FALSE)
 #> 
 #>  Test for location of quantiles via qgam
 #> 
 #> data:  phylo_0_mod_dharma
-#> p-value = 7.073e-06
+#> p-value = 1.4e-05
 #> alternative hypothesis: both
 testUniformity(phylo_0_mod_dharma, plot=FALSE)
 #> 
 #>  Asymptotic one-sample Kolmogorov-Smirnov test
 #> 
 #> data:  simulationOutput$scaledResiduals
-#> D = 0.050272, p-value = 0.4881
+#> D = 0.047319, p-value = 0.5669
 #> alternative hypothesis: two-sided
 testZeroInflation(phylo_0_mod_dharma, plot=FALSE)
 #> 
@@ -1063,7 +959,7 @@ testZeroInflation(phylo_0_mod_dharma, plot=FALSE)
 #>  simulation under H0 = fitted model
 #> 
 #> data:  simulationOutput
-#> ratioObsSim = 1.0393, p-value = 0.31
+#> ratioObsSim = 1.0389, p-value = 0.306
 #> alternative hypothesis: two.sided
 ```
 
@@ -1079,8 +975,8 @@ phylo_1_mod <- buildcompnet(presabs=ex_presabs,
 #> 
 #> SAMPLING FOR MODEL 'ame_binomial' NOW (CHAIN 1).
 #> Chain 1: 
-#> Chain 1: Gradient evaluation took 0.000154 seconds
-#> Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 1.54 seconds.
+#> Chain 1: Gradient evaluation took 0.000158 seconds
+#> Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 1.58 seconds.
 #> Chain 1: Adjust your expectations accordingly!
 #> Chain 1: 
 #> Chain 1: 
@@ -1097,17 +993,11 @@ phylo_1_mod <- buildcompnet(presabs=ex_presabs,
 #> Chain 1: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 #> Chain 1: Iteration: 2000 / 2000 [100%]  (Sampling)
 #> Chain 1: 
-#> Chain 1:  Elapsed Time: 8.762 seconds (Warm-up)
-#> Chain 1:                9.293 seconds (Sampling)
-#> Chain 1:                18.055 seconds (Total)
-#> Chain 1:
-#> Warning: The largest R-hat is 1.07, indicating chains have not mixed.
-#> Running the chains for more iterations may help. See
-#> https://mc-stan.org/misc/warnings.html#r-hat
-#> Warning: Bulk Effective Samples Size (ESS) is too low, indicating posterior means and medians may be unreliable.
-#> Running the chains for more iterations may help. See
-#> https://mc-stan.org/misc/warnings.html#bulk-ess
-#> [1] "compnet uses Stan under the hood. You may see warnings from Stan alongside, \nthis message. To deal with any warnings Stan might issue, \nPlease see the links provided in Stan's output, as well as the compnet website:\nhttps://kyle-rosenblad.github.io/compnet/"
+#> Chain 1:  Elapsed Time: 8.537 seconds (Warm-up)
+#> Chain 1:                8.912 seconds (Sampling)
+#> Chain 1:                17.449 seconds (Total)
+#> Chain 1: 
+#> [1] "compnet uses Stan under the hood. You may see warnings from Stan alongside, this message. To deal with any warnings Stan might issue, Please see the links provided in Stan's output, as well as the compnet website:https://kyle-rosenblad.github.io/compnet/"
 ```
 
 Run our model checks:
@@ -1120,7 +1010,7 @@ gofstats(phylo_1_mod)
 #> 75%
 #> 100%
 #> p.sd.rowmeans   p.cycle.dep 
-#>     0.1000000     0.5366667
+#>    0.08333333    0.56000000
 
 phylo_1_mod_ppred <- postpredsamp(phylo_1_mod)
 fpr <- apply(phylo_1_mod_ppred, 1, mean)
@@ -1134,21 +1024,21 @@ testDispersion(phylo_1_mod_dharma, plot=FALSE)
 #>  simulated
 #> 
 #> data:  simulationOutput
-#> dispersion = 0.98263, p-value = 0.928
+#> dispersion = 0.97223, p-value = 0.976
 #> alternative hypothesis: two.sided
 testQuantiles(phylo_1_mod_dharma, plot=FALSE)
 #> 
 #>  Test for location of quantiles via qgam
 #> 
 #> data:  phylo_1_mod_dharma
-#> p-value = 0.5461
+#> p-value = 0.5051
 #> alternative hypothesis: both
 testUniformity(phylo_1_mod_dharma, plot=FALSE)
 #> 
 #>  Asymptotic one-sample Kolmogorov-Smirnov test
 #> 
 #> data:  simulationOutput$scaledResiduals
-#> D = 0.060261, p-value = 0.2688
+#> D = 0.060894, p-value = 0.2577
 #> alternative hypothesis: two-sided
 testZeroInflation(phylo_1_mod_dharma, plot=FALSE)
 #> 
@@ -1156,7 +1046,7 @@ testZeroInflation(phylo_1_mod_dharma, plot=FALSE)
 #>  simulation under H0 = fitted model
 #> 
 #> data:  simulationOutput
-#> ratioObsSim = 1.0252, p-value = 0.564
+#> ratioObsSim = 1.0262, p-value = 0.57
 #> alternative hypothesis: two.sided
 ```
 
