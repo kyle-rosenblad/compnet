@@ -197,8 +197,8 @@ spvars_dist_int=ex_traits[c("ndtrait")], warmup=10, iter=20)
 #> 
 #> SAMPLING FOR MODEL 'srm_binomial' NOW (CHAIN 1).
 #> Chain 1: 
-#> Chain 1: Gradient evaluation took 0.000148 seconds
-#> Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 1.48 seconds.
+#> Chain 1: Gradient evaluation took 0.000129 seconds
+#> Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 1.29 seconds.
 #> Chain 1: Adjust your expectations accordingly!
 #> Chain 1: 
 #> Chain 1: 
