@@ -13,7 +13,7 @@ buildcompnet(
   spvars_cat_int = NULL,
   pairvars = NULL,
   rank = 0,
-  family = "fnchypg",
+  family = "binomial",
   olre = TRUE,
   prior_intercept_scale = 5,
   prior_betas_scale = 5,
@@ -60,13 +60,11 @@ species in each pair.}
 \item{rank}{Number of dimensions for the multiplicative latent factor term. Rank=0 (the default)
 yields a model with no multiplicative term.}
 
-\item{family}{Distribution family for regression model. Defaults to 'fnchypg', or Fisher's noncentral
+\item{family}{Distribution family for regression model. Defaults to 'binomial'. If family='fnchypg', or Fisher's noncentral
 hypergeometric distribution. In this case, the quantity we are modeling, as a function of species
-traits, dyadic random effects, etc. is Mainali et al.'s (2022, Science Advances) "alpha" or "cooccurrence affinity"
-parameter in the fnchypg distribution. Link function is identity. 'binomial', also supported, is not as theoretically well justified--
-see Mainali et al. (2022, Science Advances)--but, in simulations, produces qualitatively similar results,
-runs faster, and more consistently avoids problems like overdispersion. In this case, we are modeling p, the probability that both species co-occur at a given
-site, given that at least one is present. Link function is logit. May be useful for pilot analyses.}
+traits, dyadic random effects, etc. is Mainali et al.'s (2022, Science Advances) "alpha" or "co-occurrence affinity"
+parameter in the fnchypg distribution. Link function is identity. If family='binomial', we are modeling p, the probability that both species co-occur at a given
+site, given that at least one is present. Link function is logit.}
 
 \item{olre}{Logical variable indicating whether to include observation-level random intercepts drawn from a
 univariate normal distribution. Only relevant when family = 'fnchypg'. Defaults to TRUE, as these models

@@ -29,13 +29,11 @@
 #'    species in each pair.
 #' @param rank Number of dimensions for the multiplicative latent factor term. Rank=0 (the default)
 #'    yields a model with no multiplicative term.
-#' @param family Distribution family for regression model. Defaults to 'fnchypg', or Fisher's noncentral
+#' @param family Distribution family for regression model. Defaults to 'binomial'. If family='fnchypg', or Fisher's noncentral
 #'    hypergeometric distribution. In this case, the quantity we are modeling, as a function of species
-#'    traits, dyadic random effects, etc. is Mainali et al.'s (2022, Science Advances) "alpha" or "cooccurrence affinity"
-#'    parameter in the fnchypg distribution. Link function is identity. 'binomial', also supported, is not as theoretically well justified--
-#'    see Mainali et al. (2022, Science Advances)--but, in simulations, produces qualitatively similar results,
-#'    runs faster, and more consistently avoids problems like overdispersion. In this case, we are modeling p, the probability that both species co-occur at a given
-#'    site, given that at least one is present. Link function is logit. May be useful for pilot analyses.
+#'    traits, dyadic random effects, etc. is Mainali et al.'s (2022, Science Advances) "alpha" or "co-occurrence affinity"
+#'    parameter in the fnchypg distribution. Link function is identity. If family='binomial', we are modeling p, the probability that both species co-occur at a given
+#'    site, given that at least one is present. Link function is logit.
 #' @param olre Logical variable indicating whether to include observation-level random intercepts drawn from a
 #'    univariate normal distribution. Only relevant when family = 'fnchypg'. Defaults to TRUE, as these models
 #'    can often exhibit fit problems which may be mitigated by the random effects.
@@ -100,7 +98,7 @@ buildcompnet <- function(presabs,
                     spvars_cat_int=NULL,
                     pairvars=NULL,
                     rank=0,
-                    family='fnchypg',
+                    family='binomial',
                     olre=TRUE,
                     prior_intercept_scale=5,
                     prior_betas_scale=5,
@@ -419,12 +417,6 @@ buildcompnet <- function(presabs,
 
   if(family=='fnchypg'){
 
-    print(paste("You are currently running a compnet model with a Fisher's noncentral hypergeometric likelihood.",
-                 "This is the default option because there is strong theory supporting it.",
-                 "However, choosing a binomial likelihood (i.e., setting family='binomial') instead may result in a substantially faster run.",
-                 "This alternative option performs equally well in simulation-based testing.",
-                 "See https://kyle-rosenblad.github.io/compnet/ for more details", sep=" "))
-
     if(olre==TRUE){
 
       if(rank==0){
@@ -612,7 +604,7 @@ buildcompnet <- function(presabs,
   print(paste("compnet uses Stan under the hood. You may see warnings from Stan alongside, ",
         "this message. To deal with any warnings Stan might issue, ",
         "Please see the links provided in Stan's output, as well as the compnet website:",
-        "https://kyle-rosenblad.github.io/compnet/", sep="\n"))
+        "https://kyle-rosenblad.github.io/compnet/", sep=""))
 
   class(outlist) <- "compnet"
   return(outlist)
