@@ -7,12 +7,12 @@
 
 ## Citation
 
-Rosenblad K (2026). *compnet: Network Models of Interspecific
-Competition*. R package version 0.0.0.9000,
+Rosenblad K (2026). *compnet: Dyadic Regression Analysis of Species
+Co-occurrence*. R package version 0.0.0.9000,
 <https://kyle-rosenblad.github.io/compnet/>.
 
     @Manual{,
-      title = {compnet: Network Models of Interspecific Competition},
+      title = {compnet: Dyadic Regression Analysis of Species Co-occurrence},
       author = {Kyle Rosenblad},
       year = {2026},
       note = {R package version 0.0.0.9000},
