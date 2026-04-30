@@ -1,5 +1,5 @@
 Package: compnet
-Title: Network Models of Interspecific Competition
+Title: Dyadic Regression Analysis of Species Co-occurrence
 Version: 0.0.0.9000
 Authors@R:
     person("Kyle", "Rosenblad", , "kyle_rosenblad@berkeley.edu", role = c("aut", "cre"),
